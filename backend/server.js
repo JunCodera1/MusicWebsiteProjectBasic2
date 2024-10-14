@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
+import Product from "./model/product.model.js";
 
 dotenv.config();
 
@@ -33,7 +34,7 @@ app.post("/api/products", async (req, res) => {
 // Postman desktop app
 
 console.log(process.env.MONGODB_URI);
-connectDB();
 app.listen(PORT, () => {
-  console.log("Server started at http://localhost:5000");
+  connectDB();
+  console.log("Server started at http://localhost:8080");
 });
