@@ -15,5 +15,5 @@ app.use("/api/products", productRoutes);
 console.log(process.env.MONGODB_URI);
 app.listen(PORT, () => {
   connectDB();
-  console.log("Server started at http://localhost:8080");
+  console.log("Server started at http://localhost:" + PORT);
 });

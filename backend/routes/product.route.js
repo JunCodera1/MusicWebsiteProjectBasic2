@@ -1,6 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
-import Product from "../model/product.model.js";
 import {
   getProducts,
   createProducts,

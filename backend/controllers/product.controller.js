@@ -11,7 +11,7 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// Create Product 
+// Create Product
 
 export const createProducts = async (req, res) => {
   const product = req.body; // user will send this data
@@ -56,9 +56,16 @@ export const updateProducts = async (req, res) => {
   }
 };
 
-// Delete Products 
+// Delete Products
 export const deleteProducts = async (req, res) => {
   const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Invalid Product Id" });
+  }
+  
   try {
     await Product.findByIdAndDelete(id);
     res
@@ -66,6 +73,6 @@ export const deleteProducts = async (req, res) => {
       .json({ success: true, message: "Product deleted successfully" });
   } catch (error) {
     console.log("error in deleting product: ", error.message);
-    res.status(404).json({ success: false, message: "Product not found" });
+    res.status(500).json({ success: false, message: "Server error!" });
   }
 };
