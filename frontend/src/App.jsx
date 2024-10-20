@@ -1,24 +1,21 @@
-import React, { useState } from "react";
-import { Box } from "@chakra-ui/react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Thêm import cho Router, Routes và Route
-import CreatePage from "./pages/CreatePage";
-import HomePage from "./pages/HomePage";
-import Navbar from "./components/Navbar";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import CreatePage from './pages/CreatePage';
+import Navbar from './components/Navbar';
+import { Box } from '@chakra-ui/react';
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
   return (
-    <Router> 
+    <Router>
       <Box minH={"100vh"}>
-        <Navbar /> 
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/create" element={<CreatePage />} />
         </Routes>
       </Box>
     </Router>
   );
-}
+};
 
 export default App;
