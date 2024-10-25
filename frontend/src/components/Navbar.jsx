@@ -60,7 +60,7 @@ const Navbar = () => {
           placeholder="Search..."
           _placeholder={{ color: "inherit" }}
         />
-        <Link to="/">
+        <Link to="/feed">
           <Button 
           bg={useColorModeValue("#FFC436", "gray.800")} 
           textColor={useColorModeValue("black", "white")}
@@ -69,6 +69,10 @@ const Navbar = () => {
           bgGradient="linear(to-r, cyan.400, blue.500)"
           bgClip="text"
           textAlign="center"
+          _hover={{
+            bgGradient: "linear(to-r, red.500, yellow.500)",
+            transition: "background 0.3s ease",
+          }}      
           className="cursor-pointer" 
           >
             Try Pro
