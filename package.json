@@ -15,6 +15,9 @@
     "dotenv": "^16.4.5",
     "env": "^0.0.2",
     "express": "^4.21.1",
+    "joi": "^17.13.3",
+    "joi-password-complexity": "^5.2.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
     "mongoose": "^8.7.1"
   },
