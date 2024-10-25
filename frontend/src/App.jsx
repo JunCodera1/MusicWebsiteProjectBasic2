@@ -1,21 +1,22 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import CreatePage from './pages/CreatePage';
-import Navbar from './components/Navbar';
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import CreatePage from "./pages/CreatePage";
+import './index.css'; // Make sure the CSS file with Tailwind directives is imported
+
+import Navbar from "./components/Navbar";
+
+
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 const App = () => {
   return (
-    
     <Router>
       <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
         <Navbar />
         <Routes>
-          <Route path="/create" element={<CreatePage/>}></Route>
+          <Route path="/create" element={<CreatePage />}></Route>
           <Route path="/" element={<HomePage />} />
-         
         </Routes>
       </Box>
     </Router>
