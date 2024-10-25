@@ -69,3 +69,4 @@ const Product = mongoose.model("Product", productSchema);
 const Song = mongoose.model("Song", songSchema);
 
 export default Product;
+export { Song };
