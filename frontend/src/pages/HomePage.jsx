@@ -13,6 +13,7 @@ const HomePage = () => {
 
   return (
     <Container maxW={"container.xl"} py={12}>
+      
       <VStack spacing={8}>
         <Text
           fontSize={30}
@@ -20,6 +21,7 @@ const HomePage = () => {
           bgGradient={"linear(to-r, cyan.400, blue.500)"}
           bgClip={"text"}
           textAlign={"center"}
+          className="cursor-all-scroll"
         >
           Current Products
         </Text>

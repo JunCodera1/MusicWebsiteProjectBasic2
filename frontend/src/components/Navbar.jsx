@@ -2,15 +2,19 @@ import React from "react";
 import {
   Container,
   Flex,
-  Text,
   HStack,
   Button,
   useColorMode,
+  useColorModeValue,
+  Input,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom"; // Đảm bảo import từ react-router-dom
+import { Link } from "react-router-dom";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
+import { GiMusicSpell } from "react-icons/gi";
+import SignIn from "./SignIn";
+
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
@@ -21,26 +25,36 @@ const Navbar = () => {
         justifyContent={"space-between"}
         flexDir={{ base: "column", sm: "row" }}
       >
-        <Text
-          fontSize={{ base: "22", sm: "28" }}
-          fontWeight={"bold"}
-          textTransform={"uppercase"}
-          textAlign={"center"}
-          bgGradient={"linear(to-r, cyan.400, blue.500)"}
-          bgClip={"text"}
-        >
-          <Link to="/">Product Store 🛒</Link>
-        </Text>
-        <HStack spacing={2} alignItems={"center"}>
+        <Link to="/">
+          <Button
+            color={useColorModeValue("pink.600", "lightblue")}
+            bg={useColorModeValue("gray.100", "gray.900")}
+            _hover={{ bg: "transparent" }}
+            fontSize={15}
+          >
+            {" "}
+            <GiMusicSpell size={30} /> Soundbox
+          </Button>
+        </Link>
+        <Input
+          width={350}
+          height={9}
+          color="teal"
+          placeholder="Search..."
+          _placeholder={{ color: "inherit" }}
+        />
+        <HStack spacing={2} alignItems={"center"} position="relative">
           <Link to={"/create"}>
-            <Button>
+            <Button height={9}>
               <PlusSquareIcon fontSize={20} />
             </Button>
           </Link>
-          <Button onClick={toggleColorMode}>
+          <Button height={9} onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
+          <SignIn></SignIn>
         </HStack>
+        
       </Flex>
     </Container>
   );
