@@ -60,6 +60,20 @@ const Navbar = () => {
           placeholder="Search..."
           _placeholder={{ color: "inherit" }}
         />
+        <Link to="/">
+          <Button 
+          bg={useColorModeValue("#FFC436", "gray.800")} 
+          textColor={useColorModeValue("black", "white")}
+          fontSize={20}
+          fontWeight="bold"
+          bgGradient="linear(to-r, cyan.400, blue.500)"
+          bgClip="text"
+          textAlign="center"
+          className="cursor-pointer" 
+          >
+            Try Pro
+          </Button>
+        </Link>
         <HStack spacing={2} alignItems={"center"} position="relative">
           <Link to={"/create"}>
             <Button height={9}>

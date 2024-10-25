@@ -11,7 +11,7 @@ const SignIn = () => {
   return (
     <header>
       <SignedOut>
-        <SignInButton className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-300 h-9"  />
+        <SignInButton class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 px-4 py-2 rounded" />
       </SignedOut>
       <SignedIn>
         <UserButton />
