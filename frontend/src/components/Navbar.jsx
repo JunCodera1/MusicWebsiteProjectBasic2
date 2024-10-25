@@ -18,7 +18,11 @@ import SignIn from "./SignIn";
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <Container maxW={"1140px"} px={4}>
+    <Container
+      maxW={"1600px"}
+      px={1}
+      bg={useColorModeValue("#FFC436", "gray.800")}
+    >
       <Flex
         h={16}
         alignItems={"center"}
@@ -28,18 +32,31 @@ const Navbar = () => {
         <Link to="/">
           <Button
             color={useColorModeValue("pink.600", "lightblue")}
-            bg={useColorModeValue("gray.100", "gray.900")}
-            _hover={{ bg: "transparent" }}
+            bg={useColorModeValue("gray.100", "gray.800")}
+           
             fontSize={15}
           >
             {" "}
             <GiMusicSpell size={30} /> Soundbox
           </Button>
         </Link>
+        <Link to="/">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Home</Button>
+        </Link>
+        <Link to="/feed">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Feed</Button>
+        </Link>
+        <Link to="/library">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Library</Button>
+        </Link>
+        <Link to="/upload">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Upload</Button>
+        </Link>
+
         <Input
-          width={350}
+          width={500}
           height={9}
-          color="teal"
+          color={useColorModeValue("teal.700", "blue.200")}
           placeholder="Search..."
           _placeholder={{ color: "inherit" }}
         />
@@ -54,7 +71,6 @@ const Navbar = () => {
           </Button>
           <SignIn></SignIn>
         </HStack>
-        
       </Flex>
     </Container>
   );
