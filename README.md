@@ -12,7 +12,7 @@ To install the application, follow these steps:
 1. Clone the repository to your local machine using the command
 
 ```bash
-git clone https://github.com/JunCodera1/SoundBox.git"
+git clone https://github.com/JunCodera1/SoundBox.git
 ```
 
 2. Install the required dependencies using the command "npm install."
