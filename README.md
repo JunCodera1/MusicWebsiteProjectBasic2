@@ -85,5 +85,3 @@ The codebase is organized into the following directories:
 # License
 
 This project is licensed under the MIT License.
-
-"""
