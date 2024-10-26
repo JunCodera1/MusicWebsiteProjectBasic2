@@ -15,6 +15,18 @@ router.post("/", async (req, res) => {
       .send({ message: "User with given email already Exist!" });
 
   const salt = await bcrypt.genSalt(Number(process.env.SALT));
+  const hashPassword = await bcrypt.hash(req.body.password, salt);
+  let newUser = await new User({
+    ...req.body,
+    password: hashPassword,
+  }).save();
+
+  newUser.password = undefined;
+  newUser.__v = undefined;
+
+  res
+    .status(201)
+    .send({ data: newUser, message: "Account created successfully" });
 });
 
 module.exports = router;
