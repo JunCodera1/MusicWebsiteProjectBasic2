@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import Joi from "joi";
 import passwordComplexity from "joi-password-complexity";
 
+// Create user schema
 const userSchema = new mongoose.Schema({
   name: { type: String, require: true },
   email: { type: String, require: true },
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
   isAdmin: { type: Boolean, default: false },
 });
 
+// Generate auth token
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     { _id: this._id, name: this.name, isAdmin: this.isAdmin },
@@ -26,6 +28,7 @@ userSchema.methods.generateAuthToken = function () {
   return token;
 };
 
+/// Validate user
 const validate = (user) => {
   const schema = Joi.object({
     name: Joi.string().min(5).required().label("Name"),
@@ -42,6 +45,6 @@ const validate = (user) => {
   return schema.validate(user);
 };
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("user", userSchema); // Create user model
 
 export { User, validate };
