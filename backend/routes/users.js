@@ -24,10 +24,10 @@ router.post("/", async (req, res) => {
     password: hashPassword,
   });
 
-  await newUser.save(); // Lưu user vào DB
+  await newUser.save(); // Save User to DB
 
-  newUser.password = undefined; // Ẩn password
-  newUser.__v = undefined; // Ẩn version key
+  newUser.password = undefined; // Hide password
+  newUser.__v = undefined; // Hide key
 
   res
     .status(200)
