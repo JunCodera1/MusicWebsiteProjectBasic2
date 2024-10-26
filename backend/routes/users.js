@@ -45,3 +45,10 @@ router.get("/", admin, async (req, res) => {
   const users = await User.find().select("-password -__v");
   res.status(200).send({ data: users });
 });
+
+// Get user by id
+router.get("/:id", [validObjectId, auth], async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password-__v");
+  res.status(200).send({ data: user });
+});
+export default router;
