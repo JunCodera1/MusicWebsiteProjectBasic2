@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const joi = require("joi");
+import mongoose from "mongoose";
+import joi from "joi";
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 

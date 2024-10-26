@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const joi = require("joi");
+import mongoose from "mongoose";
+import joi from "joi";
 
 const songSchema = new mongoose.Schema({
   name: { type: String, require: true },
