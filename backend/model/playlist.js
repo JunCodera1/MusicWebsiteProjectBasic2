@@ -3,6 +3,7 @@ import joi from "joi";
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+// Create playlist schema
 const playlistSchema = new mongoose.Schema({
   name: { type: String, require: true },
   user: { type: ObjectId, ref: "user", require: true },
@@ -11,6 +12,7 @@ const playlistSchema = new mongoose.Schema({
   image: { type: String },
 });
 
+// Validate playlist
 const validate = (playlist) => {
   const schema = joi.object({
     name: joi.string().required(),
@@ -21,6 +23,7 @@ const validate = (playlist) => {
   });
   return schema.validate(playlist);
 };
+// Create playlist model
 const Playlist = mongoose.model("playlist", playlistSchema);
 
 module.exports = { Playlist, validate };
