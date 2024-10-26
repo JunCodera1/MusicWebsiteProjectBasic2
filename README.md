@@ -1,6 +1,5 @@
 # SoundBox
 
-"""
 Welcome to the Soundbox! This platform is dedicated to music lovers, artists, and anyone who wants to explore and share their passion for music. Whether you’re here to discover new tracks, showcase your own music, or connect with fellow enthusiasts, you’ll find what you’re looking for.
 
 This README file provides an overview of the project, including how to install and use the application, as well as information about the codebase and how to contribute to the project.
@@ -78,12 +77,13 @@ If you're interested in contributing to the project, follow these steps:
 
 The codebase is organized into the following directories:
 
-- app: This directory contains the application code, including the routes, models, and views.
-- static: This directory contains the static assets, such as images and CSS files.
-- templates: This directory contains the HTML templates used by the application.
+- `src/`: Contains the source code for the application.
+- `public/`: Contains the static files for the application.
+- `tests/`: Contains the unit tests for the application.
+- `README.md`: This file.
 
-# Tests
+# License
 
-The Music Website includes a suite of tests to ensure that the application works as expected. The tests are written using the Pytest framework, and can be run using the command "pytest."
+This project is licensed under the MIT License.
 
 """
