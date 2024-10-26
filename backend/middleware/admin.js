@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-module.exports = (req, res, next) => {
+const admin = (req, res, next) => {
   const token = req.header("x-auth-token");
   if (!token) {
     return res
@@ -24,3 +24,5 @@ module.exports = (req, res, next) => {
     }
   });
 };
+
+export default admin;
