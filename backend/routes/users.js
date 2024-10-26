@@ -51,4 +51,14 @@ router.get("/:id", [validObjectId, auth], async (req, res) => {
   const user = await User.findById(req.params.id).select("-password-__v");
   res.status(200).send({ data: user });
 });
+
+// update user by id
+router.put("/:id", [validObjectId, auth], async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { $sets: req.body },
+    { new: true }
+  ).select("-password -__v");
+  res.status(200).send({ data: user });
+});
 export default router;
