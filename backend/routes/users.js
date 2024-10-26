@@ -34,5 +34,4 @@ router.post("/", async (req, res) => {
     .send({ data: newUser, message: "Account created successfully" });
 });
 
-// Export router
 export default router;
