@@ -2,6 +2,8 @@ import express from "express";
 import { User, validate } from "../model/user.js";
 import bcrypt from "bcrypt";
 import auth from "../middleware/auth.js";
+import validObjectId from "../middleware/validObjectId.js";
+import admin from "../middleware/admin.js";
 
 const router = express.Router();
 
@@ -38,8 +40,8 @@ router.post("/", async (req, res) => {
     .send({ data: newUser, message: "Account created successfully" });
 });
 
-router.get("/", async (req, res) => {
+// Get all users
+router.get("/", admin, async (req, res) => {
   const users = await User.find().select("-password -__v");
   res.status(200).send({ data: users });
 });
-export default router;
