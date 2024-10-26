@@ -61,4 +61,10 @@ router.put("/:id", [validObjectId, auth], async (req, res) => {
   ).select("-password -__v");
   res.status(200).send({ data: user });
 });
+
+// Delete user by id
+router.delete("/:id", [validObjectId, auth, admin], async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+  res.status(200).send({ message: "User deleted successfully" });
+});
 export default router;
