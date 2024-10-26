@@ -6,17 +6,17 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/users.js";
 import authRoutes from "./routes/auth.js";
 
-dotenv.config();
-const app = express();
+dotenv.config(); // Load environment variables from .env file
+const app = express(); // Create Express app
 
-app.use(cors());
-app.use(express.json());
-app.use("/api/users", userRoutes);
-app.use("/api/login", authRoutes);
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Parse JSON bodies
+app.use("/api/users", userRoutes); // User Routes
+app.use("/api/login", authRoutes); // Auth Routes
 
-const PORT = process.env.PORT || 5000;
-console.log(process.env.MONGODB_URI);
+const PORT = process.env.PORT || 5000; // Set port
+console.log(process.env.MONGODB_URI); // Log MongoDB URI
 app.listen(PORT, () => {
   connectDB();
-  console.log("Server started at http://localhost:" + PORT);
+  console.log("Server started at http://localhost:" + PORT); // Start server
 });
