@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-module.exports = (req, res, next) => {
+const auth = (req, res, next) => {
   const token = req.header("x-auth-token");
   if (!token) {
     // if there is no token
@@ -20,3 +20,5 @@ module.exports = (req, res, next) => {
     }
   });
 };
+
+export default auth;
