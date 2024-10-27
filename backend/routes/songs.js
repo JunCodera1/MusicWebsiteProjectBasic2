@@ -96,7 +96,7 @@ router.put("/like/:id", [validObjectId, auth], async (req, res) => {
 });
 
 // get all liked songs
-router.get("/like", auth, async (res, req) => {
+router.get("/like", auth, async (req, res) => {
   const user = await User.findById(req.user._id);
   const songs = await Song.find({ _id: user.likedSongs });
   res.status(200).send({ data: songs });
