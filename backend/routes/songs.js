@@ -29,4 +29,10 @@ router.put("/:id", [validObjectId, admin], async (req, res) => {
     { $set: req.body },
     { new: true }
   );
+
+  if (!song) {
+    return res.status(404).send({ message: "Song not found" });
+  }
+
+  res.status(200).send({ data: song, message: "Song updated successfully" });
 });
