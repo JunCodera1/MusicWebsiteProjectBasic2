@@ -117,4 +117,12 @@ router.put("/remove-song", auth, async (req, res) => {
     .send({ data: playlist, message: "Song removed from playlist" });
 });
 
+// User favourite playlist
+
+router.get("/favourite", auth, async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const playlists = await Playlist.find({ _id: user.playlists });
+  res.status(200).send({ data: playlists });
+});
+
 export default router;
