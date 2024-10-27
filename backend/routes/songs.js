@@ -56,22 +56,43 @@ router.delete("/:id", [validObjectId, admin], async (req, res) => {
   res.status(200).send({ data: song, message: "Song deleted successfully" });
 });
 
-// Like song
+// Like or unlike a song
 router.put("/like/:id", [validObjectId, auth], async (req, res) => {
-  const song = await Song.findById(req.params.id);
-  if (!song) {
-    return res.status(404).send({ message: "Song not found" });
+  try {
+    // Find the song by ID
+    const song = await Song.findById(req.params.id);
+    if (!song) {
+      return res.status(404).send({ message: "Song not found" });
+    }
+
+    // Find the authenticated user
+    const user = await User.findById(req.user._id);
+
+    // Check if the song is already liked by the user
+    const index = user.likedSongs.indexOf(song._id);
+    let resMessage = ""; // Initialize resMessage here
+
+    if (index === -1) {
+      // If not liked, add the song to likedSongs
+      user.likedSongs.push(song._id);
+      resMessage = "Added to your liked songs";
+    } else {
+      // If already liked, remove the song from likedSongs
+      user.likedSongs.splice(index, 1);
+      resMessage = "Removed from your liked songs";
+    }
+
+    // Save the updated user document
+    await user.save();
+
+    // Send a response with the result message
+    res.status(200).send({ message: resMessage });
+  } catch (error) {
+    // Handle any errors that may occur during the process
+    res
+      .status(500)
+      .send({ message: "An error occurred while liking/unliking the song" });
   }
-  const user = await User.findById(req.user._id);
-  const index = user.likedSongs.indexOf(song._id);
-  if (index === -1) {
-    user.likedSongs.push(song._id);
-    resMessage = "Added to your liked songs";
-  } else {
-    user.likedSongs.splice(index, 1);
-    resMessage = "Removed from your liked songs";
-  }
-  res.status(200).send({ message: resMessage });
 });
 
 // get all liked songs
