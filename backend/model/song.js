@@ -24,4 +24,5 @@ const validate = (song) => {
 
 // Create song model
 const Song = mongoose.model("song", songSchema);
-module.exports = { Song, validate };
+
+export { Song, validate };
