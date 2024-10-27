@@ -18,8 +18,18 @@ router.post("/", admin, async (req, res) => {
 
 // Get all songs
 router.get("/", async (req, res) => {
-  const songs = await Song.find();
-  res.status(200).send({ data: songs });
+  try {
+    // Retrieve all songs from the database
+    const songs = await Song.find();
+
+    // Send a successful response with the songs data
+    res.status(200).send({ data: songs });
+  } catch (error) {
+    // Handle any errors that occur during the retrieval process
+    res
+      .status(500)
+      .send({ message: "An error occurred while retrieving songs" });
+  }
 });
 
 // Update song
