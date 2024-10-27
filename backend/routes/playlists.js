@@ -31,7 +31,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 // Edit playlists by ID
-router.put("/:id", [validObjectId, auth], async (req, res) => {
+router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
   const schema = Joi.object({
     name: Joi.string().min(1).required(),
     desc: Joi.string().allow(""),
