@@ -26,4 +26,4 @@ const validate = (playlist) => {
 // Create playlist model
 const Playlist = mongoose.model("playlist", playlistSchema);
 
-module.exports = { Playlist, validate };
+export { Playlist, validate };
