@@ -81,4 +81,4 @@ router.get("/like", auth, async (res, req) => {
   res.status(200).send({ data: songs });
 });
 
-export default Songs;
+export default router;
