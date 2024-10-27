@@ -7,6 +7,7 @@ import userRoutes from "./routes/users.js";
 import authRoutes from "./routes/auth.js";
 import songRoutes from "./routes/songs.js";
 import playlistRoutes from "./routes/playlists.js";
+import searchRoutes from "./routes/search.js";
 
 dotenv.config(); // Load environment variables from .env file
 const app = express(); // Create Express app
@@ -17,6 +18,7 @@ app.use("/api/users", userRoutes); // User Routes
 app.use("/api/login", authRoutes); // Auth Routes
 app.use("/api/songs", songRoutes); // Song Routes
 app.use("/api/playlists", playlistRoutes); // Playlist Routes
+app.use("/api/", searchRoutes); // Search Routes
 
 const PORT = process.env.PORT || 5000; // Set port
 console.log(process.env.MONGODB_URI); // Log MongoDB URI

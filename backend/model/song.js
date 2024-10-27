@@ -3,11 +3,11 @@ import joi from "joi";
 
 // Create song schema
 const songSchema = new mongoose.Schema({
-  name: { type: String, require: true },
-  artist: { type: String, require: true },
-  song: { type: String, require: true },
-  image: { type: String, require: true },
-  duration: { type: Number, require: true },
+  name: { type: String, required: true },
+  artist: { type: String, required: true },
+  song: { type: String, required: true },
+  image: { type: String, required: true },
+  duration: { type: Number, required: true },
 });
 
 // Validate song
