@@ -148,4 +148,20 @@ router.get("/", auth, async (req, res) => {
   res.status(200).send({ data: playlists });
 });
 
+// Delete playlist by id
+router.delete("/:id", [validObjectId, auth], async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const playlist = await Playlist.findById(req.params.id);
+  if (!user._id.equals(playlist.user)) {
+    return res
+      .status(403)
+      .send({ message: "You are not authorized to edit this playlist" });
+  }
+  const index = user.playlists.indexOf(req.params.id);
+  user.playlists.splice(index, 1);
+  await user.save();
+  await playlist.remove();
+  res.status(200).send({ data: playlist, message: "Playlist deleted" });
+});
+
 export default router;
