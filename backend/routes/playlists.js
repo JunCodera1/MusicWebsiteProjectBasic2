@@ -125,4 +125,10 @@ router.get("/favourite", auth, async (req, res) => {
   res.status(200).send({ data: playlists });
 });
 
+// Get random playlist
+router.get("/random", auth, async (req, res) => {
+  const playlists = await Playlist.aggregate([{ $sample: { size: 10 } }]);
+  res.status(200).send({ data: playlists });
+});
+
 export default router;
