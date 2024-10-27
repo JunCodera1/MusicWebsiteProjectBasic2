@@ -68,6 +68,32 @@ router.put("/:id", [validObjectId, auth], async (req, res) => {
       .status(500)
       .send({ message: "An error occurred while updating the playlist" });
   }
+
+  // Add song to playlist
+  router.put("/add-song", auth, async (req, res) => {
+    const schema = Joi.object({
+      playlistId: Joi.string().required(),
+      songId: Joi.string().required(),
+    });
+    const { error } = schema.validate(req.body);
+    if (error)
+      return res.status(400).send({ message: error.details[0].message });
+
+    const user = await User.findById(req.user._id);
+    const playlist = await Playlist.findById(req.body.playlistId);
+
+    if (!user._id.equals(playlist.user)) {
+      return res
+        .status(403)
+        .send({ message: "You are not authorized to edit this playlist" });
+    }
+
+    if (playlist.songs.indexOf(req.body.songId) === -1) {
+      playlist.songs.push(req.body.songId);
+    }
+    await playlist.save();
+    res.status(200).send({ data: playlist, message: "Song added to playlist" });
+  });
 });
 
 export default router;
