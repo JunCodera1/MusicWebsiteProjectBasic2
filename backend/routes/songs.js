@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Update song
+// Update song by id
 router.put("/:id", [validObjectId, admin], async (req, res) => {
   const song = await Song.findByIdAndUpdate(
     req.params.id,
@@ -45,4 +45,13 @@ router.put("/:id", [validObjectId, admin], async (req, res) => {
   }
 
   res.status(200).send({ data: song, message: "Song updated successfully" });
+});
+
+// Delete song by id
+router.delete("/:id", [validObjectId, admin], async (req, res) => {
+  const song = await Song.findByIdAndDelete(req.params.id);
+  if (!song) {
+    return res.status(404).send({ message: "Song not found" });
+  }
+  res.status(200).send({ data: song, message: "Song deleted successfully" });
 });
