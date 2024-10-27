@@ -96,4 +96,25 @@ router.put("/:id", [validObjectId, auth], async (req, res) => {
   });
 });
 
+// Remove song from playlist
+router.put("/remove-song", auth, async (req, res) => {
+  const schema = Joi.object({
+    playlistId: Joi.string().required(),
+    songId: Joi.string().required(),
+  });
+  const { error } = schema.validate(req.body);
+  if (error) return res.status(400).send({ message: error.details[0].message });
+  if (!user._id.equals(playlist.user)) {
+    return res
+      .status(403)
+      .send({ message: "You are not authorized to edit this playlist" });
+  }
+  const index = playlist.songs.indexOf(req.body.songId);
+  playlist.songs.splice(index, 1);
+  await playlist.save();
+  res
+    .status(200)
+    .send({ data: playlist, message: "Song removed from playlist" });
+});
+
 export default router;
