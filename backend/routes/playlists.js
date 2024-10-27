@@ -142,4 +142,10 @@ router.get("/:id", [validObjectId, auth], async (req, res) => {
   res.status(200).send({ data: { playlist, songs } });
 });
 
+// Get all playlists
+router.get("/", auth, async (req, res) => {
+  const playlists = await Playlist.find();
+  res.status(200).send({ data: playlists });
+});
+
 export default router;
