@@ -29,10 +29,23 @@ npm run dev
 
 The Music Website is a platform that allows users to share and discover music. It's a place where people can come together to share their love for music, whether it's by sharing their own music, discovering new artists, or connecting with fellow music enthusiasts.
 
-# Technologies used
+# Technologies Used: MERN Stack
 
-MERN stack
+## 1.MongoDB:
 
+Utilized as the primary database to store music tracks, user profiles, playlists, and other related data. Its document-oriented structure allows for flexible data representation, making it easy to manage complex data relationships.
+
+## 2.Express:
+
+Serves as the backend framework that handles API requests for features such as user authentication, song retrieval, and playlist management. Express simplifies routing and middleware integration, facilitating seamless communication between the frontend and backend.
+
+## 3.React:
+
+Powers the frontend of the music web application, allowing for the creation of dynamic and responsive user interfaces. React components enable users to browse songs, create playlists, and interact with the application in an intuitive manner.
+
+## 4.Node.js:
+
+Acts as the runtime environment for executing the backend code, enabling real-time data processing and enhancing performance. Node.js supports the development of scalable applications, making it ideal for handling multiple user requests concurrently.
 # Features
 
 For users:
