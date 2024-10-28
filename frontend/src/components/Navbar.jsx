@@ -33,7 +33,6 @@ const Navbar = () => {
           <Button
             color={useColorModeValue("pink.600", "lightblue")}
             bg={useColorModeValue("gray.100", "gray.800")}
-           
             fontSize={15}
           >
             {" "}
@@ -61,29 +60,24 @@ const Navbar = () => {
           _placeholder={{ color: "inherit" }}
         />
         <Link to="/feed">
-          <Button 
-          bg={useColorModeValue("#FFC436", "gray.800")} 
-          textColor={useColorModeValue("black", "white")}
-          fontSize={20}
-          fontWeight="bold"
-          bgGradient="linear(to-r, cyan.400, blue.500)"
-          bgClip="text"
-          textAlign="center"
-          _hover={{
-            bgGradient: "linear(to-r, red.500, yellow.500)",
-            transition: "background 0.3s ease",
-          }}      
-          className="cursor-pointer" 
+          <Button
+            bg={useColorModeValue("#FFC436", "gray.800")}
+            textColor={useColorModeValue("black", "white")}
+            fontSize={20}
+            fontWeight="bold"
+            bgGradient="linear(to-r, cyan.400, blue.500)"
+            bgClip="text"
+            textAlign="center"
+            _hover={{
+              bgGradient: "linear(to-r, red.500, yellow.500)",
+              transition: "background 0.3s ease",
+            }}
+            className="cursor-pointer"
           >
             Try Pro
           </Button>
         </Link>
         <HStack spacing={2} alignItems={"center"} position="relative">
-          <Link to={"/create"}>
-            <Button height={9}>
-              <PlusSquareIcon fontSize={20} />
-            </Button>
-          </Link>
           <Button height={9} onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
