@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+:root {
+    --primary-color: #1ed760;
+    --black: #0000;
+    --white: #fff;
+    --gray: #9b9b9b;
+    --blue: #2941ab;
+    --sky-blue: #1877f2;
+    --dark-green: #15883e;
+    --light-gray: #616467;
+    --light-white: #919496;
+    --light-black: #282828;
+    --light-black: #ffcdd2;
+    --mini-black: #181818;
+    --gradient-gary: #535353;
+
+    --error: #cc0000;
+    --toastify-toast-min-height: 5rem;
+
+
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+    background: var(--blue);
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 1rem;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+    background: var(--error);
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 1rem;
+}
