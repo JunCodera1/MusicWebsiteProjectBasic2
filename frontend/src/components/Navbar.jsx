@@ -78,10 +78,10 @@ const Navbar = () => {
           </Button>
         </Link>
         <HStack>
+          <SignIn></SignIn>
           <Button height={9} onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
-          <SignIn></SignIn>
         </HStack>
       </Flex>
     </Container>
