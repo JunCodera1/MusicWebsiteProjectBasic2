@@ -77,7 +77,7 @@ const Navbar = () => {
             Try Pro
           </Button>
         </Link>
-        <HStack spacing={2} alignItems={"center"} position="relative">
+        <HStack>
           <Button height={9} onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
