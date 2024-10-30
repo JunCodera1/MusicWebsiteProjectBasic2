@@ -7,9 +7,9 @@ import {
   useColorMode,
   useColorModeValue,
   Input,
+  background,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { PlusSquareIcon } from "@chakra-ui/icons";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
@@ -48,19 +48,32 @@ const Navbar = () => {
         <Link to="/library">
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>Library</Button>
         </Link>
-        <Link to="/upload">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Upload</Button>
+        <Link to="/favourites">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Favourites</Button>
         </Link>
         <Link to="/trending">
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>
             Trending
           </Button>
         </Link>
-        <Link to="/favourites">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
-            Favourites
+        <Link to="/upload">
+          <Button
+            bgGradient="linear(to-r, teal.400, blue.500)"
+            _hover={{
+              bgGradient: "linear(to-r, pink.500, orange.500)",
+              transform: "scale(1.05)",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              transition: "all 0.3s ease",
+
+            }}
+            px={4}
+            py={2}
+            rounded="md"
+          >
+            Upload
           </Button>
         </Link>
+
 
         <Input
           width={500}
