@@ -1,13 +1,27 @@
-import { Container } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { searchTracks } from '../spotify';
 
+const Home = () => {
+  const [tracks, setTracks] = useState([]);
 
-const HomePage = () => {
+  useEffect(() => {
+    const fetchTracks = async () => {
+      const result = await searchTracks('your favorite artist');
+      setTracks(result);
+    };
+    fetchTracks();
+  }, []);
 
   return (
-    <Container maxW={"container.xl"} py={12}>
-    </Container>
+    <div>
+      <h1>Home</h1>
+      <ul>
+        {tracks.map(track => (
+          <li key={track.id}>{track.name}</li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
-export default HomePage;
+export default Home;
