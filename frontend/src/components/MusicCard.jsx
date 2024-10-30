@@ -1,46 +1,69 @@
-import React from "react";
-import { Box, Image, Text, Button, IconButton } from "@chakra-ui/react";
-import { FaPlay, FaHeart } from "react-icons/fa";
+import React, { useState } from "react";
+import {
+  Box,
+  Image,
+  Text,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  IconButton,
+} from "@chakra-ui/react";
+import { FaPlay, FaPause } from "react-icons/fa";
 
-const MusicCard = ({ image, title, artist }) => {
+const MusicCard = ({ image, title, artist, duration }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <Box
-      maxW="250px"
+      maxW="400px"
       borderWidth="1px"
-      borderRadius="lg"
+      borderRadius="md"
       overflow="hidden"
-      boxShadow="lg"
+      boxShadow="md"
       bg="white"
-      _hover={{ transform: "scale(1.05)", transition: "0.2s" }}
+      _hover={{ transform: "scale(1.02)", transition: "0.2s" }}
+      p="4"
+      display="flex"
+      alignItems="center"
     >
-      <Image src={image} alt={title} boxSize="250px" objectFit="cover" />
+      <Image src={image} alt={title} boxSize="80px" borderRadius="md" mr="4" />
 
-      <Box p="4">
+      <Box flex="1">
         <Text fontSize="lg" fontWeight="bold" mb="1">
           {title}
         </Text>
-        <Text fontSize="md" color="gray.600">
+        <Text fontSize="sm" color="gray.600">
           {artist}
         </Text>
 
-        <Box display="flex" justifyContent="space-between" mt="3">
-          <Button
-            leftIcon={<FaPlay />}
-            colorScheme="teal"
-            size="sm"
-            onClick={() => console.log("Play", title)}
-          >
-            Play
-          </Button>
-          <IconButton
-            icon={<FaHeart />}
-            colorScheme="pink"
-            size="sm"
-            aria-label="Like"
-            onClick={() => console.log("Liked", title)}
-          />
-        </Box>
+        <Slider
+          aria-label="Music progress"
+          value={currentTime}
+          max={duration}
+          onChange={(val) => setCurrentTime(val)}
+          mt="2"
+        >
+          <SliderTrack bg="gray.200">
+            <SliderFilledTrack bg="teal.500" />
+          </SliderTrack>
+          <SliderThumb boxSize={3} />
+        </Slider>
       </Box>
+
+      <IconButton
+        icon={isPlaying ? <FaPause /> : <FaPlay />}
+        colorScheme="teal"
+        variant="outline"
+        onClick={togglePlayPause}
+        ml="4"
+        aria-label="Play/Pause"
+      />
     </Box>
   );
 };

@@ -1,9 +1,27 @@
-import React from 'react'
+import React from "react";
+import MusicCard from "../components/MusicCard";
 
 const FeedPage = () => {
-  return (
-    <div>FeedPage</div>
-  )
-}
+  const songs = [
+    {
+      image: "https://link-to-album-cover.jpg",
+      title: "Song Title",
+      artist: "Artist Name",
+    },
+  ];
 
-export default FeedPage
+  return (
+    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+      {songs.map((song, index) => (
+        <MusicCard
+          key={index}
+          image={song.image}
+          title={song.title}
+          artist={song.artist}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default FeedPage;
