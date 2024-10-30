@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Box,
   Image,
@@ -11,12 +11,36 @@ import {
 } from "@chakra-ui/react";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-const MusicCard = ({ image, title, artist, duration }) => {
+const MusicCard = ({ image, title, artist, audioSrc }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef(null);
 
+  // Toggle Play/Pause and update state
   const togglePlayPause = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
     setIsPlaying(!isPlaying);
+  };
+
+  // Update currentTime as the audio plays
+  const handleTimeUpdate = () => {
+    setCurrentTime(audioRef.current.currentTime);
+  };
+
+  // Load duration when metadata is available
+  const handleLoadedMetadata = () => {
+    setDuration(audioRef.current.duration);
+  };
+
+  // Seek functionality
+  const handleSliderChange = (value) => {
+    audioRef.current.currentTime = value;
+    setCurrentTime(value);
   };
 
   return (
@@ -32,8 +56,10 @@ const MusicCard = ({ image, title, artist, duration }) => {
       display="flex"
       alignItems="center"
     >
+      {/* Album Image */}
       <Image src={image} alt={title} boxSize="80px" borderRadius="md" mr="4" />
 
+      {/* Song Details */}
       <Box flex="1">
         <Text fontSize="lg" fontWeight="bold" mb="1">
           {title}
@@ -42,11 +68,12 @@ const MusicCard = ({ image, title, artist, duration }) => {
           {artist}
         </Text>
 
+        {/* Progress Slider */}
         <Slider
           aria-label="Music progress"
           value={currentTime}
           max={duration}
-          onChange={(val) => setCurrentTime(val)}
+          onChange={handleSliderChange}
           mt="2"
         >
           <SliderTrack bg="gray.200">
@@ -56,6 +83,7 @@ const MusicCard = ({ image, title, artist, duration }) => {
         </Slider>
       </Box>
 
+      {/* Play/Pause Button */}
       <IconButton
         icon={isPlaying ? <FaPause /> : <FaPlay />}
         colorScheme="teal"
@@ -63,6 +91,14 @@ const MusicCard = ({ image, title, artist, duration }) => {
         onClick={togglePlayPause}
         ml="4"
         aria-label="Play/Pause"
+      />
+
+      {/* Audio Element */}
+      <audio
+        ref={audioRef}
+        src={audioSrc}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
       />
     </Box>
   );
