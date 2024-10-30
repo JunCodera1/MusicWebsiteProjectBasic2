@@ -1,30 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import Home from "./components/Home";
 import CreatePage from "./pages/CreatePage";
-import './index.css'; 
-
-import Navbar from "./components/Navbar";
-
-
-import { Box, useColorModeValue } from "@chakra-ui/react";
-import FeedPage from "./pages/FeedPage";
-import LibraryPage from "./pages/LibraryPage";
-import UploadPage from "./pages/UploadPage";
+import Navbar from "./components/Navbar"; // Import Navbar
+import "./index.css";
 
 const App = () => {
   return (
     <Router>
-      <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
-        <Navbar />
+      <div className="app-container">
+        <Navbar /> {/* Sử dụng Navbar */}
         <Routes>
-          <Route path="/create" element={<CreatePage />}></Route>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/feed" element={<FeedPage/>}></Route>
-          <Route path="/library" element={<LibraryPage/>}></Route>
-          <Route path="/upload" element={<UploadPage/>}></Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/create" element={<CreatePage />} />
         </Routes>
-      </Box>
+      </div>
     </Router>
   );
 };

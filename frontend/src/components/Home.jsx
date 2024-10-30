@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Box, Heading, Text, List, ListItem } from '@chakra-ui/react';
+import { searchTracks } from '../spotify';
 
 const Home = () => {
-    const [songs, setSongs] = useState([]);
+    const [tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/songs')
-            .then(response => {
-                setSongs(response.data);
-            })
-            .catch(error => {
-                console.error('There was an error fetching the songs!', error);
-            });
+        const fetchTracks = async () => {
+            const result = await searchTracks('your favorite artist');
+            setTracks(result);
+        };
+        fetchTracks();
     }, []);
 
     return (
-        <Box p={4}>
-            <Heading as="h1" size="xl" mb={4}>Home</Heading>
-            <Text>Welcome to Spotify Clone</Text>
-            <List spacing={3} mt={4}>
-                {songs.map(song => (
-                    <ListItem key={song.id}>
-                        {song.title} by {song.artist}
-                    </ListItem>
+        <div>
+            <h1>Home</h1>
+            <ul>
+                {tracks.map(track => (
+                    <li key={track.id}>{track.name}</li>
                 ))}
-            </List>
-        </Box>
+            </ul>
+        </div>
     );
 };
 
