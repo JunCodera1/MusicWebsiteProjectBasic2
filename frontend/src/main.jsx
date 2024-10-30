@@ -18,21 +18,21 @@ const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <ChakraProvider>
-      <BrowserRouter>
-        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-          <App />
-          <ToastContainer
 
-            position="bottom-center"
-            autoClose={2000}
-            hideProgressBar={true}
-            closeButton={false}
-            theme="colored"
-            icon={false}
-          />
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+        <App />
+        <ToastContainer
 
-        </ClerkProvider>
-      </BrowserRouter>
+          position="bottom-center"
+          autoClose={2000}
+          hideProgressBar={true}
+          closeButton={false}
+          theme="colored"
+          icon={false}
+        />
+
+      </ClerkProvider>
+
     </ChakraProvider>
   </React.StrictMode>
 );
