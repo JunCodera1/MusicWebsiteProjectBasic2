@@ -9,6 +9,8 @@ import { Box, useColorModeValue } from "@chakra-ui/react";
 import FeedPage from "./pages/FeedPage";
 import LibraryPage from "./pages/LibraryPage";
 import UploadPage from "./pages/UploadPage";
+import FavouritesPage from "./pages/FavouritesPage";
+import TrendingPage from "./pages/TrendingPage";
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/library" element={<LibraryPage />} />
         <Route path="/upload" element={<UploadPage />} />
+        <Route path="/favourites" element={<FavouritesPage />} />
+        <Route path="/favourites" element={<TrendingPage />} />
       </Routes>
     </Box>
   );

@@ -51,6 +51,16 @@ const Navbar = () => {
         <Link to="/upload">
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>Upload</Button>
         </Link>
+        <Link to="/trending">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
+            Trending
+          </Button>
+        </Link>
+        <Link to="/favourites">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
+            Favourites
+          </Button>
+        </Link>
 
         <Input
           width={500}
