@@ -1,5 +1,6 @@
 import React from "react";
 import MusicCard from "../components/MusicCard";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 
 const FeedPage = () => {
   const songs = [
@@ -13,12 +14,24 @@ const FeedPage = () => {
   return (
     <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
       {songs.map((song, index) => (
-        <MusicCard
-          key={index}
-          image={song.image}
-          title={song.title}
-          artist={song.artist}
-        />
+        <SimpleGrid columns={[2, null, 3]} spacing="40px">
+          <Box bg="tomato" height="80px">
+            <MusicCard
+              key={index}
+              image={song.image}
+              title={song.title}
+              artist={song.artist}
+            />
+          </Box>
+          <Box bg="tomato" height="80px">
+            <MusicCard
+              key={index}
+              image={song.image}
+              title={song.title}
+              artist={song.artist}
+            />
+          </Box>
+        </SimpleGrid>
       ))}
     </div>
   );

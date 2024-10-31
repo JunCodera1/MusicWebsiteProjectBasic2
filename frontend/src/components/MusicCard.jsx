@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box,
   Image,
@@ -10,6 +10,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { FaPlay, FaPause } from "react-icons/fa";
+import { SimpleGrid } from "@chakra-ui/react";
 
 const MusicCard = ({ image, title, artist, audioSrc }) => {
   const [isPlaying, setIsPlaying] = useState(false);
