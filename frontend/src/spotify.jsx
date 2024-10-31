@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const client_id = import.meta.env.CLIENT_ID_SPOTIFY;
-const client_secret = "YOUR_CLIENT_SECRET";
-const redirect_uri = "YOUR_REDIRECT_URI";
+const client_secret = import.meta.env.CLIENT_SECRET_SPOTIFY;
+const redirect_uri = "http://localhost:5173/callback";
 
 const getToken = async () => {
   const response = await axios.post("https://accounts.spotify.com/api/token", {
