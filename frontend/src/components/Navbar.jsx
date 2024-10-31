@@ -14,6 +14,7 @@ import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
 import SignIn from "./SignIn";
+import Search from "./Search";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -62,13 +63,7 @@ const Navbar = () => {
           </Button>
         </Link>
 
-        <Input
-          width={500}
-          height={9}
-          color={useColorModeValue("teal.700", "blue.200")}
-          placeholder="Search..."
-          _placeholder={{ color: "inherit" }}
-        />
+        <Search></Search>
         <Link to="/feed">
           <Button
             bg={useColorModeValue("#FFC436", "gray.800")}
