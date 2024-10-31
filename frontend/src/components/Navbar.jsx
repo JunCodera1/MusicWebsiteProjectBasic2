@@ -7,6 +7,7 @@ import {
   useColorMode,
   useColorModeValue,
   Input,
+  Heading,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { PlusSquareIcon } from "@chakra-ui/icons";
@@ -14,7 +15,7 @@ import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
 import SignIn from "./SignIn";
-import Search from "./Search";
+import Search from "./SearchBar";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -63,7 +64,9 @@ const Navbar = () => {
           </Button>
         </Link>
 
-        <Search></Search>
+        <Heading as="h1" mb={14}>
+          <Search></Search>
+        </Heading>
         <Link to="/feed">
           <Button
             bg={useColorModeValue("#FFC436", "gray.800")}

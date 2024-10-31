@@ -72,7 +72,7 @@ const Search = () => {
             </ListItem>
           ))
         ) : (
-          <Text mt={4}>No results found</Text>
+          <Text mt={4}></Text>
         )}
       </List>
     </Box>
