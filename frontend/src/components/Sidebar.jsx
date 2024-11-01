@@ -59,6 +59,7 @@ export default function Sidebar() {
         />
         <NavItem navSize={navSize} icon={FiUser} title="Clients" />
         <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
+        <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
       </Flex>
 
       <Flex
