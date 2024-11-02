@@ -6,11 +6,9 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
-  Input,
   Heading,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { PlusSquareIcon } from "@chakra-ui/icons";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
