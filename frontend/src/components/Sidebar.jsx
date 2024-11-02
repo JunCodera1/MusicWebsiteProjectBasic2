@@ -7,16 +7,7 @@ import {
   Avatar,
   Heading,
 } from "@chakra-ui/react";
-import {
-  FiMenu,
-  FiHome,
-  FiCalendar,
-  FiUser,
-  FiDollarSign,
-  FiBriefcase,
-  FiSettings,
-} from "react-icons/fi";
-import { IoPawOutline } from "react-icons/io5";
+import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
 import avatarImg from "/home/jun/Documents/MusicWebsiteProjectBasic2/frontend/src/assets/images/avatar1.png";
 import NavItem from "../components/NavItem";
 
