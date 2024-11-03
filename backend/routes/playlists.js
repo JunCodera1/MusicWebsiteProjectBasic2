@@ -5,8 +5,8 @@ import { User } from "../model/user.js";
 import { Song } from "../model/song.js";
 
 import auth from "../middleware/auth.js";
-import admin from "../middleware/admin.js";
 import validObjectId from "../middleware/validObjectId.js";
+import passport from "passport-jwt";
 
 import Joi from "joi";
 

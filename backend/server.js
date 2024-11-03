@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.js";
 import songRoutes from "./routes/songs.js";
 import playlistRoutes from "./routes/playlists.js";
 import searchRoutes from "./routes/search.js";
+import User from "./model/user.js";
 
 dotenv.config(); // Load environment variables from .env file
 const app = express(); // Create Express app
@@ -32,9 +33,7 @@ var JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt;
 var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = "secret";
-opts.issuer = "accounts.examplesoft.com";
-opts.audience = "yoursite.net";
+opts.secretOrKey = "";
 passport.use(
   new JwtStrategy(opts, function (jwt_payload, done) {
     User.findOne({ id: jwt_payload.sub }, function (err, user) {
