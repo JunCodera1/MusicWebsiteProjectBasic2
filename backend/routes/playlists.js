@@ -6,29 +6,33 @@ import { Song } from "../model/song.js";
 
 import auth from "../middleware/auth.js";
 import validObjectId from "../middleware/validObjectId.js";
-import passport from "passport-jwt";
+import passport from "passport";
 
 import Joi from "joi";
 
 const router = express.Router();
 
 // Create playlist
-router.post("/", auth, async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send({ message: error.details[0].message });
-
-  const user = await User.findById(req.user._id);
-  const playlist = await Playlist({
-    ...req.body,
-    user: user._id,
-  }).save();
-  user.playlists.push(playlist._id);
-  await user.save();
-
-  res
-    .status(201)
-    .send({ data: playlist, message: "Playlist created successfully" });
-});
+router.post(
+  "/create",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const currentUser = req.user;
+    const { name, thumbnail, songs } = req.body;
+    if (!name || !thumbnail || !songs) {
+      return res.status(301).send({ err: "Insufficient data" });
+    }
+    const playlistData = {
+      name,
+      thumbnail,
+      songs,
+      owner: currentUser._id,
+      collabrators: [],
+    };
+    const playlist = await Playlist.create(playlistData);
+    return res.status(200).send(playlist);
+  }
+);
 
 // Edit playlists by ID
 router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
