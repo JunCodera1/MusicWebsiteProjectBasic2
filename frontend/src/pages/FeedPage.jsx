@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import MusicCard from "../components/MusicCard";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { searchTracks } from '../spotify';

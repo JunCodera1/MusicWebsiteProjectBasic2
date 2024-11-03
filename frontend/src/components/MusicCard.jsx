@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { getToken, playTrack } from '../spotify.jsx';
+import React, { useEffect, useState, useRef } from 'react';
+import { getToken, playTrack } from '../spotify';
 
 
 import {
