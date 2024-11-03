@@ -144,4 +144,18 @@ router.get("/like", auth, async (req, res) => {
   res.status(200).send({ data: songs });
 });
 
+// Get route to get a single song by name
+router.get(
+  "/get/songname/:songName",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { songName } = req.params;
+
+    // name:songName --> exact name matching. Vanilla, Vanila
+    // Pattern matching instead of direct name matching.
+    const songs = await Song.find({ name: songName }).populate("artist");
+    return res.status(200).json({ data: songs });
+  }
+);
+
 export default router;
