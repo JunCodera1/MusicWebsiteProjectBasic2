@@ -1,8 +1,6 @@
 # SoundBox
 
-Welcome to the Soundbox! This platform is dedicated to music lovers, artists, and anyone who wants to explore and share their passion for music. Whether you’re here to discover new tracks, showcase your own music, or connect with fellow enthusiasts, you’ll find what you’re looking for.
-
-This README file provides an overview of the project, including how to install and use the application, as well as information about the codebase and how to contribute to the project.
+Welcome to the Soundbox! This platform is dedicated to music lovers, artists, and anyone who wants to explore and share their passion for music. Whether you’re here to discover new tracks, showcase your own music, or connect with fellow enthusiasts, you’ll find what you’re looking for. This app is a combination of YouTube and Spotify.
 
 # Installation
 
@@ -22,6 +20,7 @@ git clone https://github.com/JunCodera1/SoundBox.git
 First, run the development server:
 
 ```bash
+npm install
 npm run dev
 ```
 
@@ -51,6 +50,7 @@ Acts as the runtime environment for executing the backend code, enabling real-ti
 For users:
 
 - Register/Login
+- Upload music
 - Listen to music
 - Download music
 - Register for packages
