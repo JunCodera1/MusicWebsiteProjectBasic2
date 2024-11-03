@@ -6,14 +6,17 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
+<<<<<<< HEAD
   Input,
   background, 
+=======
+  Heading,
+>>>>>>> a2ce87d67b958daf8a935f55eba8c4bc5fc8bd28
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
-import SignIn from "./SignIn";
 import Search from "./SearchBar";
 
 const Navbar = () => {
@@ -102,7 +105,6 @@ const Navbar = () => {
           </Button>
         </Link>
         <HStack>
-          <SignIn></SignIn>
           <Button height={9} onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
