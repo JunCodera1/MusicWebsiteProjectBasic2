@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Text,
@@ -7,6 +7,7 @@ import {
   Avatar,
   Heading,
   useColorModeValue,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
 import avatarImg from "C:/Users/Asus/OneDrive - Sở GDĐT Thành Phố Đà Nẵng/Pictures/Silver Wolf/4eeab16154f81a26cdf29a439b354652_141841396220551774-removebg-preview (1).png";
@@ -14,6 +15,16 @@ import NavItem from "../components/NavItem";
 
 export default function Sidebar() {
   const [navSize, changeNavSize] = useState("large");
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+
+  useEffect(() => {
+    if (isSmallScreen) {
+      changeNavSize("small");
+    } else {
+      changeNavSize("large");
+    }
+  }, [isSmallScreen]);
+
   return (
     <Flex
       pos="sticky"
@@ -22,7 +33,7 @@ export default function Sidebar() {
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
-      w={navSize == "small" ? "75px" : "200px"}
+      w={navSize == "small" ? "75px" : { base: "75px", md: "200px" }}
       flexDir="column"
       justifyContent="space-between"
       bg={useColorModeValue("gray.100", "gray.700")}
