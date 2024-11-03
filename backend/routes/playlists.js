@@ -156,6 +156,40 @@ router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
   });
 });
 
+// Add a song to a playlist
+router.post(
+  "/add/song",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const currentUser = req.user;
+    const { playlistId, songId } = req.body;
+    // Step 0: Get the playlist if valid
+    const playlist = await Playlist.findOne({ _id: playlistId });
+    if (!playlist) {
+      return res.status(304).json({ err: "Playlist does not exist" });
+    }
+
+    // Step 1: Check if currentUser owns the playlist or is a collaborator
+    if (
+      !playlist.owner.equals(currentUser._id) &&
+      !playlist.collaborators.includes(currentUser._id)
+    ) {
+      return res.status(400).json({ err: "Not allowed" });
+    }
+    // Step 2: Check if the song is a valid song
+    const song = await Song.findOne({ _id: songId });
+    if (!song) {
+      return res.status(304).json({ err: "Song does not exist" });
+    }
+
+    // Step 3: We can now simply add the song to the playlist
+    playlist.songs.push(songId);
+    await playlist.save();
+
+    return res.status(200).json(playlist);
+  }
+);
+
 // Remove song from playlist
 router.put("/remove-song", auth, async (req, res) => {
   const schema = Joi.object({
