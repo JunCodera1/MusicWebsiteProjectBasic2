@@ -56,6 +56,21 @@ router.get(
   }
 );
 
+// Get all playlists made by me
+// /get/me
+router.get(
+  "/get/me",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const artistId = req.user._id;
+
+    const playlists = await Playlist.find({ owner: artistId }).populate(
+      "owner"
+    );
+    return res.status(200).json({ data: playlists });
+  }
+);
+
 // Edit playlists by ID
 router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
   const schema = Joi.object({
