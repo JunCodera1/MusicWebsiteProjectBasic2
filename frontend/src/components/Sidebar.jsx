@@ -29,7 +29,7 @@ export default function Sidebar() {
 
   return (
     <Flex
-      pos="sticky"
+      pos="flex-start"
       left="5"
       h="86vh"
       marginTop="2.5vh"
