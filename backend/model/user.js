@@ -6,15 +6,18 @@ import passwordComplexity from "joi-password-complexity";
 
 // Create user schema
 const userSchema = new mongoose.Schema({
-  name: { type: String, require: true },
+  firstname: { type: String, require: true },
+  lastname: { type: String, require: true },
   email: { type: String, require: true },
-  password: { type: String, require: true },
+  password: { type: String, require: true, private: true },
+  username: { type: String, require: true },
   gender: { type: String, require: true },
   month: { type: String, require: true },
   date: { type: String, require: true },
   year: { type: String, require: true },
-  likedSongs: { type: [String], default: [] },
-  playlists: { type: [String], default: [] },
+  likedSongs: { type: String, default: "" },
+  playlists: { type: String, default: "" },
+  subcribedArtists: { type: String, default: "" },
   isAdmin: { type: Boolean, default: false },
 });
 
