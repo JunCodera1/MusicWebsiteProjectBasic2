@@ -6,7 +6,8 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
-  Heading,
+  Input,
+  background,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { IoMoon } from "react-icons/io5";
@@ -47,23 +48,40 @@ const Navbar = () => {
         <Link to="/library">
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>Library</Button>
         </Link>
-        <Link to="/upload">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Upload</Button>
+        <Link to="/favourites">
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Favourites</Button>
         </Link>
         <Link to="/trending">
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>
             Trending
           </Button>
         </Link>
-        <Link to="/favourites">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
-            Favourites
+        <Link to="/upload">
+          <Button
+            bgGradient="linear(to-r, teal.400, blue.500)"
+            _hover={{
+              bgGradient: "linear(to-r, pink.500, orange.500)",
+              transform: "scale(1.05)",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              transition: "all 0.3s ease",
+
+            }}
+            px={4}
+            py={2}
+            rounded="md"
+          >
+            Upload
           </Button>
         </Link>
 
-        <Heading as="h1" mb={14}>
-          <Search></Search>
-        </Heading>
+
+        <Input
+          width={500}
+          height={9}
+          color={useColorModeValue("teal.700", "blue.200")}
+          placeholder="Search..."
+          _placeholder={{ color: "inherit" }}
+        />
         <Link to="/feed">
           <Button
             bg={useColorModeValue("#FFC436", "gray.800")}
