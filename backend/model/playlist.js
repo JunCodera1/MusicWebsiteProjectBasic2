@@ -6,20 +6,27 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 // Create playlist schema
 const playlistSchema = new mongoose.Schema({
   name: { type: String, require: true },
-  user: { type: ObjectId, ref: "user", require: true },
-  desc: { type: String },
+  thumbnail: { type: String },
+  owner: { type: ObjectId, ref: "user", require: true },
   songs: { type: Array, default: [] },
-  image: { type: String },
+  collaborators: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  desc: { type: String },
 });
 
 // Validate playlist
 const validate = (playlist) => {
   const schema = joi.object({
     name: joi.string().required(),
-    user: joi.string().required(),
-    desc: joi.string().allow(""),
+    thumbnail: joi.string(),
+    owner: joi.string().required(),
     songs: joi.array().items(joi.string()),
-    image: joi.string(),
+    collaborators: joi.array().items(joi.string()),
+    desc: joi.string().allow(""),
   });
   return schema.validate(playlist);
 };
