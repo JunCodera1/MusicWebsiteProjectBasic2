@@ -3,18 +3,28 @@ import { User } from "../model/user.js";
 import { Song, validate } from "../model/song.js";
 import auth from "../middleware/auth.js";
 import admin from "../middleware/admin.js";
+import passport from "passport";
 import validObjectId from "../middleware/validObjectId.js";
 
 const router = express.Router();
 
-// Create song
-router.post("/", admin, async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send({ message: error.details[0].message });
-
-  const song = await Song(req.body).save();
-  res.status(201).send({ data: song, message: "Song created successfully" });
-});
+router.post(
+  "/create",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    // req.user getss the user because of passport.authenticate
+    const { name, thumbnail, track } = req.body;
+    if (!name || !thumbnail || !track) {
+      return res
+        .status(301)
+        .json({ err: "Insufficient details to create song." });
+    }
+    const artist = req.user._id;
+    const songDetails = { name, thumbnail, track, artist };
+    const createdSong = await Song.create(songDetails);
+    return res.status(200).json(createdSong);
+  }
+);
 
 // Get all songs
 router.get("/", async (req, res) => {
