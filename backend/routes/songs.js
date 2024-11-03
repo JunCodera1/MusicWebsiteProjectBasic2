@@ -37,6 +37,27 @@ router.get(
   }
 );
 
+// Get route to get all songs any artist has published
+// I will send the artist id and I want to see all songs that artist has published.
+router.get(
+  "/get/artist/:artistId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { artistId } = req.params;
+    // We can check if the artist does not exist
+    const artist = await User.findOne({ _id: artistId });
+    // ![] = false
+    // !null = true
+    // !undefined = true
+    if (!artist) {
+      return res.status(301).json({ err: "Artist does not exist" });
+    }
+
+    const songs = await Song.find({ artist: artistId });
+    return res.status(200).json({ data: songs });
+  }
+);
+
 // Get all songs
 router.get("/", async (req, res) => {
   try {
