@@ -7,13 +7,14 @@ import {
   useColorMode,
   useColorModeValue,
   Input,
-  background,
+  background, 
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
 import SignIn from "./SignIn";
+import Search from "./SearchBar";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
