@@ -6,9 +6,10 @@ import {
   Divider,
   Avatar,
   Heading,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
-import avatarImg from "/home/jun/Documents/MusicWebsiteProjectBasic2/frontend/src/assets/images/avatar1.png";
+import avatarImg from "C:/Users/Asus/OneDrive - Sở GDĐT Thành Phố Đà Nẵng/Pictures/Silver Wolf/4eeab16154f81a26cdf29a439b354652_141841396220551774-removebg-preview (1).png";
 import NavItem from "../components/NavItem";
 
 export default function Sidebar() {
@@ -24,6 +25,7 @@ export default function Sidebar() {
       w={navSize == "small" ? "75px" : "200px"}
       flexDir="column"
       justifyContent="space-between"
+      bg={useColorModeValue("gray.100", "gray.700")}
     >
       <Flex
         p="5%"

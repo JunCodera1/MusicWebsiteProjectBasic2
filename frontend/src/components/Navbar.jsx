@@ -6,12 +6,8 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
-<<<<<<< HEAD
   Input,
-  background, 
-=======
-  Heading,
->>>>>>> a2ce87d67b958daf8a935f55eba8c4bc5fc8bd28
+  background,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { IoMoon } from "react-icons/io5";
