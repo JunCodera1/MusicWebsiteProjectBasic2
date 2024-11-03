@@ -22,6 +22,9 @@ const Navbar = () => {
       maxW={"1600px"}
       px={1}
       bg={useColorModeValue("#FFC436", "gray.800")}
+      position="sticky"
+      top={0}
+      zIndex={1000}
     >
       <Flex
         h={16}
