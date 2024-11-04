@@ -77,7 +77,7 @@ const PlaylistView = ({ titleText, cardsData }) => {
         className="w-full flex overflow-x-auto "
         style={{ marginLeft: "20px" }}
       >
-        <div className="flex  space-x-4 justify-between space-x-4">
+        <div className="flex  space-x-4 justify-between ">
           {
             //cardsData.map will be used to render the cards by mapping over the data use
             cardsData.map((item) => (
