@@ -9,9 +9,14 @@ import {
   useColorModeValue,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
+import { FiMenu } from "react-icons/fi";
+import { AiFillPlusSquare } from "react-icons/ai";
+import { IoLibrarySharp } from "react-icons/io5";
+import { FaHeartCirclePlus } from "react-icons/fa6";
+import { IoIosHome } from "react-icons/io";
 
 import avatarImg from "../../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f.jpg";
+
 import NavItem from "../NavItem";
 
 export default function Sidebar() {
@@ -60,13 +65,21 @@ export default function Sidebar() {
         />
         <NavItem
           navSize={navSize}
-          icon={FiHome}
+          icon={IoIosHome}
           title="Dashboard"
           description="This is the description for the dashboard."
         />
-        <NavItem navSize={navSize} icon={FiUser} title="Clients" />
-        <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
-        <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
+        <NavItem navSize={navSize} icon={IoLibrarySharp} title="Library" />
+        <NavItem
+          navSize={navSize}
+          icon={AiFillPlusSquare}
+          title="Create playlist"
+        />
+        <NavItem
+          navSize={navSize}
+          icon={FaHeartCirclePlus}
+          title="Liked songs"
+        />
       </Flex>
 
       <Flex
