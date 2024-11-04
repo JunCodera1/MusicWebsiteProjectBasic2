@@ -19,9 +19,9 @@ const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Container
-      maxW={"1600px"}
-      px={1}
-      bg={useColorModeValue("#FFC436", "gray.800")}
+      maxW={{ base: "100%", md: "90%", lg: "80%", xl: "1600px" }} // Responsive max-width
+      w="100%"
+      bg={useColorModeValue("#FFFFFF", "gray.800")}
       position="sticky"
       top={0}
       zIndex={1000}
@@ -33,31 +33,27 @@ const Navbar = () => {
         flexDir={{ base: "column", sm: "row" }}
       >
         <Link to="/">
-          <Button
-            color={useColorModeValue("pink.600", "lightblue")}
-            bg={useColorModeValue("gray.100", "gray.800")}
-            fontSize={15}
-          >
+          <Button bg={useColorModeValue("#FFFFFF", "gray.800")} fontSize={15}>
             {" "}
             <GiMusicSpell size={30} /> Soundbox
           </Button>
         </Link>
         <Link to="/">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Home</Button>
+          <Button bg={useColorModeValue("#FFFFFF", "gray.800")}>Home</Button>
         </Link>
         <Link to="/feed">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Feed</Button>
+          <Button bg={useColorModeValue("#FFFFFF", "gray.800")}>Feed</Button>
         </Link>
         <Link to="/library">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Library</Button>
+          <Button bg={useColorModeValue("#FFFFFF", "gray.800")}>Library</Button>
         </Link>
         <Link to="/favourites">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
+          <Button bg={useColorModeValue("#FFFFFF", "gray.800")}>
             Favourites
           </Button>
         </Link>
         <Link to="/trending">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
+          <Button bg={useColorModeValue("#FFFFFF", "gray.800")}>
             Trending
           </Button>
         </Link>

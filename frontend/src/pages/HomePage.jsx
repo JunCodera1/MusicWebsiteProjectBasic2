@@ -1,6 +1,6 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
 
 const spotifyPlaylistData = [
@@ -63,7 +63,12 @@ const PlaylistView = ({ titleText, cardsData }) => {
       className="text-white mt-8"
       style={{ marginLeft: "20px", marginTop: "20px" }}
     >
-      <Box padding="20px" fontFamily="semibold" className="mb-5">
+      <Box
+        padding="20px"
+        fontFamily="semibold"
+        className="mb-5"
+        color={useColorModeValue("#000", "gray.800")}
+      >
         <Text fontSize="2xl" fontWeight="semibold">
           {titleText}
         </Text>
