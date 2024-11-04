@@ -13,10 +13,6 @@ const menuItems = [
     uri: "/feed",
   },
   {
-    label: "Library",
-    uri: "/library",
-  },
-  {
     label: "Trending",
     uri: "/trending",
   },
