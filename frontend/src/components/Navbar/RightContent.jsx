@@ -46,7 +46,7 @@ export function RightContent() {
 
       {/* <Avatar size="sm" name="D C" bg="teal" /> */}
       <List>
-        <NavItem uri="/login" key="Login" label="Log in" />
+        <NavItem uri="#" key="premium" label="Premium" />
       </List>
 
       <IconButton

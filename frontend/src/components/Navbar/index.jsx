@@ -17,10 +17,6 @@ const menuItems = [
     uri: "/trending",
   },
   {
-    label: "Premium",
-    uri: "#",
-  },
-  {
     label: "Upload",
     uri: "/upload",
   },
