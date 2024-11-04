@@ -9,8 +9,9 @@ const LoginPage = () => {
       <div className="logo p-5 border-b border-solid border-gray-300 w-full flex justify-center">
         <GiMusicSpell size={100} />
       </div>
+
       <div className="inputRegion w-1/3 py-10 flex items-center justify-center flex-col">
-        <div className="font-bold mb-6">To countinue, log in to Soundbox</div>
+        <div className="font-bold mb-6">To continue, log in to Soundbox</div>
         <TextInput
           label={"Email ID or username"}
           placeholder={"Email address or username"}
