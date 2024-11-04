@@ -114,11 +114,11 @@ const Card = ({ title, description, imgUrl }) => {
 const HomePage = () => {
   // const [navSize] = useState("large"); // Get navSize from context or prop if needed
   return (
-    <Box style={{ display: "flex", minHeight: "100vh", position: "relative" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", position: "relative" }}>
       <Sidebar />
       <div
-        className="content p-0 pt-0 overflow-auto flex-1"
-        style={{ overflowY: "auto", height: "100vh", position: "relative" }}
+        className="content p-0 pt-0 overflow-auto flex-1 "
+        style={{ overflowY: "auto", height: "100vh", position: "relative", color: "white" }}
       >
         <PlaylistView titleText={"Chit Chit"} cardsData={focusCardData} />
         <PlaylistView
@@ -127,7 +127,7 @@ const HomePage = () => {
         />
         <PlaylistView titleText={"Chit Tan Bao"} cardsData={focusCardData} />
       </div>
-    </Box>
+    </Box >
   );
 };
 
