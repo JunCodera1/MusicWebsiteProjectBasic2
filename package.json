@@ -23,7 +23,7 @@
     "joi-password-complexity": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
-    "mongoose": "^8.7.1",
+    "mongoose": "^8.8.0",
     "react-router-dom": "^6.27.0",
     "soundcloud-key-fetch": "^1.0.13"
   },
