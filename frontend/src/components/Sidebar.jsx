@@ -10,6 +10,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
+
 import avatarImg from "/home/jun/Documents/MusicWebsiteProjectBasic2/frontend/src/assets/images/avatar1.png";
 import NavItem from "../components/NavItem";
 
@@ -28,8 +29,8 @@ export default function Sidebar() {
   return (
     <Flex
       pos="flex-start"
-      left="5"
-      h="86vh"
+      left="0"
+      h="90vh"
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
@@ -37,6 +38,9 @@ export default function Sidebar() {
       flexDir="column"
       justifyContent="space-between"
       bg={useColorModeValue("gray.300", "gray.700")}
+      marginLeft={"10px"}
+      zIndex={"100"}
+
     >
       <Flex
         p="5%"
@@ -82,7 +86,7 @@ export default function Sidebar() {
             display={navSize == "small" ? "none" : "flex"}
           >
             <Heading as="h3" size="sm">
-              Minh Tiến
+              Huy Võ
             </Heading>
             <Text color="gray">Admin</Text>
           </Flex>
