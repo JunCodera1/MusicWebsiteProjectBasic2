@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { GiMusicSpell } from "react-icons/gi";
-import Search from "./SearchBar";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();

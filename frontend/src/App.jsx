@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
