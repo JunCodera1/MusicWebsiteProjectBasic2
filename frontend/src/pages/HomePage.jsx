@@ -67,7 +67,7 @@ const PlaylistView = ({ titleText, cardsData }) => {
         padding="20px"
         fontFamily="semibold"
         className="mb-5"
-        color={useColorModeValue("#000", "gray.800")}
+        color={useColorModeValue("#000", "gray.200")}
       >
         <Text fontSize="2xl" fontWeight="semibold">
           {titleText}
@@ -125,12 +125,15 @@ const HomePage = () => {
           color: "white",
         }}
       >
-        <PlaylistView titleText={"Chit Chit"} cardsData={focusCardData} />
         <PlaylistView
-          titleText={"Chit Manh Hon"}
+          titleText={"Honkai Star Rail"}
+          cardsData={focusCardData}
+        />
+        <PlaylistView
+          titleText={"Silver Wolf"}
           cardsData={spotifyPlaylistData}
         />
-        <PlaylistView titleText={"Chit Tan Bao"} cardsData={focusCardData} />
+        <PlaylistView titleText={"Hacker"} cardsData={focusCardData} />
       </div>
     </Box>
   );
