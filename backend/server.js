@@ -11,10 +11,17 @@ import searchRoutes from "./routes/search.js";
 import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { User } from "./model/user.js";
+import rateLimit from "express-rate-limit";
 
 dotenv.config(); // Load environment variables from .env file
-const app = express(); // Create Express app
 
+const app = express(); // Create Express app
+var limiter = RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per windowMs
+});
+
+app.use(limiter);
 app.use(cors()); // Enable CORS
 app.use(express.json()); // Parse JSON bodies
 app.use("/api/users", userRoutes); // User Routes
