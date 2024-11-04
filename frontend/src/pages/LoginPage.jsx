@@ -25,7 +25,7 @@ const LoginPage = () => {
 
         <div className="w-full border border-solid border-gray-300 "></div>
         <div className="my-6 font-bold text-lg">Don't have an account?</div>
-        <div className="border border-gray-500 w-full text-gray-300 flex items-center justify-center py-4 rounded-full">
+        <div className="border border-gray-500 w-full flex items-center justify-center py-4 rounded-full hover:bg-indigo-400">
           SIGN UP FOR SOUNDBOX
         </div>
       </div>
