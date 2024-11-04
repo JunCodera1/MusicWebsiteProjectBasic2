@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
 
-import avatarImg from "../assets/Pictures/4eeab16154f81a26cdf29a439b354652_141841396220551774.png";
-import NavItem from "../components/NavItem";
+import avatarImg from "../../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f.jpg";
+import NavItem from "../NavItem";
 
 export default function Sidebar() {
   const [navSize, changeNavSize] = useState("large");
@@ -40,7 +40,6 @@ export default function Sidebar() {
       bg={useColorModeValue("gray.300", "gray.700")}
       marginLeft={"10px"}
       zIndex={"100"}
-
     >
       <Flex
         p="5%"
