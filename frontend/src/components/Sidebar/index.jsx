@@ -14,10 +14,11 @@ import { AiFillPlusSquare } from "react-icons/ai";
 import { IoLibrarySharp } from "react-icons/io5";
 import { FaHeartCirclePlus } from "react-icons/fa6";
 import { IoIosHome } from "react-icons/io";
+import { FaEarthAsia } from "react-icons/fa6";
 
 import avatarImg from "../../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f.jpg";
 
-import NavItem from "../NavItem";
+import NavItem from "./NavItem";
 
 export default function Sidebar() {
   const [navSize, changeNavSize] = useState("large");
@@ -81,6 +82,12 @@ export default function Sidebar() {
           title="Liked songs"
         />
       </Flex>
+
+      <div className="px-5">
+        <div className="border border-gray-500 text-white  flex px-2 py-1 rounded-full items-center justify-center hover:border-white cursor-pointer">
+          <FaEarthAsia /> English
+        </div>
+      </div>
 
       <Flex
         p="5%"

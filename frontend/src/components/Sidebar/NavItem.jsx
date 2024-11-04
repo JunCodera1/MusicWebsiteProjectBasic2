@@ -8,7 +8,7 @@ import {
   MenuButton,
   MenuList,
 } from "@chakra-ui/react";
-import NavHoverBox from "../components/NavHoverBox";
+import NavHoverBox from "../NavHoverBox";
 
 export default function NavItem({ icon, title, description, active, navSize }) {
   return (
