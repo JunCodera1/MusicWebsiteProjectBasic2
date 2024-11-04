@@ -12,6 +12,7 @@ import TrendingPage from "./pages/TrendingPage";
 import LoginPage from "./pages/LoginPage.jsx";
 
 import "./index.css";
+import SignUpPage from "./pages/SignUpPage.jsx";
 
 const App = () => {
   return (
@@ -26,7 +27,8 @@ const App = () => {
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/favourites" element={<FavouritesPage />} />
             <Route path="/trending" element={<TrendingPage />} />
-            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
           </Routes>
         </Box>
       </div>

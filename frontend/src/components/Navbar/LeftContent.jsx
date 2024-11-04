@@ -20,7 +20,7 @@ export function LeftContent({ items, onToggle }) {
         variant="ghost"
         icon={<FaBurger />}
         rounded="full"
-        display={{ base: "flex", md: "none" }}
+        display={{ base: "flex", md: "flex", lg: "flex" }}
         onClick={onToggle}
       />
 
@@ -36,7 +36,7 @@ export function LeftContent({ items, onToggle }) {
         </Link>
       </Heading>
 
-      <List gap={2} display={{ base: "none", md: "flex" }}>
+      <List gap={1} display={{ base: "none", md: "none", xl: "flex" }}>
         {items.map((item) => (
           <NavItem key={item.label} {...item} /> // Pass item props directly to NavItem
         ))}
