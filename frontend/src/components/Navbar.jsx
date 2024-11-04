@@ -52,7 +52,9 @@ const Navbar = () => {
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>Library</Button>
         </Link>
         <Link to="/favourites">
-          <Button bg={useColorModeValue("#FFC436", "gray.800")}>Favourites</Button>
+          <Button bg={useColorModeValue("#FFC436", "gray.800")}>
+            Favourites
+          </Button>
         </Link>
         <Link to="/trending">
           <Button bg={useColorModeValue("#FFC436", "gray.800")}>
@@ -67,7 +69,6 @@ const Navbar = () => {
               transform: "scale(1.05)",
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
               transition: "all 0.3s ease",
-
             }}
             px={4}
             py={2}
@@ -77,7 +78,6 @@ const Navbar = () => {
           </Button>
         </Link>
 
-
         <Input
           width={500}
           height={9}
@@ -85,6 +85,7 @@ const Navbar = () => {
           placeholder="Search..."
           _placeholder={{ color: "inherit" }}
         />
+
         <Link to="/feed">
           <Button
             bg={useColorModeValue("#FFC436", "gray.800")}
@@ -108,6 +109,22 @@ const Navbar = () => {
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
         </HStack>
+        <Link to="/login">
+          <Button
+            bgGradient="linear(to-r, teal.400, blue.500)"
+            _hover={{
+              bgGradient: "linear(to-r, pink.500, orange.500)",
+              transform: "scale(1.05)",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              transition: "all 0.3s ease",
+            }}
+            px={4}
+            py={2}
+            rounded="md"
+          >
+            Login
+          </Button>
+        </Link>
       </Flex>
     </Container>
   );

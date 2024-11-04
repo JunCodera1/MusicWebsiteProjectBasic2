@@ -10,7 +10,8 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { FiMenu, FiHome, FiUser, FiSettings } from "react-icons/fi";
-import avatarImg from "../assets/Pictures/708a320ec3182cd3a629e98808e73fb5_2744128242798474951-removebg-preview.png";
+
+import avatarImg from "/home/jun/Documents/MusicWebsiteProjectBasic2/frontend/src/assets/images/avatar1.png";
 import NavItem from "../components/NavItem";
 
 export default function Sidebar() {
@@ -24,8 +25,6 @@ export default function Sidebar() {
       changeNavSize("large");
     }
   }, [isSmallScreen]);
-
-
 
   return (
     <Flex

@@ -91,7 +91,7 @@ router.get(
 );
 
 // Edit playlists by ID
-router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
+router.put("/put/edit/:id", [validObjectId, auth], async (req, res) => {
   const schema = Joi.object({
     name: Joi.string().min(1).required(),
     desc: Joi.string().allow(""),
@@ -119,7 +119,10 @@ router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
     // Update the playlist
     playlist.name = req.body.name;
     playlist.desc = req.body.desc;
-    playlist.image = req.body.image;
+    playlist.thumbnail = req.body.thumbnail;
+    playlist.owner = req.body.owner;
+    playlist.collaborators = req.body.collaborators;
+    playlist.songs = req.body.songs;
     await playlist.save();
 
     res.status(200).send({ data: playlist, message: "Playlist updated" });
@@ -130,7 +133,7 @@ router.put("/edit/:id", [validObjectId, auth], async (req, res) => {
   }
 
   // Add song to playlist
-  router.put("/add-song", auth, async (req, res) => {
+  router.put("/put/add-song", auth, async (req, res) => {
     const schema = Joi.object({
       playlistId: Joi.string().required(),
       songId: Joi.string().required(),
@@ -191,7 +194,7 @@ router.post(
 );
 
 // Remove song from playlist
-router.put("/remove-song", auth, async (req, res) => {
+router.put("/put/remove-song", auth, async (req, res) => {
   const schema = Joi.object({
     playlistId: Joi.string().required(),
     songId: Joi.string().required(),
@@ -213,26 +216,26 @@ router.put("/remove-song", auth, async (req, res) => {
 
 // User favourite playlist
 
-router.get("/favourite", auth, async (req, res) => {
+router.get("/get/favourite", auth, async (req, res) => {
   const user = await User.findById(req.user._id);
   const playlists = await Playlist.find({ _id: user.playlists });
   res.status(200).send({ data: playlists });
 });
 
 // Get random playlist
-router.get("/random", auth, async (req, res) => {
+router.get("/get/random", auth, async (req, res) => {
   const playlists = await Playlist.aggregate([{ $sample: { size: 10 } }]);
   res.status(200).send({ data: playlists });
 });
 
 // Get all playlists
-router.get("/", auth, async (req, res) => {
+router.get("/get", auth, async (req, res) => {
   const playlists = await Playlist.find();
   res.status(200).send({ data: playlists });
 });
 
 // Delete playlist by id
-router.delete("/:id", [validObjectId, auth], async (req, res) => {
+router.delete("/delete/:id", [validObjectId, auth], async (req, res) => {
   const user = await User.findById(req.user._id);
   const playlist = await Playlist.findById(req.params.id);
 
