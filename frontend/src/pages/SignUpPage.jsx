@@ -2,6 +2,7 @@ import React from "react";
 import { GiMusicSpell } from "react-icons/gi";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
+import { Link } from "@chakra-ui/react";
 
 const SignUpPage = () => {
   return (
@@ -40,7 +41,7 @@ const SignUpPage = () => {
         <div className="w-full border border-solid border-gray-300 "></div>
         <div className="my-6 font-bold text-lg">Already have an account ?</div>
         <div className="border border-gray-500 w-full flex items-center justify-center py-4 rounded-full hover:bg-indigo-400">
-          SIGN UP FOR SOUNDBOX
+          <a href="/login">LOG IN INSTEAD</a>
         </div>
       </div>
     </div>
