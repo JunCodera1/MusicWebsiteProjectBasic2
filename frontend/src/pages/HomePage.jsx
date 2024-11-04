@@ -67,9 +67,10 @@ const PlaylistView = ({ titleText, cardsData }) => {
         padding="20px"
         fontFamily="semibold"
         className="mb-5"
-        color={useColorModeValue("#000", "gray.800")}
-      >
-        <Text fontSize="2xl" fontWeight="semibold">
+        color={useColorModeValue("#000", "gray.800")
+
+        }>
+        <Text fontSize="2xl" fontWeight="semibold"  >
           {titleText}
         </Text>
       </Box>
@@ -77,7 +78,7 @@ const PlaylistView = ({ titleText, cardsData }) => {
         className="w-full flex overflow-x-auto "
         style={{ marginLeft: "20px" }}
       >
-        <div className="flex  space-x-4 justify-between space-x-4">
+        <div className="flex  space-x-4 justify-between ">
           {
             //cardsData.map will be used to render the cards by mapping over the data use
             cardsData.map((item) => (
@@ -120,12 +121,15 @@ const HomePage = () => {
         className="content p-0 pt-0 overflow-auto flex-1 "
         style={{ overflowY: "auto", height: "100vh", position: "relative", color: "white" }}
       >
-        <PlaylistView titleText={"Chit Chit"} cardsData={focusCardData} />
+        <PlaylistView
+          titleText={"Chit Chit"}
+          cardsData={focusCardData} />
         <PlaylistView
           titleText={"Chit Manh Hon"}
-          cardsData={spotifyPlaylistData}
-        />
-        <PlaylistView titleText={"Chit Tan Bao"} cardsData={focusCardData} />
+          cardsData={spotifyPlaylistData} />
+        <PlaylistView
+          titleText={"Chit Tan Bao"}
+          cardsData={focusCardData} />
       </div>
     </Box >
   );
