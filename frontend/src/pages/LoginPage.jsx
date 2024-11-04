@@ -17,7 +17,7 @@ const LoginPage = () => {
           placeholder={"Email address or username"}
           className="my-6"
         />
-        <PasswordInput label={"Password"} placeholder={"Password"} />
+        <PasswordInput label={"Password"} placeholder={"Enter Your Password"} />
         <div className="w-full flex items-center justify-end my-8 ">
           <button className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ">
             LOG IN

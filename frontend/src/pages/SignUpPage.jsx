@@ -25,14 +25,20 @@ const SignUpPage = () => {
           className="mb-6"
         />
         <PasswordInput label={"Password"} placeholder={"Password"} />
-        <div className="w-full flex items-center justify-end my-8 ">
+        <br />
+        <TextInput
+          label={"What should we call you?"}
+          placeholder={"Enter profile name"}
+          className="mb-6"
+        />
+        <div className="w-full flex items-center justify-center my-8 ">
           <button className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ">
-            LOG IN
+            SIGN UP
           </button>
         </div>
 
         <div className="w-full border border-solid border-gray-300 "></div>
-        <div className="my-6 font-bold text-lg">Don't have an account?</div>
+        <div className="my-6 font-bold text-lg">Already have an account ?</div>
         <div className="border border-gray-500 w-full flex items-center justify-center py-4 rounded-full hover:bg-indigo-400">
           SIGN UP FOR SOUNDBOX
         </div>

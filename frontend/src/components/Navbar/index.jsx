@@ -21,22 +21,8 @@ const menuItems = [
     uri: "/trending",
   },
   {
-    label: "Blog",
+    label: "Premium",
     uri: "#",
-    subitems: [
-      {
-        label: "React",
-        uri: "#",
-      },
-      {
-        label: "JavaScript",
-        uri: "#",
-      },
-      {
-        label: "Next.js",
-        uri: "#",
-      },
-    ],
   },
   {
     label: "Upload",
