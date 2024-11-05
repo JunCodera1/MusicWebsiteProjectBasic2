@@ -16,7 +16,7 @@ import rateLimit from "express-rate-limit";
 dotenv.config(); // Load environment variables from .env file
 
 const app = express(); // Create Express app
-var limiter = RateLimit({
+var limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // max 100 requests per windowMs
 });
@@ -29,16 +29,6 @@ app.use("/api/login", authRoutes); // Auth Routes
 app.use("/api/songs", songRoutes); // Song Routes
 app.use("/api/playlists", playlistRoutes); // Playlist Routes
 app.use("/api/", searchRoutes); // Search Routes
-
-const PORT = process.env.PORT || 5000; // Set port
-console.log(process.env.MONGODB_URI); // Log MongoDB URI
-app.listen(PORT, () => {
-  connectDB();
-  console.log("Server started at http://localhost:" + PORT); // Start server
-});
-
-// Error handling middleware passport-jwt
-
 var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_SECRET;
@@ -57,3 +47,12 @@ passport.use(
     });
   })
 );
+const PORT = process.env.PORT || 5000; // Set port
+console.log(process.env.MONGODB_URI); // Log MongoDB URI
+
+app.listen(PORT, () => {
+  connectDB();
+  console.log("Server started at http://localhost:" + PORT); // Start server
+});
+
+// Error handling middleware passport-jwt
