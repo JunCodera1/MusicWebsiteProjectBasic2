@@ -41,7 +41,7 @@ app.use(
 ); // Protect with JWT
 app.use("/api/login", authRoutes); // Login route
 app.use("/song", songRoutes); // Song Routes
-app.use("/playlists", playlistRoutes); // Playlist Routes
+app.use("/playlist", playlistRoutes); // Playlist Routes
 app.use("/api", searchRoutes); // Search Routes
 
 // Passport JWT Strategy
