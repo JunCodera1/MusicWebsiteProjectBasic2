@@ -21,13 +21,14 @@ var limiter = rateLimit({
   max: 100, // max 100 requests per windowMs
 });
 
+app.use(express.json()); // Parse JSON bodies
+app.use("/auth", authRoutes);
 app.use(limiter);
 app.use(cors()); // Enable CORS
-app.use(express.json()); // Parse JSON bodies
 app.use("/api/users", userRoutes); // User Routes
 app.use("/api/login", authRoutes); // Auth Routes
-app.use("/api/songs", songRoutes); // Song Routes
-app.use("/api/playlists", playlistRoutes); // Playlist Routes
+app.use("/song", songRoutes); // Song Routes
+app.use("/playlists", playlistRoutes); // Playlist Routes
 app.use("/api/", searchRoutes); // Search Routes
 var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();

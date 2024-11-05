@@ -21,16 +21,6 @@ const userSchema = new mongoose.Schema({
   isAdmin: { type: Boolean, default: false },
 });
 
-// Generate auth token
-userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign(
-    { _id: this._id, name: this.name, isAdmin: this.isAdmin },
-    process.env.JWTPRIVATEKEY,
-    { expiresIn: "7d" }
-  );
-  return token;
-};
-
 /// Validate user
 const validate = (user) => {
   const schema = Joi.object({
