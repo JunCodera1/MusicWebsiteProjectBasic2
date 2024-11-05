@@ -1,32 +1,32 @@
 import mongoose from "mongoose";
-
-import jwt from "jsonwebtoken";
 import Joi from "joi";
 import passwordComplexity from "joi-password-complexity";
 
 // Create user schema
 const userSchema = new mongoose.Schema({
-  firstname: { type: String, require: true },
-  lastname: { type: String, require: true },
-  email: { type: String, require: true },
-  password: { type: String, require: true, private: true },
-  username: { type: String, require: true },
-  gender: { type: String, require: true },
-  month: { type: String, require: true },
-  date: { type: String, require: true },
-  year: { type: String, require: true },
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true, private: true },
+  username: { type: String, required: true, unique: true },
+  gender: { type: String, required: true },
+  month: { type: String, required: true },
+  date: { type: String, required: true },
+  year: { type: String, required: true },
   likedSongs: { type: String, default: "" },
   playlists: { type: String, default: "" },
   subcribedArtists: { type: String, default: "" },
   isAdmin: { type: Boolean, default: false },
 });
 
-/// Validate user
+// Validate user
 const validate = (user) => {
   const schema = Joi.object({
-    name: Joi.string().min(5).required().label("Name"),
+    firstname: Joi.string().min(2).required().label("First Name"),
+    lastname: Joi.string().min(2).required().label("Last Name"),
     email: Joi.string().email().required().label("Email"),
     password: passwordComplexity().required().label("Password"),
+    username: Joi.string().min(5).required().label("Username"),
     gender: Joi.string()
       .valid("male", "female", "non-binary")
       .required()
@@ -38,6 +38,6 @@ const validate = (user) => {
   return schema.validate(user);
 };
 
-const User = mongoose.model("user", userSchema); // Create user model
+const User = mongoose.model("User", userSchema); // Create user model
 
 export { User, validate };

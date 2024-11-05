@@ -15,45 +15,63 @@ import rateLimit from "express-rate-limit";
 
 dotenv.config(); // Load environment variables from .env file
 
+if (!process.env.JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET in environment variables");
+}
+
 const app = express(); // Create Express app
-var limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // max 100 requests per windowMs
-});
+
+// Apply rate limiting and CORS middleware globally
+app.use(cors());
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // max 100 requests per windowMs
+  })
+);
 
 app.use(express.json()); // Parse JSON bodies
+
+// Routes
 app.use("/auth", authRoutes);
-app.use(limiter);
-app.use(cors()); // Enable CORS
-app.use("/api/users", userRoutes); // User Routes
-app.use("/api/login", authRoutes); // Auth Routes
+app.use(
+  "/api/users",
+  passport.authenticate("jwt", { session: false }),
+  userRoutes
+); // Protect with JWT
+app.use("/api/login", authRoutes); // Login route
 app.use("/song", songRoutes); // Song Routes
 app.use("/playlists", playlistRoutes); // Playlist Routes
-app.use("/api/", searchRoutes); // Search Routes
-var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = process.env.JWT_SECRET;
+app.use("/api", searchRoutes); // Search Routes
+
+// Passport JWT Strategy
+var opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
+
 passport.use(
-  new JwtStrategy(opts, function (jwt_payload, done) {
-    User.findOne({ id: jwt_payload.sub }, function (err, user) {
-      if (err) {
-        return done(err, false);
-      }
+  new JwtStrategy(opts, async (jwt_payload, done) => {
+    try {
+      const user = await User.findOne({ id: jwt_payload.sub });
       if (user) {
         return done(null, user);
       } else {
         return done(null, false);
-        // or you could create a new account
       }
-    });
+    } catch (err) {
+      return done(err, false);
+    }
   })
 );
-const PORT = process.env.PORT || 5000; // Set port
-console.log(process.env.MONGODB_URI); // Log MongoDB URI
+
+// Connect to database and start server
+const PORT = process.env.PORT || 5000;
+console.log("MongoDB URI:", process.env.MONGODB_URI);
 
 app.listen(PORT, () => {
   connectDB();
-  console.log("Server started at http://localhost:" + PORT); // Start server
+  console.log("Server started at http://localhost:" + PORT);
 });
 
-// Error handling middleware passport-jwt
+// Error handling middleware for express-async-errors

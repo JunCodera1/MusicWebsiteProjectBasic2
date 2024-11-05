@@ -3,11 +3,22 @@ import joi from "joi";
 
 // Create song schema
 const songSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  thumbnail: { type: String, required: true },
-  track: { type: String, required: true },
-  artist: { type: String, required: true },
-  duration: { type: Number, required: true },
+  name: {
+    type: String,
+    required: true,
+  },
+  thumbnail: {
+    type: String,
+    required: true,
+  },
+  track: {
+    type: String,
+    required: true,
+  },
+  artist: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 // Validate song
@@ -17,7 +28,6 @@ const validate = (song) => {
     thumbnail: joi.string().required(),
     track: joi.string().required(),
     artist: joi.string().required(),
-    duration: joi.number().required(),
   });
   return schema.validate(song);
 };
