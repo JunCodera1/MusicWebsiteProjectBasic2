@@ -13,6 +13,7 @@ const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [profileName, setProfileName] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const signUp = async () => {
@@ -20,21 +21,28 @@ const SignUpPage = () => {
       alert("Emails do not match, please try again.");
       return;
     }
+    if (!email || !username || !password || !firstName || !lastName) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
     const data = {
       email,
       username,
       password,
-      firstName,
-      lastName,
-      profileName, // Thêm profile name vào data
+      firstname: firstName,
+      lastname: lastName,
+      profileName,
     };
 
     try {
+      setLoading(true); // Set loading state
       const response = await makeUnauthenticatedPOSTRequest(
         "/auth/register",
         data
       );
+      setLoading(false); // Reset loading state
+
       if (response && !response.error) {
         alert("Successfully signed up, please login to continue.");
         navigate("/login");
@@ -42,7 +50,16 @@ const SignUpPage = () => {
         alert(response?.error || "Something went wrong, please try again.");
       }
     } catch (error) {
+      setLoading(false); // Reset loading state
+      console.error(error); // Log error for debugging
       alert("Failed to connect to the server, please try again later.");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      signUp();
     }
   };
 
@@ -62,6 +79,7 @@ const SignUpPage = () => {
           className="my-6"
           value={email}
           setValue={setEmail}
+          onKeyDown={handleKeyDown}
         />
         <TextInput
           label={"Confirm your email address"}
@@ -69,6 +87,7 @@ const SignUpPage = () => {
           className="mb-6"
           value={confirmEmail}
           setValue={setConfirmEmail}
+          onKeyDown={handleKeyDown}
         />
         <TextInput
           label={"Username"}
@@ -76,12 +95,14 @@ const SignUpPage = () => {
           className="mb-6"
           value={username}
           setValue={setUsername}
+          onKeyDown={handleKeyDown}
         />
         <PasswordInput
           label={"Password"}
           placeholder={"Enter Your Password"}
           value={password}
           setValue={setPassword}
+          onKeyDown={handleKeyDown}
         />
         <br />
         <TextInput
@@ -90,33 +111,40 @@ const SignUpPage = () => {
           className="mb-6"
           value={profileName}
           setValue={setProfileName}
+          onKeyDown={handleKeyDown}
         />
 
-        <div className="w-full flex items-center justify-between space-x-8">
+        <div className="w-full flex items-center justify-between space-x-4">
           <TextInput
             label={"First Name"}
             placeholder={"Enter Your First Name"}
-            className="my-6"
+            className="w-[48%]"
             value={firstName}
             setValue={setFirstName}
+            onKeyDown={handleKeyDown}
           />
           <TextInput
             label={"Last Name"}
             placeholder={"Enter Your Last Name"}
-            className="my-6"
+            className="w-[48%]"
             value={lastName}
             setValue={setLastName}
+            onKeyDown={handleKeyDown}
           />
         </div>
+
         <div className="w-full flex items-center justify-center my-8">
           <button
-            className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full"
+            className={`bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             onClick={(e) => {
               e.preventDefault();
               signUp();
             }}
+            disabled={loading} // Disable button when loading
           >
-            SIGN UP
+            {loading ? "SIGNING UP..." : "SIGN UP"}
           </button>
         </div>
 

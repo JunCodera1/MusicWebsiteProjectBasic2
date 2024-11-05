@@ -9,13 +9,9 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, private: true },
   username: { type: String, required: true, unique: true },
-  gender: { type: String, required: true },
-  month: { type: String, required: true },
-  date: { type: String, required: true },
-  year: { type: String, required: true },
-  likedSongs: { type: String, default: "" },
-  playlists: { type: String, default: "" },
-  subcribedArtists: { type: String, default: "" },
+  likedSongs: { type: [String], default: [] }, // Changed to an array
+  playlists: { type: [String], default: [] }, // Changed to an array
+  subscribedArtists: { type: [String], default: [] }, // Fixed typo and changed to an array
   isAdmin: { type: Boolean, default: false },
 });
 
@@ -27,13 +23,7 @@ const validate = (user) => {
     email: Joi.string().email().required().label("Email"),
     password: passwordComplexity().required().label("Password"),
     username: Joi.string().min(5).required().label("Username"),
-    gender: Joi.string()
-      .valid("male", "female", "non-binary")
-      .required()
-      .label("Gender"),
-    month: Joi.string().required().label("Month"),
-    date: Joi.string().required().label("Date"),
-    year: Joi.string().required().label("Year"),
+    // Add additional validation for new fields if necessary
   });
   return schema.validate(user);
 };
