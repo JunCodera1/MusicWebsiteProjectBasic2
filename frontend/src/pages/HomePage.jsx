@@ -74,12 +74,12 @@ const HomePage = () => {
         className="content p-0 pt-0 overflow-auto flex-1"
         style={{ overflowY: "auto", height: "100vh", position: "relative" }}
       >
-        <PlaylistView titleText={"Chit Chit"} cardsData={focusCardData} />
+        <PlaylistView titleText={"HSR"} cardsData={focusCardData} />
         <PlaylistView
-          titleText={"Chit Manh Hon"}
+          titleText={"Apple Music"}
           cardsData={spotifyPlaylistData}
         />
-        <PlaylistView titleText={"Chit Tan Bao"} cardsData={focusCardData} />
+        <PlaylistView titleText={"JP 80's"} cardsData={focusCardData} />
       </div>
     </Box>
   );

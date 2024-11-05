@@ -45,10 +45,12 @@ export function RightContent() {
       />
 
       {/* <Avatar size="sm" name="D C" bg="teal" /> */}
-      <List>
+      {/* <List>
         <NavItem uri="#" key="premium" label="Premium" />
+      </List> */}
+      <List>
+        <NavItem uri="/login" key="login" label="Login" />
       </List>
-
       <IconButton
         aria-label="toggle color mode" // Added aria-label for accessibility
         icon={colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}

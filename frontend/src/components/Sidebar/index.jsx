@@ -105,7 +105,7 @@ export default function Sidebar() {
             display={navSize == "small" ? "none" : "flex"}
           >
             <Heading as="h3" size="sm">
-              Huy Võ
+              Jun
             </Heading>
             <Text color="gray">Admin</Text>
           </Flex>
