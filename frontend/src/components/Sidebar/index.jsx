@@ -83,12 +83,6 @@ export default function Sidebar() {
         />
       </Flex>
 
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
       <div className="px-5">
         <div className="border border-gray-500 text-white  flex px-2 py-1 rounded-full items-center justify-center hover:border-white cursor-pointer">
           <FaEarthAsia /> English
