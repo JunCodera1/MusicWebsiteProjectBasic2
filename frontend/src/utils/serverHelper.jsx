@@ -13,4 +13,9 @@ export const makeUnauthenticatedPOSTRequest = async (route, body) => {
   return formattedResponse;
 };
 
+const loginData = {
+  username: "yourUsername",
+  password: "yourPassword",
+};
+
 makeUnauthenticatedPOSTRequest("/auth/login", loginData);
