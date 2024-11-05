@@ -5,6 +5,11 @@ import PasswordInput from "../components/PasswordInput";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
+  const { confirmEmail, setConfirmEmail } = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -21,19 +26,28 @@ const SignUpPage = () => {
           placeholder={"Enter Your Email Address"}
           className="my-6"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          setValue={setEmail}
         />
         <TextInput
           label={"Confirm your email address"}
           placeholder={"Confirm Your Email Address"}
           className="mb-6"
+          value={confirmEmail}
+          setValue={setConfirmEmail}
         />
         <TextInput
           label={"Username"}
           placeholder={"Enter Your Username"}
           className="mb-6"
+          value={username}
+          setValue={setUsername}
         />
-        <PasswordInput label={"Password"} placeholder={"Enter Your Password"} />
+        <PasswordInput
+          label={"Password"}
+          placeholder={"Enter Your Password"}
+          value={password}
+          setValue={setPassword}
+        />
         <br />
         <TextInput
           label={"What should we call you?"}
@@ -46,11 +60,15 @@ const SignUpPage = () => {
             label={"First Name"}
             placeholder={"Enter Your First Name"}
             className="my-6"
+            value={firstName}
+            setValue={setFirstName}
           />
           <TextInput
             label={"Last Name"}
             placeholder={"Enter Your Last Name"}
             className="my-6"
+            value={lastName}
+            setValue={setLastName}
           />
         </div>
         <div className="w-full flex items-center justify-center my-8">
