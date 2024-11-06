@@ -28,8 +28,7 @@ const App = () => {
     <Router>
       <div className="w-screen h-screen">
         <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-          {isAuthenticated && <Navbar />}{" "}
-          {/* Hiển thị Navbar chỉ khi đã đăng nhập */}
+          <Navbar />
           <Routes>
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập

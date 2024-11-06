@@ -1,9 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { GiMusicSpell } from "react-icons/gi";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
+import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cookies, setCookie] = useCookies(["token"]);
+  const navigate = useNavigate();
+
+  const login = async () => {
+    const data = { email, password };
+    const response = await makeUnauthenticatedPOSTRequest("/auth/login", data);
+    if (response && !response.err) {
+      const token = response.token;
+      const date = new Date();
+      date.setDate(date.getDate() + 30);
+      setCookie("token", token, { path: "/", expires: date });
+      alert("Success");
+      navigate("/home");
+    } else {
+      alert("Failure");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      signUp();
+    }
+  };
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="logo p-5 border-b border-solid border-gray-300 w-full flex justify-center">
@@ -16,10 +45,23 @@ const LoginPage = () => {
           label={"Email ID or username"}
           placeholder={"Email address or username"}
           className="my-6"
+          value={email}
+          setValue={setEmail}
         />
-        <PasswordInput label={"Password"} placeholder={"Enter Your Password"} />
+        <PasswordInput
+          label={"Password"}
+          placeholder={"Enter Your Password"}
+          value={password}
+          setValue={setPassword}
+        />
         <div className="w-full flex items-center justify-end my-8 ">
-          <button className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ">
+          <button
+            className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full "
+            onClick={(e) => {
+              e.preventDefault();
+              login();
+            }}
+          >
             LOG IN
           </button>
         </div>
