@@ -7,38 +7,46 @@ const router = express.Router();
 
 // This POST route will help to register a user
 router.post("/register", async (req, res) => {
-  const { email, password, firstname, lastname, username } = req.body; // Consistent naming
+  // This code is run when the /register api is called as a POST request
 
-  console.log("Request body:", req.body); // Log the request body
+  // My req.body will be of the format {email, password, firstName, lastName, username }
+  const { email, password, firstname, lastname, username } = req.body;
 
-  try {
-    const user = await User.findOne({ email: email });
-    if (user) {
-      return res
-        .status(403)
-        .json({ error: "A user with this email already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUserData = {
-      email,
-      password: hashedPassword,
-      firstname, // Ensure these match your Mongoose model
-      lastname,
-      username,
-    };
-    const newUser = await User.create(newUserData);
-    console.log(newUserData);
-
-    const token = await getToken(email, newUser);
-    const userToReturn = { ...newUser.toJSON(), token };
-    delete userToReturn.password;
-
-    return res.status(200).json(userToReturn);
-  } catch (error) {
-    console.error("Error registering user:", error);
-    return res.status(500).json({ error: "Internal server error" });
+  // Step 2 : Does a user with this email already exist? If yes, we throw an error.
+  const user = await User.findOne({ email: email });
+  if (user) {
+    // status code by default is 200
+    return res
+      .status(403)
+      .json({ error: "A user with this email already exists" });
   }
+  // This is a valid request
+
+  // Step 3: Create a new user in the DB
+  // Step 3.1 : We do not store passwords in plain text.
+  // xyz: we convert the plain text password to a hash.
+  // xyz --> asghajskbvjacnijhabigbr
+  // My hash of xyz depends on 2 parameters.
+  // If I keep those 2 parameters same, xyz ALWAYS gives the same hash.
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUserData = {
+    email,
+    password: hashedPassword,
+    firstname,
+    lastname,
+    username,
+  };
+  const newUser = await User.create(newUserData);
+  console.log(newUserData);
+
+  // Step 4: We want to create the token to return to the user
+  const token = await getToken(email, newUser);
+
+  // Step 5: Return the result to the user
+  const userToReturn = { ...newUser.toJSON(), token };
+  console.log(userToReturn);
+  delete userToReturn.password;
+  return res.status(200).json(userToReturn);
 });
 
 router.post("/login", async (req, res) => {

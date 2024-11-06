@@ -45,7 +45,7 @@ const SignUpPage = () => {
 
       if (response && !response.error) {
         alert("Successfully signed up, please login to continue.");
-        navigate("/login");
+        // navigate("/login");
       } else {
         alert(response?.error || "Something went wrong, please try again.");
       }
