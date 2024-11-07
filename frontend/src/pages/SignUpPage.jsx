@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GiMusicSpell } from "react-icons/gi";
+import { useCookies } from "react-cookie";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
@@ -15,6 +16,7 @@ const SignUpPage = () => {
   const [profileName, setProfileName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["token"]);
 
   const signUp = async () => {
     if (email !== confirmEmail) {
@@ -36,22 +38,27 @@ const SignUpPage = () => {
     };
 
     try {
-      setLoading(true); // Set loading state
+      setLoading(true);
       const response = await makeUnauthenticatedPOSTRequest(
         "/auth/register",
         data
       );
-      setLoading(false); // Reset loading state
+      setLoading(false);
 
       if (response && !response.error) {
-        alert("Successfully signed up, please login to continue.");
-        // navigate("/login");
+        console.log(response);
+        const token = response.token;
+        const date = new Date();
+        date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+        setCookie("token", token, { path: "/", expires: date });
+        alert("Successfully signed up. Redirecting to home page...");
+        navigate("/");
       } else {
         alert(response?.error || "Something went wrong, please try again.");
       }
     } catch (error) {
-      setLoading(false); // Reset loading state
-      console.error(error); // Log error for debugging
+      setLoading(false);
+      console.error(error);
       alert("Failed to connect to the server, please try again later.");
     }
   };
@@ -142,7 +149,7 @@ const SignUpPage = () => {
               e.preventDefault();
               signUp();
             }}
-            disabled={loading} // Disable button when loading
+            disabled={loading}
           >
             {loading ? "SIGNING UP..." : "SIGN UP"}
           </button>
