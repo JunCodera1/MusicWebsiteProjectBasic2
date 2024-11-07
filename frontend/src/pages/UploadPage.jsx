@@ -18,6 +18,14 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const UploadPage = () => {
   const [progress, setProgress] = useState(0);
+  const menuItemsLeft = [
+    { label: "Home", uri: "/" },
+    { label: "Feed", uri: "/feed" },
+    { label: "Trending", uri: "/trending" },
+    { label: "Upload", uri: "/upload" },
+  ];
+
+  const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
   const handleFileUpload = (event) => {
     setProgress(100); // Cập nhật phần trăm tiến độ ở đây

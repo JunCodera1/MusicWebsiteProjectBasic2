@@ -14,7 +14,7 @@ import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { NavItem } from "./NavItem";
 
-export function RightContent() {
+export function RightContent({ items, onToggle }) {
   const { colorMode, toggleColorMode } = useColorMode(); // Get color mode and toggle function
 
   return (
@@ -36,7 +36,7 @@ export function RightContent() {
       </InputGroup>
 
       <IconButton
-        aria-label="notifications" // Changed for better accessibility
+        aria-label="notifications"
         icon={<FaBell />}
         variant="ghost"
         colorScheme="teal"
@@ -44,15 +44,13 @@ export function RightContent() {
         size="sm"
       />
 
-      {/* <Avatar size="sm" name="D C" bg="teal" /> */}
-      {/* <List>
-        <NavItem uri="#" key="premium" label="Premium" />
-      </List> */}
-      <List>
-        <NavItem uri="/login" key="login" label="Login" />
+      <List gap={1} display={{ base: "none", md: "flex", lg: "flex" }}>
+        {Array.isArray(items) &&
+          items.map((item) => <NavItem key={item.label} {...item} />)}
       </List>
+
       <IconButton
-        aria-label="toggle color mode" // Added aria-label for accessibility
+        aria-label="toggle color mode"
         icon={colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
         variant="ghost"
         colorScheme="teal"

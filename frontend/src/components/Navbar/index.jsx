@@ -3,26 +3,7 @@ import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
 import { MobileNav } from "./Mobile";
 
-const menuItems = [
-  {
-    label: "Home",
-    uri: "/",
-  },
-  {
-    label: "Feed",
-    uri: "/feed",
-  },
-  {
-    label: "Trending",
-    uri: "/trending",
-  },
-  {
-    label: "Upload",
-    uri: "/upload",
-  },
-];
-
-export function Navbar() {
+export function Navbar({ menuItemsLeft, menuItemsRight }) {
   const { isOpen, onToggle } = useDisclosure();
   return (
     <VStack w="full" spacing={0}>
@@ -34,13 +15,12 @@ export function Navbar() {
         borderBottomWidth={1}
       >
         {/* left content */}
-        <LeftContent items={menuItems} onToggle={onToggle} />
+        <LeftContent items={menuItemsLeft} onToggle={onToggle} />
         {/* right content */}
-
-        <RightContent />
+        <RightContent items={menuItemsRight} onToggle={onToggle} />
       </HStack>
       {/* mobile content */}
-      <MobileNav items={menuItems} isOpen={isOpen} />
+      <MobileNav items={menuItemsLeft} isOpen={isOpen} />
     </VStack>
   );
 }

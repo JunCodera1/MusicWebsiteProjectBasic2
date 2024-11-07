@@ -5,6 +5,7 @@ import PasswordInput from "../components/PasswordInput";
 import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Navbar from "../components/Navbar";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -33,8 +34,37 @@ const LoginPage = () => {
       signUp();
     }
   };
+  const menuItemsLeft = [
+    {
+      label: "Home",
+      uri: "/",
+    },
+    {
+      label: "Feed",
+      uri: "/feed",
+    },
+    {
+      label: "Trending",
+      uri: "/trending",
+    },
+    {
+      label: "Upload",
+      uri: "/upload",
+    },
+  ];
+
+  const menuItemsRight = [
+    {
+      label: "Sign Up",
+      uri: "/signup",
+    },
+  ];
   return (
     <div className="w-full h-full flex flex-col items-center">
+      <Navbar
+        menuItemsLeft={menuItemsLeft}
+        menuItemsRight={menuItemsRight}
+      ></Navbar>
       <div className="logo p-5 border-b border-solid border-gray-300 w-full flex justify-center">
         <GiMusicSpell size={100} />
       </div>

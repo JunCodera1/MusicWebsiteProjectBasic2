@@ -2,7 +2,6 @@ import express from "express";
 import { User } from "../model/user.js";
 import bcrypt from "bcrypt";
 import getToken from "../utils/helpers.js";
-
 const router = express.Router();
 
 // This POST route will help to register a user

@@ -19,6 +19,7 @@ import SignUpPage from "./pages/SignUpPage.jsx";
 import { useCookies } from "react-cookie";
 
 import "./index.css";
+import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
 
 const App = () => {
   const [cookie] = useCookies(["token"]); // Không cần setCookie nếu không thay đổi token
@@ -28,7 +29,6 @@ const App = () => {
     <Router>
       <div className="w-screen h-screen">
         <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-          <Navbar />
           <Routes>
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập
