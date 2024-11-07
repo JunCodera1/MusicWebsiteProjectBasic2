@@ -23,7 +23,7 @@
     "joi": "^17.13.3",
     "joi-password-complexity": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.9.0",
+    "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
