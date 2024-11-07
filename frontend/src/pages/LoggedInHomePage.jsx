@@ -68,30 +68,29 @@ const menuItemsLeft = [
   { label: "Upload", uri: "/upload" },
 ];
 
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
+const menuItemsRight = [{ label: "Premium", uri: "/" }];
 
 const HomePage = () => {
   return (
-    <div>
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
-      <Box display="flex" minHeight="100vh" position={"relative"}>
-        {/* Sidebar */}
-        <Sidebar />
+    <Box display="flex" minHeight="100vh" position={relative}>
+      {/* Sidebar */}
+      <Sidebar />
 
-        {/* Main Content Area */}
-        <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
-          {/* Playlist Views */}
-          <Box p={4} className="content">
-            <PlaylistView titleText="HSR" cardsData={focusCardData} />
-            <PlaylistView
-              titleText="Apple Music"
-              cardsData={spotifyPlaylistData}
-            />
-            <PlaylistView titleText="JP 80's" cardsData={focusCardData} />
-          </Box>
+      {/* Main Content Area */}
+      <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
+        <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
+
+        {/* Playlist Views */}
+        <Box p={4} className="content">
+          <PlaylistView titleText="HSR" cardsData={focusCardData} />
+          <PlaylistView
+            titleText="Apple Music"
+            cardsData={spotifyPlaylistData}
+          />
+          <PlaylistView titleText="JP 80's" cardsData={focusCardData} />
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 

@@ -1,8 +1,7 @@
 import express from "express";
-import { User } from "/home/jun/Documents/MusicWebsiteProjectBasic2/backend/model/user.js";
+import { User } from "../model/user.js";
 import bcrypt from "bcrypt";
-import getToken from "/home/jun/Documents/MusicWebsiteProjectBasic2/backend/utils/helpers.js";
-
+import getToken from "../utils/helpers.js";
 const router = express.Router();
 
 // This POST route will help to register a user
