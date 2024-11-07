@@ -33,7 +33,7 @@ const App = () => {
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập
               <>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<LoggedInHomePage />} />
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/library" element={<LibraryPage />} />
                 <Route path="/upload" element={<UploadPage />} />

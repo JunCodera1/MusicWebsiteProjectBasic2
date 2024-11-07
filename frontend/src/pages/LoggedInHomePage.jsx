@@ -68,30 +68,31 @@ const menuItemsLeft = [
   { label: "Upload", uri: "/upload" },
 ];
 
-const menuItemsRight = [{ label: "Premium", uri: "/" }];
+const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
-const HomePage = () => {
+const LoggedInHomePage = () => {
   return (
-    <Box display="flex" minHeight="100vh" position={relative}>
-      {/* Sidebar */}
-      <Sidebar />
+    <div>
+      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
+      <Box display="flex" minHeight="100vh" position={"relative"}>
+        {/* Sidebar */}
+        <Sidebar />
 
-      {/* Main Content Area */}
-      <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
-        <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
-
-        {/* Playlist Views */}
-        <Box p={4} className="content">
-          <PlaylistView titleText="HSR" cardsData={focusCardData} />
-          <PlaylistView
-            titleText="Apple Music"
-            cardsData={spotifyPlaylistData}
-          />
-          <PlaylistView titleText="JP 80's" cardsData={focusCardData} />
+        {/* Main Content Area */}
+        <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
+          {/* Playlist Views */}
+          <Box p={4} className="content">
+            <PlaylistView titleText="HSR" cardsData={focusCardData} />
+            <PlaylistView
+              titleText="Apple Music"
+              cardsData={spotifyPlaylistData}
+            />
+            <PlaylistView titleText="JP 80's" cardsData={focusCardData} />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </div>
   );
 };
 
-export default HomePage;
+export default LoggedInHomePage;
