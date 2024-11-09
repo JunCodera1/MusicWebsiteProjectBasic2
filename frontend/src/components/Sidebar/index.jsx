@@ -39,7 +39,7 @@ export default function Sidebar() {
     <Flex
       pos="flex-start"
       left="0"
-      h="90vh"
+      h="93vh"
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
@@ -57,6 +57,16 @@ export default function Sidebar() {
         alignItems={navSize == "small" ? "center" : "flex-start"}
         as="nav"
       >
+        <Flex
+          align="center"
+          fontWeight="bold"
+          fontSize="2xl"
+          mt={4}
+          color={useColorModeValue("black", "white")}
+        >
+          <GiMusicSpell size={40} />
+          {navSize !== "small" && <Text ml={2}>Soundbox</Text>}
+        </Flex>
         <IconButton
           background="none"
           mt={5}
@@ -67,17 +77,6 @@ export default function Sidebar() {
             else changeNavSize("small");
           }}
         />
-        <Flex
-          align="center"
-          fontWeight="bold"
-          fontSize="2xl"
-          mt={4}
-          mb={8}
-          color={useColorModeValue("black", "white")}
-        >
-          <GiMusicSpell size={40} />
-          {navSize !== "small" && <Text ml={2}>Soundbox</Text>}
-        </Flex>
 
         <NavItem
           navSize={navSize}
