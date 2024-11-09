@@ -20,20 +20,22 @@ export function LeftContent({ items, onToggle }) {
         variant="ghost"
         icon={<FaBurger />}
         rounded="full"
-        display={{ base: "none", md: "flex", lg: "flex" }}
+        display={{ base: "none", md: "flex", lg: "none" }}
         onClick={onToggle}
       />
 
       <Heading color="teal" fontWeight="black">
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <Button
-            bg={useColorModeValue("gray.100", "gray.900")}
-            fontSize={15}
-            _hover={{ bg: useColorModeValue("gray.200", "gray.800") }} // Change hover styles as needed
-          >
-            <GiMusicSpell size={30} /> Soundbox
-          </Button>
-        </Link>
+        <Button
+          as={Link}
+          href="/"
+          bg={useColorModeValue("gray.100", "gray.900")}
+          fontSize={15}
+          _hover={{ bg: useColorModeValue("gray.200", "gray.800") }}
+          style={{ textDecoration: "none" }}
+          aria-label="Navigate to homepage"
+        >
+          <GiMusicSpell size={30} /> &nbsp; Soundbox
+        </Button>
       </Heading>
 
       <List gap={1} display={{ base: "none", md: "flex", lg: "flex" }}>

@@ -28,7 +28,11 @@ const App = () => {
   return (
     <Router>
       <div className="w-screen h-screen">
-        <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+        <Box
+          minH="100vh"
+          bg={useColorModeValue("gray.100", "gray.900")}
+          mx="auto"
+        >
           <Routes>
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập
