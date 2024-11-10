@@ -48,6 +48,12 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/" element={<LoggedInHomePage />} />
+                <Route path="/feed" element={<FeedPage />} />
+                <Route path="/library" element={<LibraryPage />} />
+                <Route path="/upload" element={<UploadPage />} />
+                <Route path="/favourites" element={<FavouritesPage />} />
+                <Route path="/trending" element={<TrendingPage />} />
                 {/* Điều hướng tất cả các route không xác định đến trang login */}
                 <Route path="*" element={<Navigate to="/login" />} />
               </>

@@ -12,6 +12,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.10.3",
+    "@cloudinary/react": "^1.13.1",
+    "@cloudinary/url-gen": "^1.21.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@iconify/react": "^5.0.2",
@@ -19,6 +21,7 @@
     "@mui/material": "^6.1.6",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "cloudinary-core": "^2.13.1",
     "cors": "^2.8.5",
     "express-async-errors": "^3.1.1",
     "framer-motion": "^11.11.11",

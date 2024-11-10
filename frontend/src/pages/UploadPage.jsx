@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import CloudinaryUpload from "../components/CloudinaryUpload";
 import {
   Box,
   Heading,
@@ -31,6 +32,10 @@ const UploadPage = () => {
   const handleFileUpload = (event) => {
     setProgress(100); // Cập nhật phần trăm tiến độ ở đây
   };
+
+  // console.log(window);
+  // console.log(window.cloudinary);
+
 
   return (
     <div>
@@ -120,12 +125,13 @@ const UploadPage = () => {
                   color="teal.500"
                   mb={4}
                 />
-                <Heading size="md" mb={2}>
+                <Heading size="md" mb={2} color={"black"}>
                   Kéo và Thả Tệp Lên hoặc Click để Tải Lên
                 </Heading>
                 <Button
                   colorScheme="teal"
                   onClick={() => document.getElementById("fileInput").click()}
+                  className="align-center"
                 >
                   Chọn Tệp
                 </Button>
@@ -136,6 +142,8 @@ const UploadPage = () => {
                   onChange={handleFileUpload}
                   accept=".wav,.flac,.aiff,.alac"
                 />
+
+                <CloudinaryUpload></CloudinaryUpload>
               </Box>
             </Box>
           </Flex>
