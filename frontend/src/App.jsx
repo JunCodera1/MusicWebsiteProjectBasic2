@@ -24,12 +24,34 @@ import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
 const App = () => {
   const [cookie] = useCookies(["token"]); // Không cần setCookie nếu không thay đổi token
   const isAuthenticated = !!cookie.token; // Kiểm tra xem token có tồn tại không
-
+  const breakpoints = {
+    base: "0em", // 0px
+    sm: "30em", // ~480px. em is a relative unit and is dependant on the font-size.
+    md: "48em", // ~768px
+    lg: "62em", // ~992px
+    xl: "80em", // ~1280px
+    "2xl": "96em", // ~1536px
+  };
   return (
     <Router>
       <div className="w-screen h-screen">
         <Box
-          minH="100vh"
+          minH={{
+            base: "100vh", // 0px
+            sm: "100vh", // ~480px. em is a relative unit and is dependant on the font-size.
+            md: "163vh", // ~768px
+            lg: "120vh", // ~992px
+            xl: "100vh", // ~1280px
+            "2xl": "100vh",
+          }}
+          minW={{
+            base: "118vw", // 0px
+            sm: "100vw", // ~480px. em is a relative unit and is dependant on the font-size.
+            md: "163vw", // ~768px
+            lg: "118vw", // ~992px
+            xl: "100vw", // ~1280px
+            "2xl": "100vw",
+          }}
           bg={useColorModeValue("gray.100", "gray.900")}
           mx="auto"
         >

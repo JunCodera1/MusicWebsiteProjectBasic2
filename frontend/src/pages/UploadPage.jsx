@@ -29,7 +29,7 @@ const UploadPage = () => {
   const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
   const handleFileUpload = (event) => {
-    setProgress(100); // Cập nhật phần trăm tiến độ ở đây
+    setProgress(100); // Static for demonstration; replace with actual upload logic if needed
   };
 
   return (
@@ -46,10 +46,16 @@ const UploadPage = () => {
             justify="space-between"
             gap={8}
             boxSizing="border-box"
-            marginRight={"20vh"}
+            marginRight={{ base: 0, md: "5vw" }}
+            mx="auto"
+            px={{ base: 4, md: 6 }}
           >
             {/* Form nhập thông tin nhạc, bên trái */}
-            <Box flex="1">
+            <Box
+              flex="1"
+              minW={{ base: "100%", md: "50%" }}
+              mb={{ base: 8, md: 0 }}
+            >
               <Heading size="md" mb={4}>
                 Thông Tin Bài Hát
               </Heading>
@@ -89,6 +95,8 @@ const UploadPage = () => {
               borderColor="gray.300"
               borderRadius="md"
               p={6}
+              minH={{ base: "auto", md: "50vh" }}
+              w={{ base: "100%", md: "50%" }}
             >
               <Text fontSize="lg" fontWeight="bold" mb={2}>
                 0 % of your uploads used
