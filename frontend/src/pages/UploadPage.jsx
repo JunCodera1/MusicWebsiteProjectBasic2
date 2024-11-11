@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import TextInput from "../components/TextInput";
 import {
   Box,
   Heading,
@@ -63,10 +64,6 @@ const UploadPage = () => {
     setPlaylistURLs((prevURLs) => [...prevURLs, url]); // Thêm URL mới vào mảng
     setUploadedFileNames((prevNames) => [...prevNames, filename]); // Thêm tên tệp mới vào mảng
   };
-
-  // console.log(window);
-  // console.log(window.cloudinary);
-
 
   return (
     <div>
@@ -185,15 +182,27 @@ const UploadPage = () => {
                   color="teal.500"
                   mb={4}
                 />
-                <Heading size="md" mb={2}>
-                  Kéo và Thả Tệp Lên hoặc Click để Tải Lên
-                </Heading>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => document.getElementById("fileInput").click()}
-                >
-                  Chọn Tệp
-                </Button>
+                <Heading size="md" mb={2}></Heading>
+                <div>
+                  <CloudinaryUpload
+                    setUrl={setPlaylistURL}
+                    setName={setUploadedSongFileName}
+                  />
+                  <div>
+                    {uploadedSongFileName ? (
+                      <div className="bg-green-500 rounded-full p-3 w-1/3">
+                        {uploadedSongFileName.substring(0, 35)}...
+                        <br />
+                      </div>
+                    ) : (
+                      <div>
+                        <br />
+                        "No file uploaded yet"
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <input
                   id="fileInput"
                   type="file"
@@ -201,8 +210,6 @@ const UploadPage = () => {
                   onChange={handleFileUpload}
                   accept=".wav,.flac,.aiff,.alac"
                 />
-
-                <CloudinaryUpload></CloudinaryUpload>
               </Box>
             </Box>
           </Flex>
