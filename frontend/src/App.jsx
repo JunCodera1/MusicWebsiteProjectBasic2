@@ -45,7 +45,7 @@ const App = () => {
             xl: "90vw", // ~1280px
             "2xl": "100vw",
           }}
-          bg={useColorModeValue("gray.100", "gray.900")}
+          bg={useColorModeValue("white", "gray.800")}
           h={{ md: "70vh" }}
           mx="auto"
         >
@@ -53,7 +53,7 @@ const App = () => {
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập
               <>
-                <Route path="/mySong" element={<MySongPage />}></Route>
+                <Route path="/mysongs" element={<MySongPage />}></Route>
                 <Route path="/" element={<LoggedInHomePage />} />
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/library" element={<LibraryPage />} />

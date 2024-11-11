@@ -39,16 +39,20 @@ export default function Sidebar() {
     <Flex
       pos="flex-start"
       left="0"
-      h={"100vh"}
+      h={"680px"}
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
       w={navSize == "small" ? "75px" : { base: "75px", md: "200px" }}
       flexDir="column"
       justifyContent="flex-start"
-      bg={useColorModeValue("gray.300", "gray.700")}
+      bg={useColorModeValue("gray.300", "gray.800")}
       marginLeft={"10px"}
       zIndex={"100"}
+      style={{
+        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.8)", // Shadow rõ và đậm hơn
+        transition: "all 0.3s ease", // Thêm hiệu ứng chuyển động mượt mà
+      }}
     >
       <Flex
         p="5%"
@@ -94,7 +98,7 @@ export default function Sidebar() {
           navSize={navSize}
           icon={FaMusic}
           title="My music"
-          href={"/mySong"}
+          href={"/mysongs"}
         />
         <NavItem
           navSize={navSize}
@@ -117,7 +121,11 @@ export default function Sidebar() {
           cursor="pointer"
         >
           <FaEarthAsia />
-          {navSize !== "small" && <Text ml={2}>English</Text>}
+          {navSize !== "small" && (
+            <Text color={useColorModeValue("black", "white")} ml={2}>
+              English
+            </Text>
+          )}
         </Flex>
       </Box>
       <Flex

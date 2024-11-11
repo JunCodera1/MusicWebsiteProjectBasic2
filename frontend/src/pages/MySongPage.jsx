@@ -2,7 +2,6 @@ import React from "react";
 import Sidebar from "../components/Sidebar";
 import { Box } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
-import PlaylistView from "../components/PlaylistView/PlaylistView";
 import Navbar from "../components/Navbar";
 import SingleSongCard from "../components/SingleSongCard";
 
@@ -85,8 +84,9 @@ const HomePage = () => {
       <Box display="flex" minHeight="100vh" position={"relative"}>
         {/* Sidebar */}
         <Sidebar />
-        <div className="contents p-8 pt-0 overflow-auto">
-          <SingleSongCard></SingleSongCard>
+        <div className="content p-8 overflow-auto">
+          <div className="text-2xl pb-4 font-semibold">My Songs</div>
+          <SingleSongCard />
         </div>
       </Box>
     </div>
