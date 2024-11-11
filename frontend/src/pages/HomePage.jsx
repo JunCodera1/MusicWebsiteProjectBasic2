@@ -5,7 +5,7 @@ import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-
 import PlaylistView from "../components/PlaylistView/PlaylistView";
 import Navbar from "../components/Navbar";
 
-const spotifyPlaylistData = [
+const soundboxPlaylistData = [
   {
     title: "Peaceful Piano",
     description: "Lorem ipsum dolor sit amet consectetur",
@@ -72,7 +72,14 @@ const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
 const HomePage = () => {
   return (
-    <div>
+    <div
+      className="transform"
+      sx={{
+        transform: "scale(1.0)", // Giữ nguyên kích thước gốc
+        transformOrigin: "0 0",
+        overflow: "hidden",
+      }}
+    >
       <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
       <Box display="flex" minHeight="100vh" position={"relative"}>
         {/* Sidebar */}
@@ -82,10 +89,10 @@ const HomePage = () => {
         <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
           {/* Playlist Views */}
           <Box p={4} className="content">
-            <PlaylistView titleText="HSR" cardsData={focusCardData} />
+            <PlaylistView titleText="Focus" cardsData={focusCardData} />
             <PlaylistView
-              titleText="Apple Music"
-              cardsData={spotifyPlaylistData}
+              titleText="Soundbox Music"
+              cardsData={soundboxPlaylistData}
             />
             <PlaylistView titleText="JP 80's" cardsData={focusCardData} />
           </Box>

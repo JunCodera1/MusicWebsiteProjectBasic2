@@ -8,6 +8,7 @@ import {
   Heading,
   useColorModeValue,
   useBreakpointValue,
+  Box,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import { AiFillPlusSquare } from "react-icons/ai";
@@ -19,6 +20,8 @@ import { FaEarthAsia } from "react-icons/fa6";
 import avatarImg from "../../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f.jpg";
 
 import NavItem from "./NavItem";
+import { FaMusic } from "react-icons/fa";
+import { GiMusicSpell } from "react-icons/gi";
 
 export default function Sidebar() {
   const [navSize, changeNavSize] = useState("large");
@@ -36,13 +39,13 @@ export default function Sidebar() {
     <Flex
       pos="flex-start"
       left="0"
-      h="90vh"
+      h={"100vh"}
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
       w={navSize == "small" ? "75px" : { base: "75px", md: "200px" }}
       flexDir="column"
-      justifyContent="space-between"
+      justifyContent="flex-start"
       bg={useColorModeValue("gray.300", "gray.700")}
       marginLeft={"10px"}
       zIndex={"100"}
@@ -54,6 +57,16 @@ export default function Sidebar() {
         alignItems={navSize == "small" ? "center" : "flex-start"}
         as="nav"
       >
+        <Flex
+          align="center"
+          fontWeight="bold"
+          fontSize="2xl"
+          mt={4}
+          color={useColorModeValue("black", "white")}
+        >
+          <GiMusicSpell size={40} />
+          {navSize !== "small" && <Text ml={2}>Soundbox</Text>}
+        </Flex>
         <IconButton
           background="none"
           mt={5}
@@ -64,6 +77,7 @@ export default function Sidebar() {
             else changeNavSize("small");
           }}
         />
+
         <NavItem
           navSize={navSize}
           icon={IoIosHome}
@@ -76,6 +90,7 @@ export default function Sidebar() {
           icon={AiFillPlusSquare}
           title="Create playlist"
         />
+        <NavItem navSize={navSize} icon={FaMusic} title="My music" />
         <NavItem
           navSize={navSize}
           icon={FaHeartCirclePlus}
@@ -83,12 +98,23 @@ export default function Sidebar() {
         />
       </Flex>
 
-      <div className="px-5">
-        <div className="border border-gray-500 text-white  flex px-2 py-1 rounded-full items-center justify-center hover:border-white cursor-pointer">
-          <FaEarthAsia /> English
-        </div>
-      </div>
-
+      <Box px={5} mb={4}>
+        <Flex
+          border="1px"
+          borderColor="gray.500"
+          color="white"
+          px={2}
+          py={1}
+          rounded="full"
+          align="center"
+          justify="center"
+          _hover={{ borderColor: "white" }}
+          cursor="pointer"
+        >
+          <FaEarthAsia />
+          {navSize !== "small" && <Text ml={2}>English</Text>}
+        </Flex>
+      </Box>
       <Flex
         p="5%"
         flexDir="column"

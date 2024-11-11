@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 
 const clerkId = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-console.log(clerkId);
 
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(

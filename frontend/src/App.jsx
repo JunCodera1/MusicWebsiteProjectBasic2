@@ -6,7 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
-import Navbar from "./components/Navbar/";
 
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
@@ -28,7 +27,27 @@ const App = () => {
   return (
     <Router>
       <div className="w-screen h-screen">
-        <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+        <Box
+          minH={{
+            base: "100vh", // 0px
+            sm: "100vh", // ~480px. em is a relative unit and is dependant on the font-size.
+            md: "163vh", // ~768px
+            lg: "120vh", // ~992px
+            xl: "100vh", // ~1280px
+            "2xl": "110vh",
+          }}
+          minW={{
+            base: "107vw", // 0px
+            sm: "100vw", // ~480px. em is a relative unit and is dependant on the font-size.
+            md: "162vw", // ~768px
+            lg: "118vw", // ~992px
+            xl: "90vw", // ~1280px
+            "2xl": "100vw",
+          }}
+          bg={useColorModeValue("gray.100", "gray.900")}
+          h={{ md: "70vh" }}
+          mx="auto"
+        >
           <Routes>
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập

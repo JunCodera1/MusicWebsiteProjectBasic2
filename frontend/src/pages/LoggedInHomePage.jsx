@@ -72,9 +72,9 @@ const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
 const LoggedInHomePage = () => {
   return (
-    <div>
+    <div className="w-full ">
       <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
-      <Box display="flex" minHeight="100vh" position={"relative"}>
+      <Box display="flex" minHeight="150vh" position={"relative"}>
         {/* Sidebar */}
         <Sidebar />
 
