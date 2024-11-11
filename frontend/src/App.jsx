@@ -24,14 +24,7 @@ import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
 const App = () => {
   const [cookie] = useCookies(["token"]); // Không cần setCookie nếu không thay đổi token
   const isAuthenticated = !!cookie.token; // Kiểm tra xem token có tồn tại không
-  const breakpoints = {
-    base: "0em", // 0px
-    sm: "30em", // ~480px. em is a relative unit and is dependant on the font-size.
-    md: "48em", // ~768px
-    lg: "62em", // ~992px
-    xl: "80em", // ~1280px
-    "2xl": "96em", // ~1536px
-  };
+
   return (
     <Router>
       <div className="w-screen h-screen">

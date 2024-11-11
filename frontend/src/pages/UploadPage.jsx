@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import TextInput from "../components/TextInput";
 import {
   Box,
   Heading,
@@ -16,8 +17,30 @@ import {
 } from "@chakra-ui/react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import { openUploadWidget } from "../utils/CloudinaryService";
 
 const UploadPage = () => {
+  console.log(window);
+  console.log(window.cloudinary);
+
+  // Cloudinary upload
+  const uploadImageWidget = () => {
+    let myUploadWidget = openUploadWidget(
+      {
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+        uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+        sources: ["local"],
+      },
+      function (error, result) {
+        if (!error && result.event === "success") {
+          console.log(result.info);
+        } else {
+          console.log(error);
+        }
+      }
+    );
+    myUploadWidget.open();
+  };
   const [progress, setProgress] = useState(0);
   const menuItemsLeft = [
     { label: "Home", uri: "/" },
@@ -57,27 +80,27 @@ const UploadPage = () => {
               mb={{ base: 8, md: 0 }}
             >
               <Heading size="md" mb={4}>
-                Thông Tin Bài Hát
+                Song profile
               </Heading>
               <VStack spacing={4} align="stretch">
                 <FormControl id="author">
-                  <FormLabel>Tác Giả</FormLabel>
-                  <Input type="text" placeholder="Nhập tên tác giả" />
+                  <FormLabel>Author</FormLabel>
+                  <TextInput type="text" placeholder="Enter author name" />
                 </FormControl>
 
                 <FormControl id="uploadDate">
-                  <FormLabel>Ngày Upload</FormLabel>
-                  <Input type="date" />
+                  <FormLabel>Upload date</FormLabel>
+                  <TextInput type="date" placeholder={"Enter upload date"} />
                 </FormControl>
 
                 <FormControl id="musicName">
-                  <FormLabel>Tên Nhạc</FormLabel>
-                  <Input type="text" placeholder="Nhập tên nhạc" />
+                  <FormLabel>Music name</FormLabel>
+                  <TextInput type="text" placeholder="Enter music name" />
                 </FormControl>
 
                 <FormControl id="genre">
-                  <FormLabel>Chủ Đề</FormLabel>
-                  <Select placeholder="Chọn chủ đề">
+                  <FormLabel>Genre</FormLabel>
+                  <Select placeholder="Choose your genre">
                     <option value="pop">Pop</option>
                     <option value="rock">Rock</option>
                     <option value="jazz">Jazz</option>
@@ -119,7 +142,6 @@ const UploadPage = () => {
                 borderRadius="md"
                 bg="white"
                 textAlign="center"
-                onDrop={handleFileUpload}
                 onDragOver={(e) => e.preventDefault()}
               >
                 <Icon
@@ -131,11 +153,8 @@ const UploadPage = () => {
                 <Heading size="md" mb={2}>
                   Kéo và Thả Tệp Lên hoặc Click để Tải Lên
                 </Heading>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => document.getElementById("fileInput").click()}
-                >
-                  Chọn Tệp
+                <Button colorScheme="teal" onClick={uploadImageWidget}>
+                  Upload
                 </Button>
                 <input
                   id="fileInput"
