@@ -17,6 +17,7 @@ import Navbar from "../components/Navbar";
 import CloudinaryUpload from "../components/CloudinaryUpload";
 import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
 import { Navigate, useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 const UploadPage = () => {
   const [artist, setArtist] = useState("");
@@ -71,150 +72,156 @@ const UploadPage = () => {
         menuItemsLeft={menuItemsLeft}
         menuItemsRight={menuItemsRight}
       ></Navbar>
-      <Layout>
-        <Box maxW="1400px" mx="auto" py={1}>
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            align="flex-start"
-            justify="space-between"
-            gap={8}
-            boxSizing="border-box"
-            mx="auto"
-            px={{ base: 4, md: 6 }}
-          >
-            {/* Form nhập thông tin nhạc, bên trái */}
-            <Box
-              flex="1"
-              minW={{ base: "100%", md: "50%" }}
-              mb={{ base: 8, md: 0 }}
+      <div className="flex min-h-28 relative">
+        {/* display="flex"
+            minHeight="100vh"
+            position={"relative"} */}
+        <Sidebar></Sidebar>
+        <Layout>
+          <Box maxW="1400px" mx="auto" py={1}>
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              align="flex-start"
+              justify="space-between"
+              gap={8}
+              boxSizing="border-box"
+              mx="auto"
+              px={{ base: 4, md: 6 }}
             >
-              <Heading size="md" mb={4}>
-                Song profile
-              </Heading>
-              <VStack spacing={4} align="stretch">
-                <FormControl id="artist">
-                  <FormLabel>Artist</FormLabel>
-                  <TextInput
-                    type="text"
-                    placeholder="Enter artist name"
-                    value={artist}
-                    setValue={setArtist}
-                  />
-                </FormControl>
-
-                <FormControl id="thumbnail">
-                  <FormLabel>Thumbnail</FormLabel>
-                  <TextInput
-                    placeholder={"Enter thumbnail"}
-                    value={thumbnail}
-                    setValue={setThumbnail}
-                  />
-                </FormControl>
-
-                <FormControl id="musicName">
-                  <FormLabel>Music name</FormLabel>
-                  <TextInput
-                    placeholder="Enter music name"
-                    value={musicName}
-                    setValue={setMusicName}
-                  />
-                </FormControl>
-
-                <FormControl id="playlistURL">
-                  <FormLabel>Playlist URL</FormLabel>
-                  <TextInput
-                    placeholder="Enter playlist URL"
-                    value={playlistURL}
-                    setValue={setPlaylistURL}
-                  />
-                </FormControl>
-
-                <FormControl id="genre">
-                  <FormLabel>Genre</FormLabel>
-                  <TextInput
-                    placeholder={"Enter your genre"}
-                    value={genre}
-                    setValue={setGenre}
-                  />
-                </FormControl>
-                <Box display="flex" justifyContent="center" mt={"0"}>
-                  <div
-                    className="bg-teal-500 w-40 flex items-center justify-center p-4 rounded-full cursor-pointer font-semibold"
-                    onClick={submitSong}
-                  >
-                    Submit Song
-                  </div>
-                </Box>
-              </VStack>
-            </Box>
-
-            {/* Phần chứa tiêu đề và upload, bên phải */}
-            <Box
-              flex="1"
-              border="1px solid"
-              borderColor="gray.300"
-              borderRadius="md"
-              p={6}
-              minH={{ base: "auto", md: "50vh" }}
-              w={{ base: "100%", md: "50%" }}
-            >
-              <Heading size="lg" mb={2}>
-                Upload your audio files.
-              </Heading>
-              <Text mb={4}>
-                For optimal quality, use WAV, FLAC, AIFF, or ALAC formats. The
-                maximum file size is 4 GB uncompressed.
-              </Text>
-
-              {/* Phần upload */}
+              {/* Form nhập thông tin nhạc, bên trái */}
               <Box
-                border="1px dashed"
-                borderColor="gray.300"
-                py={10}
-                borderRadius="md"
-                bg="white"
-                textAlign="center"
-                onDragOver={(e) => e.preventDefault()}
+                flex="1"
+                minW={{ base: "100%", md: "50%" }}
+                mb={{ base: 8, md: 0 }}
               >
-                <Icon
-                  as={FaCloudUploadAlt}
-                  boxSize={12}
-                  color="teal.500"
-                  mb={4}
-                />
-                <Heading size="md" mb={2}></Heading>
-                <div>
-                  <CloudinaryUpload
-                    setUrl={setPlaylistURL}
-                    setName={setUploadedSongFileName}
-                  />
-                  <div>
-                    {uploadedSongFileName ? (
-                      <div className="bg-green-500 rounded-full p-3 w-1/3">
-                        {uploadedSongFileName.substring(0, 35)}...
-                        <br />
-                      </div>
-                    ) : (
-                      <div>
-                        <br />
-                        "No file uploaded yet"
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <Heading size="md" mb={4}>
+                  Song profile
+                </Heading>
+                <VStack spacing={4} align="stretch">
+                  <FormControl id="artist">
+                    <FormLabel>Artist</FormLabel>
+                    <TextInput
+                      type="text"
+                      placeholder="Enter artist name"
+                      value={artist}
+                      setValue={setArtist}
+                    />
+                  </FormControl>
 
-                <input
-                  id="fileInput"
-                  type="file"
-                  style={{ display: "none" }}
-                  onChange={handleFileUpload}
-                  accept=".wav,.flac,.aiff,.alac"
-                />
+                  <FormControl id="thumbnail">
+                    <FormLabel>Thumbnail</FormLabel>
+                    <TextInput
+                      placeholder={"Enter thumbnail"}
+                      value={thumbnail}
+                      setValue={setThumbnail}
+                    />
+                  </FormControl>
+
+                  <FormControl id="musicName">
+                    <FormLabel>Music name</FormLabel>
+                    <TextInput
+                      placeholder="Enter music name"
+                      value={musicName}
+                      setValue={setMusicName}
+                    />
+                  </FormControl>
+
+                  <FormControl id="playlistURL">
+                    <FormLabel>Playlist URL</FormLabel>
+                    <TextInput
+                      placeholder="Enter playlist URL"
+                      value={playlistURL}
+                      setValue={setPlaylistURL}
+                    />
+                  </FormControl>
+
+                  <FormControl id="genre">
+                    <FormLabel>Genre</FormLabel>
+                    <TextInput
+                      placeholder={"Enter your genre"}
+                      value={genre}
+                      setValue={setGenre}
+                    />
+                  </FormControl>
+                  <Box display="flex" justifyContent="center" mt={"0"}>
+                    <div
+                      className="bg-teal-500 w-40 flex items-center justify-center p-4 rounded-full cursor-pointer font-semibold"
+                      onClick={submitSong}
+                    >
+                      Submit Song
+                    </div>
+                  </Box>
+                </VStack>
               </Box>
-            </Box>
-          </Flex>
-        </Box>
-      </Layout>
+
+              {/* Phần chứa tiêu đề và upload, bên phải */}
+              <Box
+                flex="1"
+                border="1px solid"
+                borderColor="gray.300"
+                borderRadius="md"
+                p={6}
+                minH={{ base: "auto", md: "50vh" }}
+                w={{ base: "100%", md: "50%" }}
+              >
+                <Heading size="lg" mb={2}>
+                  Upload your audio files.
+                </Heading>
+                <Text mb={4}>
+                  For optimal quality, use WAV, FLAC, AIFF, or ALAC formats. The
+                  maximum file size is 4 GB uncompressed.
+                </Text>
+
+                {/* Phần upload */}
+                <Box
+                  border="1px dashed"
+                  borderColor="gray.300"
+                  py={10}
+                  borderRadius="md"
+                  bg="white"
+                  textAlign="center"
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <Icon
+                    as={FaCloudUploadAlt}
+                    boxSize={12}
+                    color="teal.500"
+                    mb={4}
+                  />
+                  <Heading size="md" mb={2}></Heading>
+                  <div>
+                    <CloudinaryUpload
+                      setUrl={setPlaylistURL}
+                      setName={setUploadedSongFileName}
+                    />
+                    <div>
+                      {uploadedSongFileName ? (
+                        <div className="bg-green-500 rounded-full p-3 w-1/3">
+                          {uploadedSongFileName.substring(0, 35)}...
+                          <br />
+                        </div>
+                      ) : (
+                        <div>
+                          <br />
+                          "No file uploaded yet"
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <input
+                    id="fileInput"
+                    type="file"
+                    style={{ display: "none" }}
+                    onChange={handleFileUpload}
+                    accept=".wav,.flac,.aiff,.alac"
+                  />
+                </Box>
+              </Box>
+            </Flex>
+          </Box>
+        </Layout>
+      </div>
     </div>
   );
 };

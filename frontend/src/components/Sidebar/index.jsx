@@ -90,7 +90,12 @@ export default function Sidebar() {
           icon={AiFillPlusSquare}
           title="Create playlist"
         />
-        <NavItem navSize={navSize} icon={FaMusic} title="My music" />
+        <NavItem
+          navSize={navSize}
+          icon={FaMusic}
+          title="My music"
+          href={"/mySong"}
+        />
         <NavItem
           navSize={navSize}
           icon={FaHeartCirclePlus}

@@ -19,6 +19,7 @@ import { useCookies } from "react-cookie";
 
 import "./index.css";
 import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
+import MySongPage from "./pages/MySongPage.jsx";
 
 const App = () => {
   const [cookie] = useCookies(["token"]); // Không cần setCookie nếu không thay đổi token
@@ -52,6 +53,7 @@ const App = () => {
             {isAuthenticated ? (
               // Các route dành cho người dùng đã đăng nhập
               <>
+                <Route path="/mySong" element={<MySongPage />}></Route>
                 <Route path="/" element={<LoggedInHomePage />} />
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/library" element={<LibraryPage />} />
