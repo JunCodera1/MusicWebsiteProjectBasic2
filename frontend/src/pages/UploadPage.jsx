@@ -11,6 +11,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -203,7 +204,7 @@ const UploadPage = () => {
                       ) : (
                         <div>
                           <br />
-                          "No file uploaded yet"
+                          <Text color={"black"}>"No file uploaded yet"</Text>
                         </div>
                       )}
                     </div>
