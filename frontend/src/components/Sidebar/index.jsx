@@ -26,6 +26,7 @@ import { GiMusicSpell } from "react-icons/gi";
 export default function Sidebar() {
   const [navSize, changeNavSize] = useState("large");
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const iconColor = useColorModeValue("black", "white");
 
   useEffect(() => {
     if (isSmallScreen) {
@@ -39,7 +40,7 @@ export default function Sidebar() {
     <Flex
       pos="flex-start"
       left="0"
-      h={"680px"}
+      h={"690px"}
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
@@ -68,7 +69,7 @@ export default function Sidebar() {
           mt={4}
           color={useColorModeValue("black", "white")}
         >
-          <GiMusicSpell size={40} />
+          <GiMusicSpell size={40} color={iconColor} />
           {navSize !== "small" && <Text ml={2}>Soundbox</Text>}
         </Flex>
         <IconButton
@@ -120,7 +121,7 @@ export default function Sidebar() {
           _hover={{ borderColor: "white" }}
           cursor="pointer"
         >
-          <FaEarthAsia />
+          <FaEarthAsia color={iconColor} />
           {navSize !== "small" && (
             <Text color={useColorModeValue("black", "white")} ml={2}>
               English
