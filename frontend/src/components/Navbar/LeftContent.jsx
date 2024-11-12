@@ -20,7 +20,7 @@ export function LeftContent({ items, onToggle }) {
         variant="ghost"
         icon={<FaBurger />}
         rounded="full"
-        display={{ base: "none", md: "flex", lg: "none" }}
+        display={{ base: "flex", md: "none", lg: "none" }}
         onClick={onToggle}
       />
 
@@ -28,7 +28,7 @@ export function LeftContent({ items, onToggle }) {
         <Button
           as={Link}
           href="/"
-          bg={useColorModeValue("gray.100", "gray.900")}
+          bg={useColorModeValue("white", "gray.800")}
           fontSize={15}
           _hover={{ bg: useColorModeValue("gray.200", "gray.800") }}
           style={{ textDecoration: "none" }}

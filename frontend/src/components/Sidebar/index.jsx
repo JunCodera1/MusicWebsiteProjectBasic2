@@ -75,10 +75,10 @@ export default function Sidebar() {
         <IconButton
           background="none"
           mt={5}
-          _hover={{ background: "none" }}
+          _hover={{ background: "teal", transition: "transform 0.3s ease" }}
           icon={<FiMenu />}
           onClick={() => {
-            if (navSize == "small") changeNavSize("large");
+            if (navSize === "small") changeNavSize("large");
             else changeNavSize("small");
           }}
         />

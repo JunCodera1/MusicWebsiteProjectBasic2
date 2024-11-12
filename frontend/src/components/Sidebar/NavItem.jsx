@@ -28,11 +28,16 @@ export default function NavItem({
       <Menu placement="right">
         <Link
           href={href}
-          backgroundColor={active && "#AEC8CA"}
+          backgroundColor={active ? "#AEC8CA" : "transparent"}
           p={3}
           borderRadius={8}
-          _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
-          w={navSize == "large" && "100%"}
+          _hover={{
+            textDecor: "none",
+            backgroundColor: "teal.300",
+            transform: "scale(1.05)", // Thêm hiệu ứng phóng to khi hover
+            transition: "transform 1.5s ease",
+          }}
+          w={navSize === "large" ? "100%" : "auto"}
         >
           <MenuButton w="100%">
             <Flex>

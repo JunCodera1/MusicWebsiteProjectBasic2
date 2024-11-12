@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
+import { useCookies } from "react-cookie";
 
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
@@ -15,73 +16,62 @@ import FavouritesPage from "./pages/FavouritesPage";
 import TrendingPage from "./pages/TrendingPage";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignUpPage from "./pages/SignUpPage.jsx";
-import { useCookies } from "react-cookie";
-
-import "./index.css";
 import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
 import MySongPage from "./pages/MySongPage.jsx";
+import SongContext from "./components/SongContext.jsx";
+
+import "./index.css";
 
 const App = () => {
-  const [cookie] = useCookies(["token"]); // Không cần setCookie nếu không thay đổi token
-  const isAuthenticated = !!cookie.token; // Kiểm tra xem token có tồn tại không
+  const [cookie] = useCookies(["token"]);
+  const isAuthenticated = !!cookie.token;
+  const [currentSong, setCurrentSong] = useState(null);
 
   return (
     <Router>
-      <div className="w-screen h-screen">
-        <Box
-          minH={{
-            base: "100vh", // 0px
-            sm: "100vh", // ~480px. em is a relative unit and is dependant on the font-size.
-            md: "163vh", // ~768px
-            lg: "120vh", // ~992px
-            xl: "100vh", // ~1280px
-            "2xl": "110vh",
-          }}
-          minW={{
-            base: "107vw", // 0px
-            sm: "100vw", // ~480px. em is a relative unit and is dependant on the font-size.
-            md: "162vw", // ~768px
-            lg: "118vw", // ~992px
-            xl: "90vw", // ~1280px
-            "2xl": "100vw",
-          }}
-          bg={useColorModeValue("white", "gray.800")}
-          h={{ md: "70vh" }}
-          mx="auto"
-        >
+      <Box
+        minH={{
+          base: "100vh",
+          sm: "100vh",
+          md: "163vh",
+          lg: "120vh",
+          xl: "100vh",
+          "2xl": "110vh",
+        }}
+        minW={{
+          base: "107vw",
+          sm: "100vw",
+          md: "162vw",
+          lg: "118vw",
+          xl: "90vw",
+          "2xl": "100vw",
+        }}
+        bg={useColorModeValue("white", "gray.800")}
+        h={{ md: "70vh" }}
+        mx="auto"
+      >
+        {isAuthenticated ? (
+          <SongContext.Provider value={{ currentSong, setCurrentSong }}>
+            <Routes>
+              <Route path="/" element={<LoggedInHomePage />} />
+              <Route path="/mysongs" element={<MySongPage />} />
+              <Route path="/feed" element={<FeedPage />} />
+              <Route path="/library" element={<LibraryPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/trending" element={<TrendingPage />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </SongContext.Provider>
+        ) : (
           <Routes>
-            {isAuthenticated ? (
-              // Các route dành cho người dùng đã đăng nhập
-              <>
-                <Route path="/mysongs" element={<MySongPage />}></Route>
-                <Route path="/" element={<LoggedInHomePage />} />
-                <Route path="/feed" element={<FeedPage />} />
-                <Route path="/library" element={<LibraryPage />} />
-                <Route path="/upload" element={<UploadPage />} />
-                <Route path="/favourites" element={<FavouritesPage />} />
-                <Route path="/trending" element={<TrendingPage />} />
-                {/* Điều hướng tất cả các route không xác định đến trang chủ */}
-                <Route path="*" element={<Navigate to="/" />} />
-              </>
-            ) : (
-              // Các route dành cho người dùng chưa đăng nhập
-              <>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
-                <Route path="/" element={<LoggedInHomePage />} />
-                <Route path="/feed" element={<FeedPage />} />
-                <Route path="/library" element={<LibraryPage />} />
-                <Route path="/upload" element={<UploadPage />} />
-                <Route path="/favourites" element={<FavouritesPage />} />
-                <Route path="/trending" element={<TrendingPage />} />
-                {/* Điều hướng tất cả các route không xác định đến trang login */}
-                <Route path="*" element={<Navigate to="/login" />} />
-              </>
-            )}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
-        </Box>
-      </div>
+        )}
+      </Box>
     </Router>
   );
 };
