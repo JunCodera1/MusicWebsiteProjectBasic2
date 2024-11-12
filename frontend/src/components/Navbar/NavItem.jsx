@@ -14,6 +14,8 @@ import { FaChevronDown } from "react-icons/fa";
 
 export function NavItem({ label, uri, subitems }) {
   const { isOpen, onToggle } = useDisclosure();
+
+  // If the item has subitems, render the Popover menu
   if (subitems) {
     return (
       <ListItem>
@@ -31,6 +33,8 @@ export function NavItem({ label, uri, subitems }) {
               colorScheme="teal"
               variant="ghost"
               onClick={onToggle}
+              aria-expanded={isOpen ? "true" : "false"} // Add aria-expanded for accessibility
+              aria-controls={`subitems-${label}`} // Link button with subitems dropdown
             >
               {label}
             </Button>
@@ -53,6 +57,8 @@ export function NavItem({ label, uri, subitems }) {
       </ListItem>
     );
   }
+
+  // For items without subitems, render the regular button
   return (
     <ListItem>
       <Button

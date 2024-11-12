@@ -1,7 +1,7 @@
 import { Collapse, List } from "@chakra-ui/react";
 import { MobileNavItem } from "./MobileNavItem";
 
-export function MobileNav({ items, isOpen }) {
+export function MobileNav({ items = [], isOpen }) {
   return (
     <Collapse in={isOpen} animateOpacity style={{ width: "100%" }}>
       <List

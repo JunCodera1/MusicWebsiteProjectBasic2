@@ -1,16 +1,29 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import { useState } from "react"
-import { ArrowLeft, ArrowRight, Play, Search, Settings } from "lucide-react"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { Line, LineChart, CartesianGrid, Tooltip, XAxis, YAxis, ResponsiveContainer } from "recharts"
-import p1 from "../assets/Pictures/708a320ec3182cd3a629e98808e73fb5_2744128242798474951-removebg-preview.png"
-
-
+import { useState } from "react";
+import { ArrowLeft, ArrowRight, Play, Search, Settings } from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import {
+  Line,
+  LineChart,
+  CartesianGrid,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from "recharts";
+import p1 from "../assets/Pictures/708a320ec3182cd3a629e98808e73fb5_2744128242798474951-removebg-preview.png";
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -20,8 +33,6 @@ const menuItemsLeft = [
 ];
 
 const menuItemsRight = [{ label: "Login", uri: "/login" }];
-
-
 
 // Sample song ranking data
 const rankingData = [
@@ -37,39 +48,31 @@ const rankingData = [
   { time: "09:00", song1: 88, song2: 47, song3: 37 },
   { time: "11:00", song1: 82, song2: 44, song3: 34 },
   { time: "13:00", song1: 85, song2: 45, song3: 35 },
-]
+];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="rounded-lg bg-[#34224F] p-3 shadow-lg border border-white/10">
         <div className="flex items-center gap-2">
-          <img
-            src={'p1'}
-            alt="Song thumbnail"
-            className="w-10 h-10 rounded"
-          />
+          <img src={"p1"} alt="Song thumbnail" className="w-10 h-10 rounded" />
           <div>
-            <p className="font-medium text-white">
-              {payload[0].value}%
-            </p>
-            <p className="text-sm text-gray-400">
-              {label}
-            </p>
+            <p className="font-medium text-white">{payload[0].value}%</p>
+            <p className="text-sm text-gray-400">{label}</p>
           </div>
         </div>
       </div>
-    )
+    );
   }
-  return null
-}
+  return null;
+};
 
 export default function TrendingPage() {
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const handleMouseEnter = (data, index) => {
-    setActiveIndex(index)
-  }
+    setActiveIndex(index);
+  };
 
   return (
     <div className="min-h-screen bg-[#170f23] text-white">
@@ -113,8 +116,13 @@ export default function TrendingPage() {
       {/* Chart Section */}
       <div className="p-8">
         <div className="flex items-center gap-4 mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">SoundBox</h1>
-          <Button size="icon" className="rounded-full bg-[#9b4de0] hover:bg-[#9b4de0]/90">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
+            SoundBox
+          </h1>
+          <Button
+            size="icon"
+            className="rounded-full bg-[#9b4de0] hover:bg-[#9b4de0]/90"
+          >
             <Play className="h-4 w-4" />
           </Button>
         </div>
@@ -138,7 +146,7 @@ export default function TrendingPage() {
                   <XAxis
                     dataKey="time"
                     stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF' }}
+                    tick={{ fill: "#9CA3AF" }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -150,7 +158,7 @@ export default function TrendingPage() {
                     stroke="hsl(217, 91%, 60%)"
                     strokeWidth={2}
                     dot={(props) => {
-                      const { cx, cy, index } = props
+                      const { cx, cy, index } = props;
                       return (
                         <circle
                           cx={cx}
@@ -160,7 +168,7 @@ export default function TrendingPage() {
                           strokeWidth={2}
                           fill="#170f23"
                         />
-                      )
+                      );
                     }}
                     activeDot={false}
                     onMouseEnter={handleMouseEnter}
@@ -191,7 +199,9 @@ export default function TrendingPage() {
             <Card key={index} className="bg-[#2f2739]/50 hover:bg-[#2f2739]">
               <CardContent className="p-4">
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl font-bold text-gray-400 w-8">{index}</span>
+                  <span className="text-3xl font-bold text-gray-400 w-8">
+                    {index}
+                  </span>
                   <div className="w-10 h-10">
                     <img
                       src="/placeholder.svg"
@@ -215,7 +225,7 @@ export default function TrendingPage() {
       <div className="p-8 bg-[#2f2739]/30">
         <h2 className="text-2xl font-bold mb-6">Bảng Xếp Hạng Tuần</h2>
         <div className="grid grid-cols-3 gap-6">
-          {['Việt Nam', 'US-UK', 'K-Pop'].map((region) => (
+          {["Việt Nam", "US-UK", "K-Pop"].map((region) => (
             <Card key={region} className="bg-[#2f2739]/50">
               <CardContent className="p-4">
                 <h3 className="text-xl font-bold mb-4">{region}</h3>
@@ -232,8 +242,12 @@ export default function TrendingPage() {
                               className="w-10 h-10 rounded"
                             />
                             <div>
-                              <div className="font-medium">Song Title {rank}</div>
-                              <div className="text-sm text-gray-400">Artist Name</div>
+                              <div className="font-medium">
+                                Song Title {rank}
+                              </div>
+                              <div className="text-sm text-gray-400">
+                                Artist Name
+                              </div>
                             </div>
                           </div>
                         </TableCell>
@@ -251,6 +265,5 @@ export default function TrendingPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,3 +1,4 @@
+import { Input } from "@chakra-ui/react";
 import React from "react";
 
 const TextInput = ({ label, placeholder, className, value, setValue }) => {
@@ -9,10 +10,10 @@ const TextInput = ({ label, placeholder, className, value, setValue }) => {
       >
         {label}
       </label>
-      <input
+      <Input
         type="text"
         placeholder={placeholder}
-        className="p-2 md:p-3 border border-gray-400 rounded w-full placeholder-gray-500 text-sm md:text-base lg:text-lg "
+        className="p-2 md:p-3 border-3 bg-black border-gray-400 rounded w-full placeholder-gray-500 text-sm md:text-base lg:text-lg "
         id={label}
         value={value}
         onChange={(e) => setValue(e.target.value)}

@@ -11,7 +11,7 @@ import { NavItem } from "./NavItem"; // Make sure NavItem is properly set to han
 import { FaBurger } from "react-icons/fa6";
 import { GiMusicSpell } from "react-icons/gi";
 
-export function LeftContent({ items, onToggle }) {
+export function LeftContent({ items = [], onToggle }) {
   return (
     <Flex alignItems="center" justifyContent="space-between" gap={4}>
       <IconButton
@@ -40,7 +40,7 @@ export function LeftContent({ items, onToggle }) {
 
       <List gap={1} display={{ base: "none", md: "flex", lg: "flex" }}>
         {items.map((item) => (
-          <NavItem key={item.label} {...item} /> // Pass item props directly to NavItem
+          <NavItem key={item.label} {...item} />
         ))}
       </List>
     </Flex>
