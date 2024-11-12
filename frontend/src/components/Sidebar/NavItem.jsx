@@ -46,7 +46,11 @@ export default function NavItem({
                 fontSize="xl"
                 color={active ? "#82AAAD" : "gray.500"}
               />
-              <Text ml={5} display={navSize == "small" ? "none" : "flex"}>
+              <Text
+                ml={5}
+                fontSize={15}
+                display={navSize == "small" ? "none" : "flex"}
+              >
                 {title}
               </Text>
             </Flex>

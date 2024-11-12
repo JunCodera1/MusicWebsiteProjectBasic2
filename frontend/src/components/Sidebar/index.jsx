@@ -65,11 +65,12 @@ export default function Sidebar() {
         <Flex
           align="center"
           fontWeight="bold"
-          fontSize="2xl"
+          fontSize="18"
           mt={4}
+          ml={5}
           color={useColorModeValue("black", "white")}
         >
-          <GiMusicSpell size={40} color={iconColor} />
+          <GiMusicSpell size={30} color={iconColor} />
           {navSize !== "small" && <Text ml={2}>Soundbox</Text>}
         </Flex>
         <IconButton
