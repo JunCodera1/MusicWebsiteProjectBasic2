@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import SingleSongCard from "../components/SingleSongCard";
+import { Howl, Howler } from "howler";
 import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
 
 const menuItemsLeft = [
@@ -18,6 +19,22 @@ const SongPage = () => {
   const [songData, setSongData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [soundPlayed, setSoundPlayed] = useState(null);
+
+  const playSound = (songSrc) => {
+    if (soundPlayed) {
+      soundPlayed.stop();
+    }
+    let sound = new Howl({
+      src: [songSrc],
+      html5: true,
+      preload: true,
+      loop: true,
+    });
+    setSoundPlayed(sound);
+
+    sound.play();
+  };
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -67,6 +84,7 @@ const SongPage = () => {
                   info={song}
                   onPlay={() => handlePlay(song._id)}
                   onMoreOptions={() => handleMoreOptions(song._id)}
+                  playSound={playSound}
                 />
               ))}
             </div>

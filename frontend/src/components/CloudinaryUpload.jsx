@@ -14,7 +14,6 @@ const CloudinaryUpload = ({ setUrl, setName }) => {
           console.log(result.info);
           setUrl(result.info.secure_url); // Set URL from result
           setName(result.info.original_filename); // Set file name
-          setProgress(100);
         } else {
           console.log(error);
         }

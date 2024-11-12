@@ -7,7 +7,6 @@ import userRoutes from "./routes/users.js";
 import authRoutes from "./routes/auth.js";
 import songRoutes from "./routes/songs.js";
 import playlistRoutes from "./routes/playlists.js";
-import searchRoutes from "./routes/search.js";
 import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { User } from "./model/user.js";
@@ -33,16 +32,10 @@ app.use(
 app.use(express.json()); // Parse JSON bodies
 
 // Routes
+app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
-app.use(
-  "/api/users",
-  passport.authenticate("jwt", { session: false }),
-  userRoutes
-); // Protect with JWT
-app.use("/api/login", authRoutes); // Login route
-app.use("/song", songRoutes); // Song Routes
-app.use("/playlist", playlistRoutes); // Playlist Routes
-app.use("/api", searchRoutes); // Search Routes
+app.use("/song", songRoutes);
+app.use("/playlist", playlistRoutes);
 
 // Passport JWT Strategy
 var opts = {

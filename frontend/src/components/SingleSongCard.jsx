@@ -1,10 +1,13 @@
 import React from "react";
 import { PlayCircle, MoreHorizontal } from "lucide-react";
 
-const SingleSongCard = ({ info, onPlay, onMoreOptions }) => {
+const SingleSongCard = ({ info, onPlay, onMoreOptions, playSound }) => {
   return (
     <div
       className="flex items-center p-4 hover:bg-gray-700 rounded-xl transition duration-200 ease-in-out relative group"
+      onClick={() => {
+        playSound(info.track);
+      }}
       style={{
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)",
         width: "82vw",

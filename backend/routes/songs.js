@@ -90,13 +90,17 @@ router.put("/:id", [validObjectId, admin], async (req, res) => {
 });
 
 // Delete song by id
-router.delete("/:id", [validObjectId, admin], async (req, res) => {
-  const song = await Song.findByIdAndDelete(req.params.id);
-  if (!song) {
-    return res.status(404).send({ message: "Song not found" });
+router.delete(
+  "/delete/song/:songId",
+  [validObjectId, admin],
+  async (req, res) => {
+    const song = await Song.findByIdAndDelete(req.params.id);
+    if (!song) {
+      return res.status(404).send({ message: "Song not found" });
+    }
+    res.status(200).send({ data: song, message: "Song deleted successfully" });
   }
-  res.status(200).send({ data: song, message: "Song deleted successfully" });
-});
+);
 
 // Like or unlike a song
 router.put("/like/:id", [validObjectId, auth], async (req, res) => {
