@@ -8,6 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Line, LineChart, CartesianGrid, Tooltip, XAxis, YAxis, ResponsiveContainer } from "recharts"
+import p1 from "../assets/Pictures/708a320ec3182cd3a629e98808e73fb5_2744128242798474951-removebg-preview.png"
+
 
 
 const menuItemsLeft = [
@@ -43,7 +45,7 @@ const CustomTooltip = ({ active, payload, label }) => {
       <div className="rounded-lg bg-[#34224F] p-3 shadow-lg border border-white/10">
         <div className="flex items-center gap-2">
           <img
-            src="/placeholder.svg"
+            src={'p1'}
             alt="Song thumbnail"
             className="w-10 h-10 rounded"
           />
