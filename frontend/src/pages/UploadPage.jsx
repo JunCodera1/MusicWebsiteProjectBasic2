@@ -88,6 +88,7 @@ const UploadPage = () => {
               boxSizing="border-box"
               mx="auto"
               px={{ base: 4, md: 6 }}
+              w={"full"}
             >
               {/* Form nhập thông tin nhạc, bên trái */}
               <Box
@@ -162,7 +163,7 @@ const UploadPage = () => {
                 borderColor="gray.300"
                 borderRadius="md"
                 p={6}
-                minH={{ base: "auto", md: "50vh" }}
+                minH={"auto"}
                 w={{ base: "100%", md: "50%" }}
               >
                 <Heading size="lg" mb={2}>
