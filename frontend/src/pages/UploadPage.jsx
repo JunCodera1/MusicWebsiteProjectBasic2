@@ -16,7 +16,7 @@ import {
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import CloudinaryUpload from "../components/CloudinaryUpload";
-import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
+import { makeAuthenticatedPOSTRequest } from "../utils/serverHelper";
 import { Navigate, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 
@@ -31,13 +31,12 @@ const UploadPage = () => {
 
   const submitSong = async () => {
     const data = {
-      artist,
       thumbnail,
       name: musicName,
       genre,
       track: playlistURL,
     };
-    const response = await makeUnauthenticatedPOSTRequest("/song/create", data);
+    const response = await makeAuthenticatedPOSTRequest("/song/create", data);
     if (response.err) {
       alert("Could not create a song");
       return;
@@ -100,16 +99,6 @@ const UploadPage = () => {
                   Song profile
                 </Heading>
                 <VStack spacing={4} align="stretch">
-                  <FormControl id="artist">
-                    <FormLabel>Artist</FormLabel>
-                    <TextInput
-                      type="text"
-                      placeholder="Enter artist name"
-                      value={artist}
-                      setValue={setArtist}
-                    />
-                  </FormControl>
-
                   <FormControl id="thumbnail">
                     <FormLabel>Thumbnail</FormLabel>
                     <TextInput
@@ -148,7 +137,7 @@ const UploadPage = () => {
                   <Box display="flex" justifyContent="center" mt={"0"}>
                     <div
                       className="bg-teal-500 w-40 flex items-center justify-center p-4 rounded-full cursor-pointer font-semibold"
-                      onClick={submitSong}
+                      onClick={() => submitSong()} // Thêm dấu ngoặc để gọi hàm
                     >
                       Submit Song
                     </div>

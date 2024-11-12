@@ -3,7 +3,7 @@ import { GiMusicSpell } from "react-icons/gi";
 import { useCookies } from "react-cookie";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
-import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
+import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 

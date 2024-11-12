@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GiMusicSpell } from "react-icons/gi";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
-import { makeUnauthenticatedPOSTRequest } from "../utils/serverHelper";
+import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Navbar from "../components/Navbar";
@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const login = async () => {
     const data = { email, password };
-    const response = await makeUnauthenticatedPOSTRequest("/auth/login", data);
+    const response = await makeUnAuthenticatedPOSTRequest("/auth/login", data);
     if (response && !response.err) {
       const token = response.token;
       const date = new Date();
