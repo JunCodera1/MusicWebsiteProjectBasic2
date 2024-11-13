@@ -25,7 +25,7 @@ import "./index.css";
 const App = () => {
   const [cookie] = useCookies(["token"]);
   const isAuthenticated = !!cookie.token;
-  const [currentSong, setCurrentSong] = useState(null);
+  const [currentSong, setCurrentSong] = useState(SongContext);
 
   return (
     <Router>

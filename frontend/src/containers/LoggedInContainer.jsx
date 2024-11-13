@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { Box, Image, useColorModeValue } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
@@ -11,6 +11,7 @@ import { MdOutlineSkipNext } from "react-icons/md";
 import { FaCirclePause } from "react-icons/fa6";
 import { FaRepeat } from "react-icons/fa6";
 import { FaPlayCircle } from "react-icons/fa";
+import SongContext from "@/components/SongContext";
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -22,6 +23,7 @@ const menuItemsLeft = [
 const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
 const LoggedInContainer = ({ children }) => {
+  const { currentSong, setCurrentSong } = useContext(SongContext); // Sử dụng useContext
   const [soundPlayed, setSoundPlayed] = useState(null);
   const [isPaused, setIsPaused] = useState(true);
 
@@ -36,9 +38,7 @@ const LoggedInContainer = ({ children }) => {
         setIsPaused(true); // Update state
       }
     } else {
-      playSound(
-        "https://res.cloudinary.com/da8vrvx03/video/upload/v1731389834/grvpzwch4pazl34eiewl.mp4"
-      ); // Initialize and play sound if not set
+      playSound(currentSong.track); // Initialize and play sound if not set
     }
   };
 
@@ -54,13 +54,14 @@ const LoggedInContainer = ({ children }) => {
       loop: true,
     });
     setSoundPlayed(sound); // Store the sound instance
-
     sound.play(); // Play the sound immediately
     setIsPaused(false); // Set paused state to false as sound is playing
   };
 
+  console.log("Current Song:", currentSong);
+
   return (
-    <Box className="w-full">
+    <Box className="w-full h-9/10">
       <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
       <Box display="flex" minH="100vh" position="relative">
         {/* Sidebar */}
@@ -76,63 +77,71 @@ const LoggedInContainer = ({ children }) => {
           <Box p={4}>{children}</Box>
         </Box>
       </Box>
-
-      <Box
-        width="full"
-        height="full"
-        bg={"#0F0616"}
-        className="bg-opacity-30 items-center px-4"
-        color={"white"}
-        display={"flex"}
-      >
-        <div className="w-1/3 flex items-center">
-          <Image
-            src="https://i1.sndcdn.com/artworks-000079325950-c0pvul-t500x500.jpg"
-            className="h-20 w-20"
-          />
-          <div className="pl-4">
-            <div className="text-md hover:underline">Nothing Lasts</div>
-            <div className="text-sm text-gray-500 hover:underline">Bedroom</div>
-          </div>
-        </div>
-        <div className="w-1/2 flex items-center justify-center">
-          <div className="flex w-2/6 justify-between items-center">
-            <FaShuffle
-              className="text-gray-500 hover:text-white text-md"
-              size={24}
+      {currentSong && (
+        <Box
+          width="full"
+          height="full"
+          bg={"#0F0616"}
+          className="bg-opacity-30 items-center px-4"
+          color={"white"}
+          display={"flex"}
+        >
+          <div className="w-1/3 flex items-center">
+            <Image
+              src={currentSong.thumbnail}
+              className="h-16 w-16"
+              borderRadius={"full"}
             />
-            <MdOutlineSkipPrevious
-              className="text-gray-500 hover:text-white text-2xl"
-              size={32}
-            />
-            <div>
-              {isPaused ? (
-                <FaPlayCircle
-                  className="text-gray-500 hover:text-white text-2xl"
-                  size={40}
-                  onClick={togglePlayPause}
-                />
-              ) : (
-                <FaCirclePause
-                  className="text-gray-500 hover:text-white text-2xl"
-                  size={40}
-                  onClick={togglePlayPause}
-                />
-              )}
+            <div className="pl-4">
+              <div className="text-md hover:underline">
+                {currentSong ? currentSong.name : "No song selected"}
+              </div>
+              <div className="text-sm text-gray-500 hover:underline">
+                {currentSong && currentSong.artist
+                  ? currentSong.artist.username
+                  : "Unknown Artist"}
+              </div>
             </div>
-            <MdOutlineSkipNext
-              className="text-gray-500 hover:text-white text-2xl"
-              size={32}
-            />
-            <FaRepeat
-              className="text-gray-500 hover:text-white text-md"
-              size={24}
-            />
           </div>
-        </div>
+          <div className="w-1/2 flex items-center justify-center">
+            <div className="flex w-2/6 justify-between items-center">
+              <FaShuffle
+                className="text-gray-500 hover:text-white text-md"
+                size={24}
+              />
+              <MdOutlineSkipPrevious
+                className="text-gray-500 hover:text-white text-2xl"
+                size={32}
+              />
+              <div>
+                {isPaused ? (
+                  <FaPlayCircle
+                    className="text-gray-500 hover:text-white text-2xl"
+                    size={40}
+                    onClick={togglePlayPause}
+                  />
+                ) : (
+                  <FaCirclePause
+                    className="text-gray-500 hover:text-white text-2xl"
+                    size={40}
+                    onClick={togglePlayPause}
+                  />
+                )}
+              </div>
+              <MdOutlineSkipNext
+                className="text-gray-500 hover:text-white text-2xl"
+                size={32}
+              />
+              <FaRepeat
+                className="text-gray-500 hover:text-white text-md"
+                size={24}
+              />
+            </div>
+          </div>
 
-        <div className="w-1/4 flex items-center justify-end">HI</div>
-      </Box>
+          <div className="w-1/4 flex items-center justify-end">HI</div>
+        </Box>
+      )}
     </Box>
   );
 };

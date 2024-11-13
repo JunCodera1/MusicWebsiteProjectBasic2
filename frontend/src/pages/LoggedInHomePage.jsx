@@ -1,16 +1,7 @@
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import { Box, Image, useColorModeValue } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
 import PlaylistView from "../components/PlaylistView/PlaylistView";
-import { Howl, Howler } from "howler";
-import Navbar from "../components/Navbar";
-import { FaShuffle } from "react-icons/fa6";
-import { MdOutlineSkipPrevious } from "react-icons/md";
-import { MdOutlineSkipNext } from "react-icons/md";
-import { FaCirclePause } from "react-icons/fa6";
-import { FaRepeat } from "react-icons/fa6";
-import { FaPlayCircle } from "react-icons/fa";
+
 import LoggedInContainer from "@/containers/LoggedInContainer";
 
 const spotifyPlaylistData = [
