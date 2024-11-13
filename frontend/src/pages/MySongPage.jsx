@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import SingleSongCard from "../components/SingleSongCard";
 import { Howl, Howler } from "howler";
 import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
+import LoggedInContainer from "@/containers/LoggedInContainer";
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -64,34 +65,28 @@ const SongPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
-      <Box display="flex" minHeight="calc(100vh - 64px)" position="relative">
-        <Sidebar />
-        <main className="flex-1 p-8 overflow-auto">
-          <h1 className="text-white text-2xl font-semibold mb-6">My Songs</h1>
-          {isLoading ? (
-            <p className="text-white">Loading songs...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : songData.length === 0 ? (
-            <p className="text-white">No songs found.</p>
-          ) : (
-            <div className="space-y-4">
-              {songData.map((song) => (
-                <SingleSongCard
-                  key={song._id}
-                  info={song}
-                  onPlay={() => handlePlay(song._id)}
-                  onMoreOptions={() => handleMoreOptions(song._id)}
-                  playSound={playSound}
-                />
-              ))}
-            </div>
-          )}
-        </main>
-      </Box>
-    </div>
+    <LoggedInContainer>
+      <h1 className="text-white text-2xl font-semibold mb-6">My Songs</h1>
+      {isLoading ? (
+        <p className="text-white">Loading songs...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : songData.length === 0 ? (
+        <p className="text-white">No songs found.</p>
+      ) : (
+        <div className="space-y-4">
+          {songData.map((song) => (
+            <SingleSongCard
+              key={song._id}
+              info={song}
+              onPlay={() => handlePlay(song._id)}
+              onMoreOptions={() => handleMoreOptions(song._id)}
+              playSound={playSound}
+            />
+          ))}
+        </div>
+      )}
+    </LoggedInContainer>
   );
 };
 
