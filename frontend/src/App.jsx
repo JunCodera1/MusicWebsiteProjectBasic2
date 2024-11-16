@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { useCookies } from "react-cookie";
+import Payment from "./pages/PaymentPage";
 
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
@@ -60,15 +61,20 @@ const App = () => {
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
               <Route path="/trending" element={<TrendingPage />} />
+              <Route path="/payment" element={<Payment />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </SongContext.Provider>
+          //D:\SoundBox\frontend\src\pages\PaymentPage.jsx
         ) : (
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/mysongs" element={<MySongPage />} />
             <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="/payment" element={<Payment />} />
+
           </Routes>
         )}
       </Box>
