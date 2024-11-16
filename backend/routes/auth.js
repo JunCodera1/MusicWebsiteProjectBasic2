@@ -1,7 +1,10 @@
 import express from "express";
 import { User } from "../model/user.js";
 import bcrypt from "bcrypt";
-import getToken from "../utils/helpers.js";
+import crypto from "crypto"; // Import crypto để tạo token
+import sendEmail from "../utils/sendEmail.js"; // Import hàm sendEmail
+import getToken from "../utils/helpers.js"; // Import hàm getToken
+
 const router = express.Router();
 
 // This POST route will help to register a user
@@ -75,6 +78,80 @@ router.post("/login", async (req, res) => {
   const userToReturn = { ...user.toJSON(), token };
   delete userToReturn.password;
   return res.status(200).json(userToReturn);
+});
+
+router.post("/forgotPassword", async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res
+      .status(404)
+      .json({ error: "User with this email does not exist" });
+  }
+
+  // Tạo token reset password
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  // Hash token trước khi lưu vào cơ sở dữ liệu (tăng bảo mật)
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  // Lưu token và thời gian hết hạn vào user document
+  user.passwordResetToken = hashedToken;
+  user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // Token hết hạn sau 15 phút
+  await user.save();
+
+  // Gửi email với đường dẫn reset password
+  const resetURL = `${req.protocol}://localhost/auth/resetPassword/${resetToken}`;
+  const message = `You requested a password reset. Please use the link below to reset your password:\n\n${resetURL}\n\nIf you did not request this, please ignore this email.`;
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Password Reset Request",
+      message,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent!",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+    res.status(500).json({ error: "Failed to send email. Try again later." });
+  }
+});
+
+// Reset Password Route
+router.post("/resetPassword/:token", async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(400).json({ error: "Invalid or expired token" });
+  }
+
+  user.password = await bcrypt.hash(password, 10);
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password has been reset successfully",
+    token,
+  });
 });
 
 export default router;

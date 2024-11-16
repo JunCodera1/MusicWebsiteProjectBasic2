@@ -81,7 +81,6 @@ const SongPage = () => {
               info={song}
               onPlay={() => handlePlay(song._id)}
               onMoreOptions={() => handleMoreOptions(song._id)}
-              playSound={playSound}
             />
           ))}
         </div>

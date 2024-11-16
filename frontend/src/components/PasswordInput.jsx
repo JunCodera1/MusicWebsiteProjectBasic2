@@ -1,15 +1,19 @@
+import { Input } from "@chakra-ui/react";
 import React from "react";
 
-const PasswordInput = ({ label, placeholder, value, setValue }) => {
+const TextInput = ({ label, placeholder, className, value, setValue }) => {
   return (
-    <div className="textInputDiv flex flex-col space-y-2 w-full">
-      <label htmlFor={label} className="font-semibold">
+    <div className={`textInputDiv flex flex-col space-y-2 w-full ${className}`}>
+      <label
+        htmlFor={label}
+        className="font-semibold text-base md:text-lg lg:text-xl"
+      >
         {label}
       </label>
-      <input
+      <Input
         type="password"
         placeholder={placeholder}
-        className="p-2 border border-gray-400 border-solid rounded placeholder-gray-500"
+        className="p-2 md:p-3 border-3 bg-black border-gray-400 rounded w-full placeholder-gray-500 text-sm md:text-base lg:text-lg "
         id={label}
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -18,4 +22,4 @@ const PasswordInput = ({ label, placeholder, value, setValue }) => {
   );
 };
 
-export default PasswordInput;
+export default TextInput;

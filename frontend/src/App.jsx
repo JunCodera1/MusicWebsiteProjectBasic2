@@ -46,7 +46,7 @@ const App = () => {
           xl: "90vw",
           "2xl": "100vw",
         }}
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("gray.200", "gray.800")}
         h={{ md: "70vh" }}
         mx="auto"
       >
