@@ -1,6 +1,5 @@
 import {
   Button,
-  Link,
   List,
   ListItem,
   Popover,
@@ -11,6 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FaChevronDown } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export function NavItem({ label, uri, subitems }) {
   const { isOpen, onToggle } = useDisclosure();
@@ -45,7 +45,7 @@ export function NavItem({ label, uri, subitems }) {
               <List display="flex" flexDir="column" gap={4}>
                 {subitems.map((subitem) => (
                   <ListItem key={subitem.label}>
-                    <Link href={subitem.uri} px={2} py={1}>
+                    <Link to={subitem.uri} px={2} py={1}>
                       {subitem.label}
                     </Link>
                   </ListItem>
@@ -63,7 +63,7 @@ export function NavItem({ label, uri, subitems }) {
     <ListItem>
       <Button
         as={Link}
-        href={uri}
+        to={uri}
         colorScheme="teal"
         variant="ghost"
         _hover={{ textDecoration: "none", bg: "teal.50" }}
