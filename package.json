@@ -4,7 +4,8 @@
   "description": "<p> Welcome to the Music Website! This platform is dedicated to music lovers, artists, and anyone who wants to explore and share their passion for music. Whether you’re here to discover new tracks, showcase your own music, or connect with fellow enthusiasts, you’ll find what you’re looking for. </p>",
   "main": "backend/server.js",
   "scripts": {
-    "dev": "nodemon ./backend/server.js"
+    "dev": "nodemon ./backend/server.js",
+    "zalopay": "nodemon zalopay/server.js"
   },
   "type": "module",
   "keywords": [],
@@ -25,6 +26,7 @@
     "cloudinary-react": "^1.8.1",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "env": "^0.0.2",
     "express": "^4.21.1",
@@ -35,6 +37,7 @@
     "joi-password-complexity": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.456.0",
+    "moment": "^2.30.1",
     "mongodb": "^6.9.0",
     "mongoose": "^8.8.0",
     "passport": "^0.7.0",
