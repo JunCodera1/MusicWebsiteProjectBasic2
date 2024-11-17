@@ -21,6 +21,8 @@ import MySongPage from "./pages/MySongPage.jsx";
 import SongContext from "./components/SongContext.jsx";
 
 import "./index.css";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPassword";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -68,6 +70,9 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+            <Route path="/resetPassword" element={<ResetPasswordPage />} />
+
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         )}
