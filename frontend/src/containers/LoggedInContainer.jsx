@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { Box, Image, useColorModeValue } from "@chakra-ui/react";
+import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
 import PlaylistView from "../components/PlaylistView/PlaylistView";
 import { Howl, Howler } from "howler";
 import Navbar from "../components/Navbar";
@@ -22,74 +23,48 @@ const menuItemsLeft = [
 const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
 const LoggedInContainer = ({ children }) => {
-  Howler.autoUnlock = true; // Cho phép Howler tự động mở khóa âm thanh khi có tương tác
-  Howler.html5PoolSize = 10; // Tăng giới hạn pool nếu cần
-  const { currentSong, setCurrentSong } = useContext(SongContext);
+  const { currentSong, setCurrentSong } = useContext(SongContext); // Sử dụng useContext
+  const [soundPlayed, setSoundPlayed] = useState(null);
   const [isPaused, setIsPaused] = useState(true);
-  const soundRef = useRef(null); // Ref to persist the Howl instance
-  const currentSongRef = useRef(null); // Ref to track the currently playing song
 
-  // Play or pause the music
+  // Function to handle the play/pause toggle
   const togglePlayPause = () => {
-    if (isPaused) {
-      // Resume AudioContext if it's suspended
-      if (
-        soundRef.current.context &&
-        soundRef.current.context.state === "suspended"
-      ) {
-        soundRef.current.context.resume();
+    if (soundPlayed) {
+      if (isPaused) {
+        soundPlayed.play(); // Play the sound if paused
+        setIsPaused(false); // Update state
+      } else {
+        soundPlayed.pause(); // Pause the sound if playing
+        setIsPaused(true); // Update state
       }
-      playSound();
-      setIsPaused(false);
     } else {
-      pauseSound();
-      setIsPaused(true);
+      playSound(currentSong.track); // Initialize and play sound if not set
     }
   };
 
-  // Change the song without stopping the sound
-  const changeSong = (songSrc) => {
-    if (soundRef.current) {
-      // Nếu bài hát hiện tại giống bài hát yêu cầu, không phát chồng
-      if (soundRef.current._src === songSrc && soundRef.current.playing()) {
-        return;
-      }
-      soundRef.current.stop(); // Dừng bài hát hiện tại
+  // Function to initialize and play the sound
+  const playSound = (songSrc) => {
+    if (soundPlayed) {
+      soundPlayed.stop(); // Stop the previous sound if any
     }
-
-    soundRef.current = new Howl({
+    let sound = new Howl({
       src: [songSrc],
       html5: true,
+      preload: true,
+      loop: true,
     });
-
-    soundRef.current.play(); // Phát bài hát mới
+    setSoundPlayed(sound); // Store the sound instance
+    sound.play(); // Play the sound immediately
+    setIsPaused(false); // Set paused state to false as sound is playing
   };
 
-  useEffect(() => {
-    if (!currentSong) return;
-
-    // Only change the song if currentSong.track is different from the current playing song
-    changeSong(currentSong.track);
-  }, [currentSong]);
-
-  // Initialize and play the sound
-  const playSound = () => {
-    if (soundRef.current) {
-      soundRef.current.play();
-    }
-  };
-
-  // Pause the sound
-  const pauseSound = () => {
-    if (soundRef.current) {
-      soundRef.current.pause();
-    }
-  };
+  console.log("Current Song:", currentSong);
 
   return (
     <Box className="w-full h-9/10">
       <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
       <Box display="flex" minH="100vh" position="relative">
+        {/* Sidebar */}
         <Box
           width={{ base: "70px", md: "250px" }}
           bg={useColorModeValue("white", "gray.800")}
