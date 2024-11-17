@@ -7,7 +7,6 @@ import getToken from "../utils/helpers.js"; // Import hàm getToken
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import moment from "moment";
-import dotenv from "dotenv";
 
 const router = express.Router();
 
@@ -84,34 +83,37 @@ router.post("/login", async (req, res) => {
   return res.status(200).json(userToReturn);
 });
 
+// This POST route will help to forgot password
 router.post("/forgotPassword", async (req, res) => {
   const { email } = req.body;
 
-  const user = await User.findOne({ email: email });
-  if (!user) {
-    return res
-      .status(404)
-      .json({ error: "User with this email does not exist" });
-  }
-
-  // Tạo token reset password
-  const resetToken = crypto.randomBytes(32).toString("hex");
-
-  // Hash token trước khi lưu vào cơ sở dữ liệu (tăng bảo mật)
-  const hashedToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
-
-  // Lưu token và thời gian hết hạn vào user document
-  user.passwordResetToken = hashedToken;
-  user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // Token hết hạn sau 15 phút
-  await user.save();
-
-  // Gửi email với đường dẫn reset password
-  const resetURL = `${req.protocol}://localhost/auth/resetPassword/${resetToken}`;
-  const message = `You requested a password reset. Please use the link below to reset your password:\n\n${resetURL}\n\nIf you did not request this, please ignore this email.`;
   try {
+    // Kiểm tra xem email có tồn tại trong cơ sở dữ liệu không
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User with this email does not exist" });
+    }
+
+    // Tạo token reset password
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    // Hash token trước khi lưu vào cơ sở dữ liệu (tăng bảo mật)
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    // Lưu token và thời gian hết hạn vào user document
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // Token hết hạn sau 15 phút
+    await user.save();
+
+    // Gửi email với đường dẫn reset password
+    const resetURL = `${req.protocol}://localhost:8080/auth/resetPassword/${resetToken}`;
+    const message = `You requested a password reset. Please use the link below to reset your password:\n\n${resetURL}\n\nIf you did not request this, please ignore this email.`;
+
     await sendEmail({
       email: user.email,
       subject: "Password Reset Request",
@@ -123,10 +125,10 @@ router.post("/forgotPassword", async (req, res) => {
       message: "Password reset email sent!",
     });
   } catch (err) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save();
-    res.status(500).json({ error: "Failed to send email. Try again later." });
+    console.error("Error in forgotPassword:", err);
+    res
+      .status(500)
+      .json({ error: "Failed to process the request. Try again later." });
   }
 });
 
@@ -135,28 +137,41 @@ router.post("/resetPassword/:token", async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
-  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  try {
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-  const user = await User.findOne({
-    passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
-  });
+    console.log("Hashed token:", hashedToken); // In ra để kiểm tra giá trị hash của token
 
-  if (!user) {
-    return res.status(400).json({ error: "Invalid or expired token" });
+    // Tìm user với token khớp và token chưa hết hạn
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    console.log("User found:", user); // Kiểm tra lại user tìm thấy
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid or expired token" });
+    }
+
+    // Cập nhật mật khẩu mới và xóa token reset
+    user.password = await bcrypt.hash(password, 10);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password has been reset successfully",
+    });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while resetting password" });
   }
-
-  user.password = await bcrypt.hash(password, 10);
-  user.passwordResetToken = undefined;
-  user.passwordResetExpires = undefined;
-  await user.save();
-
-  res.status(200).json({
-    success: true,
-    message: "Password has been reset successfully",
-    token,
-  });
 });
+
 // Payment route
 const config = {
   app_id: process.env.ZALOPAY_APP_ID,

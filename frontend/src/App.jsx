@@ -22,6 +22,8 @@ import MySongPage from "./pages/MySongPage.jsx";
 import SongContext from "./components/SongContext.jsx";
 
 import "./index.css";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPassword";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);

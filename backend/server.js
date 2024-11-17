@@ -36,6 +36,7 @@ app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/song", songRoutes);
 app.use("/playlist", playlistRoutes);
+app.use(express.urlencoded({ extended: true }));
 
 // Passport JWT Strategy
 var opts = {
