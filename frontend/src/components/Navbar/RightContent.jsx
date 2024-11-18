@@ -5,17 +5,17 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Button, // Make sure to import the Button
+  Button,
   useColorMode,
-  List, // Import useColorMode
+  List,
 } from "@chakra-ui/react";
 import { FaBell, FaSearch } from "react-icons/fa";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { NavItem } from "./NavItem";
 
-export function RightContent({ items, onToggle }) {
-  const { colorMode, toggleColorMode } = useColorMode(); // Get color mode and toggle function
+export function RightContent({ items, onToggle, user }) {
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Flex alignItems="center" gap={2}>
@@ -48,6 +48,14 @@ export function RightContent({ items, onToggle }) {
         {Array.isArray(items) &&
           items.map((item) => <NavItem key={item.label} {...item} />)}
       </List>
+      {/* Avatar Section */}
+      <Avatar
+        size="sm"
+        name={user.name} // Hiển thị tên viết tắt nếu không có ảnh
+        src={user.avatar || "https://via.placeholder.com/150"} // Ảnh mặc định nếu không có URL avatar
+        cursor="pointer"
+        onClick={() => console.log("Avatar clicked!")} // Thêm hành động khi click
+      />
 
       <IconButton
         aria-label="toggle color mode"

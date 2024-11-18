@@ -20,7 +20,6 @@ const menuItemsLeft = [
   { label: "Upload", uri: "/upload" },
   { label: "Premium", uri: "/payment" },
 ];
-const menuItemsRight = [{ label: "Profile", uri: "/" }];
 
 const LoggedInContainer = ({ children }) => {
   const { currentSong, setCurrentSong } = useContext(SongContext); // Sử dụng useContext
@@ -62,7 +61,7 @@ const LoggedInContainer = ({ children }) => {
 
   return (
     <Box className="w-full h-9/10">
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
+      <Navbar menuItemsLeft={menuItemsLeft} />
       <Box display="flex" minH="100vh" position="relative">
         {/* Sidebar */}
         <Box
