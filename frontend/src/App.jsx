@@ -23,6 +23,7 @@ import SongContext from "./components/SongContext.jsx";
 import "./index.css";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPassword";
+import PaymentPage from "./pages/PaymentPage";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -48,7 +49,7 @@ const App = () => {
           xl: "90vw",
           "2xl": "100vw",
         }}
-        bg={useColorModeValue("gray.200", "gray.800")}
+        bg={useColorModeValue("white", "gray.800")}
         h={{ md: "70vh" }}
         mx="auto"
       >
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
@@ -72,6 +74,7 @@ const App = () => {
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
             <Route path="/resetPassword" element={<ResetPasswordPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
 
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>

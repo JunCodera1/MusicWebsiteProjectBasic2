@@ -47,7 +47,7 @@ export default function Sidebar() {
       w={navSize == "small" ? "75px" : { base: "75px", md: "200px" }}
       flexDir="column"
       justifyContent="flex-start"
-      bg={useColorModeValue("gray.300", "gray.800")}
+      bg={useColorModeValue("gray.100", "gray.700")}
       marginLeft={"10px"}
       zIndex={"100"}
       style={{

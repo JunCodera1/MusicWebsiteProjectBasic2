@@ -17,6 +17,7 @@ const TextInput = ({ label, placeholder, className, value, setValue }) => {
         id={label}
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        border={"1px"}
       />
     </div>
   );

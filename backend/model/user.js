@@ -9,9 +9,10 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, private: true },
   username: { type: String, required: true, unique: true },
-  likedSongs: { type: [String], default: [] }, // Changed to an array
-  playlists: { type: [String], default: [] }, // Changed to an array
-  subscribedArtists: { type: [String], default: [] }, // Fixed typo and changed to an array
+  avatar: { type: String, default: "" }, // Optional field for avatar URL
+  likedSongs: { type: [String], default: [] },
+  playlists: { type: [String], default: [] },
+  subscribedArtists: { type: [String], default: [] },
   isAdmin: { type: Boolean, default: false },
 });
 
@@ -23,7 +24,7 @@ const validate = (user) => {
     email: Joi.string().email().required().label("Email"),
     password: passwordComplexity().required().label("Password"),
     username: Joi.string().min(5).required().label("Username"),
-    // Add additional validation for new fields if necessary
+    avatar: Joi.string().uri().label("Avatar"), // Validate avatar URL if provided
   });
   return schema.validate(user);
 };

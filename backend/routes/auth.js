@@ -40,6 +40,7 @@ router.post("/register", async (req, res) => {
     firstname,
     lastname,
     username,
+    avatar,
   };
   const newUser = await User.create(newUserData);
   console.log(newUserData);
@@ -111,7 +112,7 @@ router.post("/forgotPassword", async (req, res) => {
     await user.save();
 
     // Gửi email với đường dẫn reset password
-    const resetURL = `${req.protocol}://localhost:8080/auth/resetPassword/${resetToken}`;
+    const resetURL = `${req.protocol}://localhost:5173/resetPassword/${resetToken}`;
     const message = `You requested a password reset. Please use the link below to reset your password:\n\n${resetURL}\n\nIf you did not request this, please ignore this email.`;
 
     await sendEmail({

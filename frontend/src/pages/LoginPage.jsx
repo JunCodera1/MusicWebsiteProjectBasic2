@@ -3,7 +3,7 @@ import { GiMusicSpell } from "react-icons/gi";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Navbar from "../components/Navbar";
 
@@ -35,22 +35,11 @@ const LoginPage = () => {
     }
   };
   const menuItemsLeft = [
-    {
-      label: "Home",
-      uri: "/",
-    },
-    {
-      label: "Feed",
-      uri: "/feed",
-    },
-    {
-      label: "Trending",
-      uri: "/trending",
-    },
-    {
-      label: "Upload",
-      uri: "/upload",
-    },
+    { label: "Home", uri: "/" },
+    { label: "Feed", uri: "/feed" },
+    { label: "Trending", uri: "/trending" },
+    { label: "Upload", uri: "/upload" },
+    { label: "Premium", uri: "/payment" },
   ];
 
   const menuItemsRight = [
@@ -84,7 +73,7 @@ const LoginPage = () => {
           value={password}
           setValue={setPassword}
         />
-        <div className="w-full flex items-center justify-end my-8 ">
+        <div className="w-full flex flex-col items-end my-8">
           <button
             className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full "
             onClick={(e) => {
@@ -94,6 +83,12 @@ const LoginPage = () => {
           >
             LOG IN
           </button>
+          <Link
+            to="/forgotPassword"
+            className="mt-2 text-blue-500 hover:underline"
+          >
+            Forgot password? Get back this.
+          </Link>
         </div>
 
         <div className="w-full border border-solid border-gray-300 "></div>

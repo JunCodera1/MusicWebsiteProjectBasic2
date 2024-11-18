@@ -1,4 +1,9 @@
-import { HStack, VStack, useDisclosure } from "@chakra-ui/react";
+import {
+  HStack,
+  VStack,
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
 import { MobileNav } from "./Mobile";
@@ -13,6 +18,7 @@ export function Navbar({ menuItemsLeft, menuItemsRight }) {
         p={2}
         justifyContent="space-between"
         borderBottomWidth={1}
+        bg={useColorModeValue("gray.300", "gray.800")}
       >
         {/* left content */}
         <LeftContent items={menuItemsLeft} onToggle={onToggle} />

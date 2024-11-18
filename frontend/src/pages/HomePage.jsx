@@ -66,6 +66,7 @@ const menuItemsLeft = [
   { label: "Feed", uri: "/feed" },
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
+  { label: "Premium", uri: "/payment" },
 ];
 
 const menuItemsRight = [{ label: "Login", uri: "/login" }];

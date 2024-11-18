@@ -18,9 +18,9 @@ const menuItemsLeft = [
   { label: "Feed", uri: "/feed" },
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
+  { label: "Premium", uri: "/payment" },
 ];
-
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
+const menuItemsRight = [{ label: "Profile", uri: "/" }];
 
 const LoggedInContainer = ({ children }) => {
   const { currentSong, setCurrentSong } = useContext(SongContext); // Sử dụng useContext
@@ -67,13 +67,19 @@ const LoggedInContainer = ({ children }) => {
         {/* Sidebar */}
         <Box
           width={{ base: "70px", md: "250px" }}
-          bg={useColorModeValue("white", "gray.800")}
+          bg={useColorModeValue("gray.100", "gray.800")}
         >
           <Sidebar />
         </Box>
 
         {/* Main Content Area */}
-        <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
+        <Box
+          flex="1"
+          display="flex"
+          flexDirection="column"
+          overflowY="auto"
+          height={"100vh"}
+        >
           <Box p={4}>{children}</Box>
         </Box>
       </Box>
