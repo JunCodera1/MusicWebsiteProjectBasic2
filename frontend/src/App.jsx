@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { useCookies } from "react-cookie";
-import Payment from "./pages/PaymentPage";
+import PaymentPage from "./pages/PaymentPage";
 
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
@@ -20,6 +20,7 @@ import SignUpPage from "./pages/SignUpPage.jsx";
 import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
 import MySongPage from "./pages/MySongPage.jsx";
 import SongContext from "./components/SongContext.jsx";
+import Payment from './pages/Payment';
 
 import "./index.css";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
