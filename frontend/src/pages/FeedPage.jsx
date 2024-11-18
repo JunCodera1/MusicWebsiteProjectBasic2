@@ -22,12 +22,6 @@ const menuItemsLeft = [
   },
 ];
 
-const menuItemsRight = [
-  {
-    label: "Login",
-    uri: "/",
-  },
-];
 export default function FeedPage() {
   const [tracks, setTracks] = useState([]);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -57,10 +51,7 @@ export default function FeedPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900">
-      <Navbar
-        menuItemsLeft={menuItemsLeft}
-        menuItemsRight={menuItemsRight}
-      ></Navbar>
+      <Navbar menuItemsLeft={menuItemsLeft}></Navbar>
       <main className="flex-grow flex">
         <div className="flex-grow p-6">
           <h1 className="text-2xl font-bold mb-6">

@@ -42,7 +42,7 @@ const App = () => {
           "2xl": "110vh",
         }}
         minW={{
-          base: "100vw",
+          base: "98vw",
           sm: "100vw",
           md: "162vw",
           lg: "118vw",

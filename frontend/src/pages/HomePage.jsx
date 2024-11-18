@@ -69,8 +69,6 @@ const menuItemsLeft = [
   { label: "Premium", uri: "/payment" },
 ];
 
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
-
 const HomePage = () => {
   return (
     <div
@@ -81,7 +79,7 @@ const HomePage = () => {
         overflow: "hidden",
       }}
     >
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
+      <Navbar menuItemsLeft={menuItemsLeft} />
       <Box display="flex" minHeight="100vh" position={"relative"}>
         {/* Sidebar */}
         <Sidebar />
