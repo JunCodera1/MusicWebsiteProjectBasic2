@@ -28,7 +28,7 @@ export function LeftContent({ items = [], onToggle }) {
         <Button
           as={Link}
           href="/"
-          bg={useColorModeValue("white", "gray.800")}
+          bg={useColorModeValue("gray.300", "gray.800")}
           fontSize={15}
           _hover={{ bg: useColorModeValue("gray.200", "gray.800") }}
           style={{ textDecoration: "none" }}

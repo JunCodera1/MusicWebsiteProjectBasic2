@@ -3,10 +3,19 @@ import { GiMusicSpell } from "react-icons/gi";
 import { useCookies } from "react-cookie";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
+import CloudinaryUploadAvatar from "../components/CloudinaryUploadAvatar"; // Import upload component
 import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+const menuItemsLeft = [
+  { label: "Home", uri: "/" },
+  { label: "Feed", uri: "/feed" },
+  { label: "Trending", uri: "/trending" },
+  { label: "Upload", uri: "/upload" },
+  { label: "Premium", uri: "/payment" },
+];
 
+const menuItemsRight = [{ label: "Login", uri: "/login" }];
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -15,6 +24,7 @@ const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [profileName, setProfileName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState(""); // New state for avatar
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(["token"]);
@@ -36,18 +46,18 @@ const SignUpPage = () => {
       firstname: firstName,
       lastname: lastName,
       profileName,
+      avatar: avatarUrl, // Include avatar URL
     };
 
     try {
       setLoading(true);
-      const response = await makeUnauthenticatedPOSTRequest(
+      const response = await makeUnAuthenticatedPOSTRequest(
         "/auth/register",
         data
       );
       setLoading(false);
 
       if (response && !response.error) {
-        console.log(response);
         const token = response.token;
         const date = new Date();
         date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
@@ -64,44 +74,9 @@ const SignUpPage = () => {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      signUp();
-    }
-  };
-  const menuItemsLeft = [
-    {
-      label: "Home",
-      uri: "/",
-    },
-    {
-      label: "Feed",
-      uri: "/feed",
-    },
-    {
-      label: "Trending",
-      uri: "/trending",
-    },
-    {
-      label: "Upload",
-      uri: "/upload",
-    },
-  ];
-
-  const menuItemsRight = [
-    {
-      label: "Login",
-      uri: "/",
-    },
-  ];
-
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <Navbar
-        menuItemsLeft={menuItemsLeft}
-        menuItemsRight={menuItemsRight}
-      ></Navbar>
+    <div className="w-full flex flex-col items-center">
+      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
       <div className="logo p-5 border-b border-solid border-gray-300 w-full flex justify-center">
         <GiMusicSpell size={100} />
       </div>
@@ -110,13 +85,21 @@ const SignUpPage = () => {
         <div className="font-bold mb-6 text-2xl">
           Sign up for free to start listening.
         </div>
+        <CloudinaryUploadAvatar setAvatarUrl={setAvatarUrl} />{" "}
+        {/* Upload Button */}
+        {avatarUrl && ( // Show avatar preview if available
+          <img
+            src={avatarUrl}
+            alt="Avatar Preview"
+            className="w-24 h-24 rounded-full mt-4"
+          />
+        )}
         <TextInput
           label={"Email"}
           placeholder={"Enter Your Email Address"}
           className="my-6"
           value={email}
           setValue={setEmail}
-          onKeyDown={handleKeyDown}
         />
         <TextInput
           label={"Confirm your email address"}
@@ -124,7 +107,6 @@ const SignUpPage = () => {
           className="mb-6"
           value={confirmEmail}
           setValue={setConfirmEmail}
-          onKeyDown={handleKeyDown}
         />
         <TextInput
           label={"Username"}
@@ -132,14 +114,12 @@ const SignUpPage = () => {
           className="mb-6"
           value={username}
           setValue={setUsername}
-          onKeyDown={handleKeyDown}
         />
         <PasswordInput
           label={"Password"}
           placeholder={"Enter Your Password"}
           value={password}
           setValue={setPassword}
-          onKeyDown={handleKeyDown}
         />
         <br />
         <TextInput
@@ -148,9 +128,7 @@ const SignUpPage = () => {
           className="mb-6"
           value={profileName}
           setValue={setProfileName}
-          onKeyDown={handleKeyDown}
         />
-
         <div className="w-full flex items-center justify-between space-x-4">
           <TextInput
             label={"First Name"}
@@ -158,7 +136,6 @@ const SignUpPage = () => {
             className="w-[48%]"
             value={firstName}
             setValue={setFirstName}
-            onKeyDown={handleKeyDown}
           />
           <TextInput
             label={"Last Name"}
@@ -166,30 +143,19 @@ const SignUpPage = () => {
             className="w-[48%]"
             value={lastName}
             setValue={setLastName}
-            onKeyDown={handleKeyDown}
           />
         </div>
-
-        <div className="w-full flex items-center justify-center my-8">
-          <button
-            className={`bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              signUp();
-            }}
-            disabled={loading}
-          >
-            {loading ? "SIGNING UP..." : "SIGN UP"}
-          </button>
-        </div>
-
-        <div className="w-full border border-solid border-gray-300"></div>
-        <div className="my-6 font-bold text-lg">Already have an account?</div>
-        <div className="border border-gray-500 w-full flex items-center justify-center py-4 rounded-full hover:bg-indigo-400">
-          <a href="/login">LOG IN INSTEAD</a>
-        </div>
+        <br />
+        <br />
+        <button
+          className={`bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={signUp}
+          disabled={loading}
+        >
+          {loading ? "SIGNING UP..." : "SIGN UP"}
+        </button>
       </div>
     </div>
   );

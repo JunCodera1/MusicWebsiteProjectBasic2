@@ -47,7 +47,7 @@ const ForgotPasswordPage = () => {
     { label: "Upload", uri: "/upload" },
   ];
 
-  const menuItemsRight = [{ label: "Sign Up", uri: "/signup" }];
+  const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
   return (
     <div className="w-full h-full flex flex-col items-center">

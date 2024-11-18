@@ -30,9 +30,8 @@ const menuItemsLeft = [
   { label: "Feed", uri: "/feed" },
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
+  { label: "Premium", uri: "/payment" },
 ];
-
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
 // Sample song ranking data
 const rankingData = [
@@ -108,10 +107,7 @@ export default function TrendingPage() {
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
       </div> */}
-      <Navbar
-        menuItemsLeft={menuItemsLeft}
-        menuItemsRight={menuItemsRight}
-      ></Navbar>
+      <Navbar menuItemsLeft={menuItemsLeft}></Navbar>
 
       {/* Chart Section */}
       <div className="p-8">

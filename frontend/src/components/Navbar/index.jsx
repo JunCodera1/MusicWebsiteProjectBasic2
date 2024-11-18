@@ -1,4 +1,9 @@
-import { HStack, VStack, useDisclosure } from "@chakra-ui/react";
+import {
+  HStack,
+  VStack,
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
 import { MobileNav } from "./Mobile";
@@ -13,11 +18,19 @@ export function Navbar({ menuItemsLeft, menuItemsRight }) {
         p={2}
         justifyContent="space-between"
         borderBottomWidth={1}
+        bg={useColorModeValue("gray.300", "gray.800")}
       >
         {/* left content */}
         <LeftContent items={menuItemsLeft} onToggle={onToggle} />
         {/* right content */}
-        <RightContent items={menuItemsRight} onToggle={onToggle} />
+        <RightContent
+          items={menuItemsRight}
+          onToggle={onToggle}
+          user={{
+            name: "Minh Tiến",
+            avatar: "", // Không có URL ảnh sẽ sử dụng ảnh mặc định
+          }}
+        />
       </HStack>
       {/* mobile content */}
       <MobileNav items={menuItemsLeft} isOpen={isOpen} />

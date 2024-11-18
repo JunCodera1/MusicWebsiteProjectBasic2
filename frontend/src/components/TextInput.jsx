@@ -11,6 +11,7 @@ const TextInput = ({ label, placeholder, className, value, setValue }) => {
         {label}
       </label>
       <Input
+        border={"1px"}
         type="text"
         placeholder={placeholder}
         className="p-2 md:p-3 border-3 bg-black border-gray-400 rounded w-full placeholder-gray-500 text-sm md:text-base lg:text-lg "

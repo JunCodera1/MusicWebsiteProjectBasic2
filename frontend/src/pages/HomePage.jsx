@@ -66,9 +66,8 @@ const menuItemsLeft = [
   { label: "Feed", uri: "/feed" },
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
+  { label: "Premium", uri: "/payment" },
 ];
-
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
 
 const HomePage = () => {
   return (
@@ -80,7 +79,7 @@ const HomePage = () => {
         overflow: "hidden",
       }}
     >
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
+      <Navbar menuItemsLeft={menuItemsLeft} />
       <Box display="flex" minHeight="100vh" position={"relative"}>
         {/* Sidebar */}
         <Sidebar />

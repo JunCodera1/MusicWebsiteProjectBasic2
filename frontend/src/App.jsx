@@ -25,6 +25,7 @@ import Payment from './pages/Payment';
 import "./index.css";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPassword";
+import PaymentPage from "./pages/PaymentPage";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -43,14 +44,14 @@ const App = () => {
           "2xl": "110vh",
         }}
         minW={{
-          base: "100vw",
+          base: "98vw",
           sm: "100vw",
           md: "162vw",
           lg: "118vw",
           xl: "90vw",
           "2xl": "100vw",
         }}
-        bg={useColorModeValue("gray.200", "gray.800")}
+        bg={useColorModeValue("white", "gray.800")}
         h={{ md: "70vh" }}
         mx="auto"
       >
@@ -63,6 +64,7 @@ const App = () => {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="*" element={<Navigate to="/" />} />
