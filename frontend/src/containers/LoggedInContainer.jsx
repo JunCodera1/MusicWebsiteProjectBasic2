@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useLayoutEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { Box, Image, useColorModeValue } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
@@ -22,42 +22,72 @@ const menuItemsLeft = [
 ];
 
 const LoggedInContainer = ({ children }) => {
-  const { currentSong, setCurrentSong } = useContext(SongContext); // Sử dụng useContext
-  const [soundPlayed, setSoundPlayed] = useState(null);
-  const [isPaused, setIsPaused] = useState(true);
+  const {
+    currentSong,
+    setCurrentSong,
+    soundPlayed,
+    setSoundPlayed,
+    isPaused,
+    setIsPaused,
+  } = useContext(SongContext);
 
-  // Function to handle the play/pause toggle
-  const togglePlayPause = () => {
-    if (soundPlayed) {
-      if (isPaused) {
-        soundPlayed.play(); // Play the sound if paused
-        setIsPaused(false); // Update state
-      } else {
-        soundPlayed.pause(); // Pause the sound if playing
-        setIsPaused(true); // Update state
-      }
-    } else {
-      playSound(currentSong.track); // Initialize and play sound if not set
-    }
-  };
+  const firstUpdate = useRef(true);
 
-  // Function to initialize and play the sound
-  const playSound = (songSrc) => {
-    if (soundPlayed) {
-      soundPlayed.stop(); // Stop the previous sound if any
+  useLayoutEffect(() => {
+    // Prevent first render logic
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
     }
+
+    if (!currentSong) {
+      return;
+    }
+    // Don't change the song if the song is already playing
+    if (soundPlayed && soundPlayed.playing()) {
+      return; // Skip playing if already playing
+    }
+
+    changeSong(currentSong.track);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSong && currentSong.track]);
+
+  const changeSong = (songSrc) => {
+    if (soundPlayed) {
+      soundPlayed.stop(); // Stop current song if any
+    }
+
     let sound = new Howl({
       src: [songSrc],
       html5: true,
-      preload: true,
-      loop: true,
     });
-    setSoundPlayed(sound); // Store the sound instance
-    sound.play(); // Play the sound immediately
-    setIsPaused(false); // Set paused state to false as sound is playing
+
+    setSoundPlayed(sound);
+    sound.play();
+    setIsPaused(false);
   };
 
-  console.log("Current Song:", currentSong);
+  const playSound = () => {
+    if (!soundPlayed) {
+      return;
+    }
+    soundPlayed.play();
+  };
+
+  const pauseSound = () => {
+    soundPlayed.pause();
+  };
+
+  const togglePlayPause = () => {
+    if (isPaused) {
+      playSound();
+      setIsPaused(false);
+    } else {
+      pauseSound();
+      setIsPaused(true);
+    }
+  };
 
   return (
     <Box className="w-full h-9/10">
