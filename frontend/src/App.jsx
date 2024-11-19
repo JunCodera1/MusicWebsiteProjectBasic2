@@ -24,6 +24,7 @@ import "./index.css";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPassword";
 import PaymentPage from "./pages/PaymentPage";
+import SearchPage from "./pages/SearchPage";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -86,6 +87,7 @@ const App = () => {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="*" element={<Navigate to="/" />} />

@@ -62,17 +62,6 @@ export default function Sidebar() {
         alignItems={navSize == "small" ? "center" : "flex-start"}
         as="nav"
       >
-        <Flex
-          align="center"
-          fontWeight="bold"
-          fontSize="18"
-          mt={4}
-          ml={5}
-          color={useColorModeValue("black", "white")}
-        >
-          <GiMusicSpell size={30} color={iconColor} />
-          {navSize !== "small" && <Text ml={2}>Soundbox</Text>}
-        </Flex>
         <IconButton
           background="none"
           mt={5}
