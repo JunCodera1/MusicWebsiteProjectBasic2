@@ -12,6 +12,7 @@ import { FaCirclePause } from "react-icons/fa6";
 import { FaRepeat } from "react-icons/fa6";
 import { FaPlayCircle } from "react-icons/fa";
 import SongContext from "@/components/SongContext";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa"; // Import icons for volume
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -31,6 +32,12 @@ const LoggedInContainer = ({ children }) => {
     setIsPaused,
   } = useContext(SongContext);
 
+  const [volume, setVolume] = useState(1);
+  const [muted, setMuted] = useState(false);
+
+  // Tính toán finalVolume với chế độ mute
+  const finalVolume = muted ? 0 : volume;
+
   const firstUpdate = useRef(true);
 
   useLayoutEffect(() => {
@@ -38,6 +45,10 @@ const LoggedInContainer = ({ children }) => {
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
+    }
+
+    if (soundPlayed) {
+      soundPlayed.volume(finalVolume);
     }
 
     if (!currentSong) {
@@ -51,7 +62,7 @@ const LoggedInContainer = ({ children }) => {
     changeSong(currentSong.track);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSong && currentSong.track]);
+  }, [currentSong && currentSong.track, finalVolume]);
 
   const changeSong = (songSrc) => {
     if (soundPlayed) {
@@ -174,7 +185,24 @@ const LoggedInContainer = ({ children }) => {
             </div>
           </div>
 
-          <div className="w-1/4 flex items-center justify-end">HI</div>
+          <div className="w-1/4 flex items-center justify-end space-x-4">
+            {/* Biểu tượng âm thanh */}
+            <button
+              onClick={() => setMuted((prev) => !prev)}
+              style={{ marginLeft: 10 }}
+            >
+              {muted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.02}
+              value={volume}
+              onChange={(e) => setVolume(e.target.valueAsNumber)}
+              style={{ marginLeft: 10 }}
+            />
+          </div>
         </Box>
       )}
     </Box>
