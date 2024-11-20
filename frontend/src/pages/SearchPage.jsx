@@ -2,82 +2,75 @@ import React, { useState } from "react";
 import Scroll from "../components/Search/Scroll";
 import LoggedInContainer from "../containers/LoggedInContainer";
 import SingleSongCard from "../components/SingleSongCard";
+import { Icon } from "@iconify/react";
+
 import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
 
-function SearchPage() {
+const SearchPage = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [songData, setSongData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const searchSong = async () => {
-    try {
-      setLoading(true);
-      const response = await makeAuthenticatedGETRequest(
-        `/song/get/songname/${searchText}`
-      );
-      setSongData(response.data || []);
-    } catch (error) {
-      console.error("Error fetching songs:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = async (e) => {
-    const inputValue = e.target.value;
-    setSearchText(inputValue);
-
-    if (inputValue.trim() === "") {
-      setSongData([]); // Clear song data
-    } else {
-      await searchSong(); // Trigger search
-    }
+    // This function will call the search api
+    const response = await makeAuthenticatedGETRequest(
+      "/song/get/songname/" + searchText
+    );
+    setSongData(response.data);
   };
 
   return (
-    <LoggedInContainer>
-      <section className="garamond">
-        <div className="navy georgia ma0 grow">
-          <h2 className="f2">Search your music</h2>
-        </div>
-        <div className="pa2">
+    <LoggedInContainer curActiveScreen="search">
+      <div className="w-full py-6">
+        <div
+          className={`w-1/3 p-3 text-sm rounded-full bg-gray-800 px-5 flex text-white space-x-3 items-center ${
+            isInputFocused ? "border-radius border-white" : ""
+          }`}
+        >
+          <Icon icon="ic:outline-search" className="text-lg" />
           <input
-            className="placeholder-red-500 bb br3 grow b--none bg-lightest-blue ma3"
-            type="search"
-            placeholder="Search Songs"
-            onChange={handleChange}
-            style={{
-              color: "black",
-              boxShadow: isInputFocused
-                ? "0 0 10px rgba(0, 0, 0, 0.2)"
-                : "none",
+            type="text"
+            placeholder="What do you want to listen to?"
+            className="w-full bg-gray-800 focus:outline-none"
+            onFocus={() => {
+              setIsInputFocused(true);
             }}
-            onFocus={() => setIsInputFocused(true)}
-            onBlur={() => setIsInputFocused(false)}
+            onBlur={() => {
+              setIsInputFocused(false);
+            }}
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                searchSong();
+              }
+            }}
           />
         </div>
-
-        <div>
-          {loading ? (
-            <div className="text-gray-400 pt-10">Loading...</div>
-          ) : songData.length > 0 ? (
-            <Scroll>
-              {songData.map((song) => (
+        {songData.length > 0 ? (
+          <div className="pt-10 space-y-3">
+            <div className="text-white">
+              Showing search results for
+              <span className="font-bold"> {searchText}</span>
+            </div>
+            {songData.map((item) => {
+              return (
                 <SingleSongCard
-                  key={song.id}
-                  info={song}
-                  playSound={() => console.log(`Playing ${song.name}`)}
+                  info={item}
+                  key={JSON.stringify(item)}
+                  playSound={() => {}}
                 />
-              ))}
-            </Scroll>
-          ) : (
-            <div className="text-gray-400 pt-10">Nothing to show here.</div>
-          )}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-gray-400 pt-10">Nothing to show here.</div>
+        )}
+      </div>
     </LoggedInContainer>
   );
-}
+};
 
 export default SearchPage;

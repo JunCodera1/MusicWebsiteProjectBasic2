@@ -23,6 +23,7 @@ const UploadPage = () => {
   const [artist, setArtist] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [musicName, setMusicName] = useState("");
+  const [duration, setDuration] = useState("");
   const [genre, setGenre] = useState("");
   const [playlistURL, setPlaylistURL] = useState("");
   const [uploadedSongFileName, setUploadedSongFileName] = useState("");
@@ -34,6 +35,7 @@ const UploadPage = () => {
       name: musicName,
       genre,
       track: playlistURL,
+      duration: duration,
     };
     const response = await makeAuthenticatedPOSTRequest("/song/create", data);
     if (response.err) {
@@ -51,6 +53,7 @@ const UploadPage = () => {
   const handleFileUploadSuccess = (url, filename) => {
     setPlaylistURLs((prevURLs) => [...prevURLs, url]); // Thêm URL mới vào mảng
     setUploadedFileNames((prevNames) => [...prevNames, filename]); // Thêm tên tệp mới vào mảng
+    setDuration((prevDuration) => [...prevDuration, duration]); // Thêm duration mới vào mảng
   };
 
   return (
@@ -101,6 +104,14 @@ const UploadPage = () => {
                     placeholder="Enter playlist URL"
                     value={playlistURL}
                     setValue={setPlaylistURL}
+                  />
+                </FormControl>
+                <FormControl id="playlistURL">
+                  <FormLabel>Duration</FormLabel>
+                  <TextInput
+                    placeholder="Enter playlist URL"
+                    value={duration}
+                    setValue={setDuration}
                   />
                 </FormControl>
 
@@ -162,6 +173,7 @@ const UploadPage = () => {
                   <CloudinaryUpload
                     setUrl={setPlaylistURL}
                     setName={setUploadedSongFileName}
+                    setDuration={setDuration}
                   />
                   <div>
                     {uploadedSongFileName ? (

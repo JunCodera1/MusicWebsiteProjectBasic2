@@ -11,9 +11,11 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
+import { PiPlaylistBold } from "react-icons/pi";
 import { AiFillPlusSquare } from "react-icons/ai";
 import { IoLibrarySharp } from "react-icons/io5";
 import { FaHeartCirclePlus } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 import { IoIosHome } from "react-icons/io";
 import { FaEarthAsia } from "react-icons/fa6";
 
@@ -75,15 +77,17 @@ export default function Sidebar() {
 
         <NavItem
           navSize={navSize}
-          icon={IoIosHome}
-          title="Dashboard"
+          icon={FaSearch}
+          title="Search"
           description="This is the description for the dashboard."
+          href={"/search"}
         />
         <NavItem navSize={navSize} icon={IoLibrarySharp} title="Library" />
         <NavItem
           navSize={navSize}
-          icon={AiFillPlusSquare}
-          title="Create playlist"
+          icon={PiPlaylistBold}
+          title="Playlist View"
+          href={"/playlistView"}
         />
         <NavItem
           navSize={navSize}

@@ -1,6 +1,6 @@
 import express from "express";
 
-import { Playlist, validate } from "../model/playlist.js";
+import { Playlist } from "../model/playlist.js";
 import { User } from "../model/user.js";
 import { Song } from "../model/song.js";
 
@@ -45,14 +45,49 @@ router.get(
   "/get/playlist/:playlistId",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    // This concept is called req.params
-    const playlistId = req.params.playlistId;
-    // I need to find a playlist with the _id = playlistId
-    const playlist = await Playlist.findOne({ _id: playlistId });
-    if (!playlist) {
-      return res.status(301).json({ err: "Invalid ID" });
+    const { playlistId } = req.params;
+
+    try {
+      // Tìm playlist theo _id
+      const playlist = await Playlist.findById(playlistId);
+
+      if (!playlist) {
+        return res.status(404).json({ err: "Playlist not found" });
+      }
+
+      return res.status(200).json(playlist);
+    } catch (error) {
+      return res.status(500).json({ err: "Server error" });
     }
-    return res.status(200).json(playlist);
+  }
+);
+
+router.put(
+  "/put/:playlistName",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { playlistName } = req.params;
+
+    try {
+      // Tìm playlist theo tên (có thể thêm nhiều điều kiện khác như _id để đảm bảo tính duy nhất)
+      const updatedPlaylist = await Playlist.findOneAndUpdate(
+        { name: playlistName },
+        { $set: req.body },
+        { new: true } // Trả về playlist đã cập nhật
+      );
+
+      if (!updatedPlaylist) {
+        return res.status(404).send({ message: "Playlist not found" });
+      }
+
+      return res.status(200).send({
+        data: updatedPlaylist,
+        message: "Playlist updated successfully",
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ message: "Internal server error" });
+    }
   }
 );
 

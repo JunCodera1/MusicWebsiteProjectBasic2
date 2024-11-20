@@ -167,10 +167,17 @@ router.get(
   async (req, res) => {
     const { songName } = req.params;
 
-    // name:songName --> exact name matching. Vanilla, Vanila
-    // Pattern matching instead of direct name matching.
-    const songs = await Song.find({ name: songName }).populate("artist");
-    return res.status(200).json({ data: songs });
+    try {
+      // Sử dụng regex để tìm kiếm bài hát có tên chứa songName
+      const songs = await Song.find({
+        name: { $regex: songName, $options: "i" }, // "i" là tùy chọn để tìm kiếm không phân biệt chữ hoa chữ thường
+      }).populate("artist");
+
+      return res.status(200).json({ data: songs });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error searching songs" });
+    }
   }
 );
 
