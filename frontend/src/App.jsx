@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { useCookies } from "react-cookie";
-import PaymentPage from "./pages/PaymentPage";
+
 
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
