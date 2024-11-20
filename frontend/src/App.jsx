@@ -8,7 +8,6 @@ import {
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { useCookies } from "react-cookie";
 
-
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
 import LibraryPage from "./pages/LibraryPage";
@@ -20,7 +19,6 @@ import SignUpPage from "./pages/SignUpPage.jsx";
 import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
 import MySongPage from "./pages/MySongPage.jsx";
 import SongContext from "./components/SongContext.jsx";
-import Payment from './pages/Payment';
 
 import "./index.css";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -93,24 +91,23 @@ const App = () => {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/playlistView" element={<PlaylistViewPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-          </SongContext.Provider>
-          //D:\SoundBox\frontend\src\pages\PaymentPage.jsx
-        ) : (
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/mysongs" element={<MySongPage />} />
-          <Route path="*" element={<Navigate to="/login" />} />
-          <Route path="/payment" element={<Payment />} />
-
-        </Routes>
-        )}
-      </Box>
-    </Router>
+          ) : (
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+              <Route path="/resetPassword" element={<ResetPasswordPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
+          )}
+        </Box>
+      </Router>
+    </SongContext.Provider>
   );
 };
 
