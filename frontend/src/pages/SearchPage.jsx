@@ -1,41 +1,39 @@
 import React, { useState } from "react";
 import Scroll from "../components/Search/Scroll";
-import SearchList from "../components/Search/SearchList";
-import LoggedInContainer from "@/containers/LoggedInContainer";
+import LoggedInContainer from "../containers/LoggedInContainer";
+import SingleSongCard from "../components/SingleSongCard";
+import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
 
-function SearchPage({ details }) {
-  const [searchField, setSearchField] = useState("");
-  const [searchShow, setSearchShow] = useState(true);
+function SearchPage() {
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [songData, setSongData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Check if details is defined and is an array before using filter
-  const filteredPersons = Array.isArray(details)
-    ? details.filter((person) => {
-        return (
-          person.name.toLowerCase().includes(searchField.toLowerCase()) ||
-          person.email.toLowerCase().includes(searchField.toLowerCase())
-        );
-      })
-    : [];
-
-  const handleChange = (e) => {
-    setSearchField(e.target.value);
-    if (e.target.value === "") {
-      setSearchShow(false);
-    } else {
-      setSearchShow(true);
+  const searchSong = async () => {
+    try {
+      setLoading(true);
+      const response = await makeAuthenticatedGETRequest(
+        `/song/get/songname/${searchText}`
+      );
+      setSongData(response.data || []);
+    } catch (error) {
+      console.error("Error fetching songs:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  function searchList() {
-    if (searchShow) {
-      return (
-        <Scroll>
-          <SearchList filteredPersons={filteredPersons} />
-        </Scroll>
-      );
+  const handleChange = async (e) => {
+    const inputValue = e.target.value;
+    setSearchText(inputValue);
+
+    if (inputValue.trim() === "") {
+      setSongData([]); // Clear song data
+    } else {
+      await searchSong(); // Trigger search
     }
-    return null;
-  }
+  };
 
   return (
     <LoggedInContainer>
@@ -47,12 +45,36 @@ function SearchPage({ details }) {
           <input
             className="placeholder-red-500 bb br3 grow b--none bg-lightest-blue ma3"
             type="search"
-            placeholder="Search People"
+            placeholder="Search Songs"
             onChange={handleChange}
-            style={{ color: "black" }}
+            style={{
+              color: "black",
+              boxShadow: isInputFocused
+                ? "0 0 10px rgba(0, 0, 0, 0.2)"
+                : "none",
+            }}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
           />
         </div>
-        {searchList()}
+
+        <div>
+          {loading ? (
+            <div className="text-gray-400 pt-10">Loading...</div>
+          ) : songData.length > 0 ? (
+            <Scroll>
+              {songData.map((song) => (
+                <SingleSongCard
+                  key={song.id}
+                  info={song}
+                  playSound={() => console.log(`Playing ${song.name}`)}
+                />
+              ))}
+            </Scroll>
+          ) : (
+            <div className="text-gray-400 pt-10">Nothing to show here.</div>
+          )}
+        </div>
       </section>
     </LoggedInContainer>
   );

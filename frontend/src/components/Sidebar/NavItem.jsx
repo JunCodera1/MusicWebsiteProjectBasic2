@@ -3,12 +3,13 @@ import {
   Flex,
   Text,
   Icon,
-  Link,
   Menu,
   MenuButton,
   MenuList,
+  Box,
 } from "@chakra-ui/react";
 import NavHoverBox from "../NavHoverBox";
+import { Link } from "react-router-dom";
 
 export default function NavItem({
   icon,
@@ -23,11 +24,12 @@ export default function NavItem({
       mt={30}
       flexDir="column"
       w="100%"
-      alignItems={navSize == "small" ? "center" : "flex-start"}
+      alignItems={navSize === "small" ? "center" : "flex-start"}
     >
       <Menu placement="right">
-        <Link
-          href={href}
+        <Box
+          as={Link}
+          to={href}
           backgroundColor={active ? "#AEC8CA" : "transparent"}
           p={3}
           borderRadius={8}
@@ -35,7 +37,7 @@ export default function NavItem({
             textDecor: "none",
             backgroundColor: "teal.300",
             transform: "scale(1.05)", // Thêm hiệu ứng phóng to khi hover
-            transition: "transform 1.5s ease",
+            transition: "transform 0.3s ease", // Giảm thời gian transition để mượt mà hơn
           }}
           w={navSize === "large" ? "100%" : "auto"}
         >
@@ -49,13 +51,13 @@ export default function NavItem({
               <Text
                 ml={5}
                 fontSize={15}
-                display={navSize == "small" ? "none" : "flex"}
+                display={navSize === "small" ? "none" : "flex"}
               >
                 {title}
               </Text>
             </Flex>
           </MenuButton>
-        </Link>
+        </Box>
         <MenuList py={0} border="none" w={200} h={200} ml={5}>
           <NavHoverBox title={title} icon={icon} description={description} />
         </MenuList>

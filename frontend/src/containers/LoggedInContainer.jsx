@@ -47,47 +47,45 @@ const LoggedInContainer = ({ children }) => {
       return;
     }
 
-    if (soundPlayed) {
+    // Only change the song if it's a new song
+    if (
+      currentSong &&
+      (!soundPlayed || soundPlayed._src !== currentSong.track)
+    ) {
+      if (soundPlayed && soundPlayed.playing()) {
+        soundPlayed.stop(); // Stop the previous song if any
+      }
+
+      changeSong(currentSong.track);
+    } else if (soundPlayed) {
+      // If the same song is playing, adjust the volume
       soundPlayed.volume(finalVolume);
     }
-
-    if (!currentSong) {
-      return;
-    }
-    // Don't change the song if the song is already playing
-    if (soundPlayed && soundPlayed.playing()) {
-      return; // Skip playing if already playing
-    }
-
-    changeSong(currentSong.track);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSong && currentSong.track, finalVolume]);
+  }, [currentSong, finalVolume]); // Trigger on currentSong or volume change
 
   const changeSong = (songSrc) => {
-    if (soundPlayed) {
-      soundPlayed.stop(); // Stop current song if any
-    }
-
-    let sound = new Howl({
+    // Create a new Howl instance and play the new song
+    const sound = new Howl({
       src: [songSrc],
       html5: true,
+      volume: finalVolume,
     });
 
-    setSoundPlayed(sound);
-    sound.play();
-    setIsPaused(false);
+    setSoundPlayed(sound); // Set the new sound to state
+    sound.play(); // Play the song
+    setIsPaused(false); // Song is playing, not paused
   };
 
   const playSound = () => {
-    if (!soundPlayed) {
-      return;
+    if (soundPlayed) {
+      soundPlayed.play();
     }
-    soundPlayed.play();
   };
 
   const pauseSound = () => {
-    soundPlayed.pause();
+    if (soundPlayed) {
+      soundPlayed.pause();
+    }
   };
 
   const togglePlayPause = () => {
