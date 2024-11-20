@@ -4,22 +4,11 @@ import SuggestedArtists from "../components/SuggestedArtists";
 import Player from "../components/Player";
 import Navbar from "@/components/Navbar";
 const menuItemsLeft = [
-  {
-    label: "Home",
-    uri: "/",
-  },
-  {
-    label: "Feed",
-    uri: "/feed",
-  },
-  {
-    label: "Trending",
-    uri: "/trending",
-  },
-  {
-    label: "Upload",
-    uri: "/upload",
-  },
+  { label: "Home", uri: "/" },
+  { label: "Feed", uri: "/feed" },
+  { label: "Trending", uri: "/trending" },
+  { label: "Upload", uri: "/upload" },
+  { label: "Premium", uri: "/payment" },
 ];
 
 export default function FeedPage() {

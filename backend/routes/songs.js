@@ -74,20 +74,32 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Update song by id
-router.put("/:id", [validObjectId, admin], async (req, res) => {
-  const song = await Song.findByIdAndUpdate(
-    req.params.id,
-    { $set: req.body },
-    { new: true }
-  );
+router.put(
+  "/put/:songName",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { songName } = req.params;
 
-  if (!song) {
-    return res.status(404).send({ message: "Song not found" });
+    try {
+      const updatedSong = await Song.findOneAndUpdate(
+        { name: songName },
+        { $set: req.body },
+        { new: true }
+      );
+
+      if (!updatedSong) {
+        return res.status(404).send({ message: "Song not found" });
+      }
+
+      return res
+        .status(200)
+        .send({ data: updatedSong, message: "Song updated successfully" });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ message: "Internal server error" });
+    }
   }
-
-  res.status(200).send({ data: song, message: "Song updated successfully" });
-});
+);
 
 // Delete song by id
 router.delete(
@@ -155,10 +167,17 @@ router.get(
   async (req, res) => {
     const { songName } = req.params;
 
-    // name:songName --> exact name matching. Vanilla, Vanila
-    // Pattern matching instead of direct name matching.
-    const songs = await Song.find({ name: songName }).populate("artist");
-    return res.status(200).json({ data: songs });
+    try {
+      // Sử dụng regex để tìm kiếm bài hát có tên chứa songName
+      const songs = await Song.find({
+        name: { $regex: songName, $options: "i" }, // "i" là tùy chọn để tìm kiếm không phân biệt chữ hoa chữ thường
+      }).populate("artist");
+
+      return res.status(200).json({ data: songs });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error searching songs" });
+    }
   }
 );
 

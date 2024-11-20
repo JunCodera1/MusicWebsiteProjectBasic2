@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -26,37 +26,63 @@ import "./index.css";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPassword";
 import PaymentPage from "./pages/PaymentPage";
+import SearchPage from "./pages/SearchPage";
+import PlaylistViewPage from "./pages/PlaylistViewPage";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
   const isAuthenticated = !!cookie.token;
-  const [currentSong, setCurrentSong] = useState(SongContext);
+
+  // Load state from localStorage if available
+  const storedSong = JSON.parse(localStorage.getItem("currentSong"));
+  const storedIsPaused = JSON.parse(localStorage.getItem("isPaused"));
+
+  const [currentSong, setCurrentSong] = useState(storedSong || null);
+  const [soundPlayed, setSoundPlayed] = useState(null);
+  const [isPaused, setIsPaused] = useState(storedIsPaused || true);
+
+  // Store current state to localStorage when it changes
+  useEffect(() => {
+    if (currentSong) {
+      localStorage.setItem("currentSong", JSON.stringify(currentSong));
+    }
+    localStorage.setItem("isPaused", JSON.stringify(isPaused));
+  }, [currentSong, isPaused]);
 
   return (
-    <Router>
-      <Box
-        minH={{
-          base: "100vh",
-          sm: "100vh",
-          md: "163vh",
-          lg: "120vh",
-          xl: "100vh",
-          "2xl": "110vh",
-        }}
-        minW={{
-          base: "98vw",
-          sm: "100vw",
-          md: "162vw",
-          lg: "118vw",
-          xl: "90vw",
-          "2xl": "100vw",
-        }}
-        bg={useColorModeValue("white", "gray.800")}
-        h={{ md: "70vh" }}
-        mx="auto"
-      >
-        {isAuthenticated ? (
-          <SongContext.Provider value={{ currentSong, setCurrentSong }}>
+    <SongContext.Provider
+      value={{
+        currentSong,
+        setCurrentSong,
+        soundPlayed,
+        setSoundPlayed,
+        isPaused,
+        setIsPaused,
+      }}
+    >
+      <Router>
+        <Box
+          minH={{
+            base: "100vh",
+            sm: "100vh",
+            md: "163vh",
+            lg: "120vh",
+            xl: "100vh",
+            "2xl": "110vh",
+          }}
+          minW={{
+            base: "98vw",
+            sm: "100vw",
+            md: "162vw",
+            lg: "118vw",
+            xl: "90vw",
+            "2xl": "100vw",
+          }}
+          bg={useColorModeValue("white", "gray.800")}
+          h={{ md: "70vh" }}
+          mx="auto"
+        >
+          {isAuthenticated ? (
             <Routes>
               <Route path="/" element={<LoggedInHomePage />} />
               <Route path="/mysongs" element={<MySongPage />} />
@@ -64,6 +90,7 @@ const App = () => {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/payment" element={<Payment />} />
@@ -72,15 +99,15 @@ const App = () => {
           </SongContext.Provider>
           //D:\SoundBox\frontend\src\pages\PaymentPage.jsx
         ) : (
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/mysongs" element={<MySongPage />} />
-            <Route path="*" element={<Navigate to="/login" />} />
-            <Route path="/payment" element={<Payment />} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/mysongs" element={<MySongPage />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="/payment" element={<Payment />} />
 
-          </Routes>
+        </Routes>
         )}
       </Box>
     </Router>

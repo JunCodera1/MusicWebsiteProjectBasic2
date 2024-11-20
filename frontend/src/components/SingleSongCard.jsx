@@ -2,8 +2,25 @@ import React, { useContext } from "react";
 import { PlayCircle, MoreHorizontal } from "lucide-react";
 import SongContext from "./SongContext";
 
-const SingleSongCard = ({ info, onPlay, onMoreOptions, playSound }) => {
-  const { currentSong, setCurrentSong } = useContext(SongContext);
+// Helper function to format duration
+const formatDuration = (durationInSeconds) => {
+  const minutes = Math.floor(durationInSeconds / 60);
+  let seconds = durationInSeconds % 60;
+
+  // Round seconds to 2 decimal places
+  seconds = seconds.toFixed(0);
+
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+};
+
+const SingleSongCard = ({ info, onPlay, onMoreOptions }) => {
+  const { setCurrentSong } = useContext(SongContext);
+
+  // Prepare formatted duration once at the top level
+  const formattedDuration = info.duration
+    ? formatDuration(info.duration)
+    : "6:14";
+
   return (
     <div
       className="flex items-center p-4 hover:bg-gray-700 rounded-xl transition duration-200 ease-in-out relative group"
@@ -41,7 +58,10 @@ const SingleSongCard = ({ info, onPlay, onMoreOptions, playSound }) => {
       </div>
 
       <div className="flex items-center gap-4 ml-auto">
-        <div className="text-md text-gray-400">{info.duration || "6:14"}</div>
+        <div className="text-md text-gray-400">
+          {/* Use the formatted duration here */}
+          {formattedDuration}
+        </div>
         <button
           className="text-gray-400 hover:text-white transition-colors duration-200"
           onClick={onMoreOptions}

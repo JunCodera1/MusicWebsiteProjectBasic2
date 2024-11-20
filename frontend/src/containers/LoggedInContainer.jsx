@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useLayoutEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { Box, Image, useColorModeValue } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
@@ -12,6 +12,7 @@ import { FaCirclePause } from "react-icons/fa6";
 import { FaRepeat } from "react-icons/fa6";
 import { FaPlayCircle } from "react-icons/fa";
 import SongContext from "@/components/SongContext";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa"; // Import icons for volume
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -22,42 +23,80 @@ const menuItemsLeft = [
 ];
 
 const LoggedInContainer = ({ children }) => {
-  const { currentSong, setCurrentSong } = useContext(SongContext); // Sử dụng useContext
-  const [soundPlayed, setSoundPlayed] = useState(null);
-  const [isPaused, setIsPaused] = useState(true);
+  const {
+    currentSong,
+    setCurrentSong,
+    soundPlayed,
+    setSoundPlayed,
+    isPaused,
+    setIsPaused,
+  } = useContext(SongContext);
 
-  // Function to handle the play/pause toggle
-  const togglePlayPause = () => {
-    if (soundPlayed) {
-      if (isPaused) {
-        soundPlayed.play(); // Play the sound if paused
-        setIsPaused(false); // Update state
-      } else {
-        soundPlayed.pause(); // Pause the sound if playing
-        setIsPaused(true); // Update state
+  const [volume, setVolume] = useState(1);
+  const [muted, setMuted] = useState(false);
+
+  // Tính toán finalVolume với chế độ mute
+  const finalVolume = muted ? 0 : volume;
+
+  const firstUpdate = useRef(true);
+
+  useLayoutEffect(() => {
+    // Prevent first render logic
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+
+    // Only change the song if it's a new song
+    if (
+      currentSong &&
+      (!soundPlayed || soundPlayed._src !== currentSong.track)
+    ) {
+      if (soundPlayed && soundPlayed.playing()) {
+        soundPlayed.stop(); // Stop the previous song if any
       }
-    } else {
-      playSound(currentSong.track); // Initialize and play sound if not set
-    }
-  };
 
-  // Function to initialize and play the sound
-  const playSound = (songSrc) => {
-    if (soundPlayed) {
-      soundPlayed.stop(); // Stop the previous sound if any
+      changeSong(currentSong.track);
+    } else if (soundPlayed) {
+      // If the same song is playing, adjust the volume
+      soundPlayed.volume(finalVolume);
     }
-    let sound = new Howl({
+  }, [currentSong, finalVolume]); // Trigger on currentSong or volume change
+
+  const changeSong = (songSrc) => {
+    // Create a new Howl instance and play the new song
+    const sound = new Howl({
       src: [songSrc],
       html5: true,
-      preload: true,
-      loop: true,
+      volume: finalVolume,
     });
-    setSoundPlayed(sound); // Store the sound instance
-    sound.play(); // Play the sound immediately
-    setIsPaused(false); // Set paused state to false as sound is playing
+
+    setSoundPlayed(sound); // Set the new sound to state
+    sound.play(); // Play the song
+    setIsPaused(false); // Song is playing, not paused
   };
 
-  console.log("Current Song:", currentSong);
+  const playSound = () => {
+    if (soundPlayed) {
+      soundPlayed.play();
+    }
+  };
+
+  const pauseSound = () => {
+    if (soundPlayed) {
+      soundPlayed.pause();
+    }
+  };
+
+  const togglePlayPause = () => {
+    if (isPaused) {
+      playSound();
+      setIsPaused(false);
+    } else {
+      pauseSound();
+      setIsPaused(true);
+    }
+  };
 
   return (
     <Box className="w-full h-9/10">
@@ -144,7 +183,24 @@ const LoggedInContainer = ({ children }) => {
             </div>
           </div>
 
-          <div className="w-1/4 flex items-center justify-end">HI</div>
+          <div className="w-1/4 flex items-center justify-end space-x-4">
+            {/* Biểu tượng âm thanh */}
+            <button
+              onClick={() => setMuted((prev) => !prev)}
+              style={{ marginLeft: 10 }}
+            >
+              {muted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.02}
+              value={volume}
+              onChange={(e) => setVolume(e.target.valueAsNumber)}
+              style={{ marginLeft: 10 }}
+            />
+          </div>
         </Box>
       )}
     </Box>

@@ -22,21 +22,6 @@ const SongPage = () => {
   const [error, setError] = useState(null);
   const [soundPlayed, setSoundPlayed] = useState(null);
 
-  const playSound = (songSrc) => {
-    if (soundPlayed) {
-      soundPlayed.stop();
-    }
-    let sound = new Howl({
-      src: [songSrc],
-      html5: true,
-      preload: true,
-      loop: true,
-    });
-    setSoundPlayed(sound);
-
-    sound.play();
-  };
-
   useEffect(() => {
     const fetchSongs = async () => {
       try {
