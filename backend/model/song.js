@@ -25,6 +25,9 @@ const songSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "User",
   },
+  description: {
+    type: String,
+  },
 });
 
 // Validate song

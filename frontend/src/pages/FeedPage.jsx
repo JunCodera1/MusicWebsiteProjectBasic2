@@ -3,6 +3,7 @@ import TrackList from "../components/TrackList";
 import SuggestedArtists from "../components/SuggestedArtists";
 import Player from "../components/Player";
 import Navbar from "@/components/Navbar";
+
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
   { label: "Feed", uri: "/feed" },
@@ -17,6 +18,7 @@ export default function FeedPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch tracks data
   useEffect(() => {
     const fetchTracks = async () => {
       setIsLoading(true);
@@ -46,17 +48,25 @@ export default function FeedPage() {
           <h1 className="text-2xl font-bold mb-6">
             Hear the latest posts from the people you're following:
           </h1>
+
+          {/* Hiển thị trạng thái loading hoặc lỗi */}
           {isLoading ? (
-            <div className="text-center py-8">Loading tracks...</div>
+            <div className="text-center py-8 text-gray-400">
+              Loading tracks...
+            </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
             <TrackList tracks={tracks} setCurrentTrack={setCurrentTrack} />
           )}
         </div>
+
+        {/* Hiển thị suggested artists */}
         <SuggestedArtists />
       </main>
-      <Player currentTrack={currentTrack} />
+
+      {/* Hiển thị Player khi có bài hát đang phát */}
+      {currentTrack && <Player currentTrack={currentTrack} />}
     </div>
   );
 }
