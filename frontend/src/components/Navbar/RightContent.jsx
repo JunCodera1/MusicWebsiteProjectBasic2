@@ -26,15 +26,29 @@ import {
   Tr,
   Th,
   Td,
+  Badge,
+  Box,
+  Text,
 } from "@chakra-ui/react";
 import { FaBell, FaSearch } from "react-icons/fa";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { NavItem } from "./NavItem";
+import { useState } from "react";
 
 export function RightContent({ items, user = null }) {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isProfileOpen,
+    onOpen: onProfileOpen,
+    onClose: onProfileClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isSettingsOpen,
+    onOpen: onSettingsOpen,
+    onClose: onSettingsClose,
+  } = useDisclosure();
 
   const deleteCookie = (name) => {
     document.cookie = `${name}=; Max-Age=-99999999; path=/;`;
@@ -49,6 +63,16 @@ export function RightContent({ items, user = null }) {
     name: user?.name || "Unknown",
     email: user?.email || "N/A",
     role: user?.role || "User",
+  };
+
+  const [notifications, setNotifications] = useState([
+    { id: 1, message: "New message from admin", read: false },
+    { id: 2, message: "Your subscription is about to expire", read: false },
+    { id: 3, message: "New song added to your playlist", read: true },
+  ]);
+
+  const markAllAsRead = () => {
+    setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
   };
 
   return (
@@ -69,14 +93,47 @@ export function RightContent({ items, user = null }) {
         </InputRightElement>
       </InputGroup>
 
-      <IconButton
-        aria-label="notifications"
-        icon={<FaBell />}
-        variant="ghost"
-        colorScheme="teal"
-        rounded="full"
-        size="sm"
-      />
+      {/* Notifications */}
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          aria-label="notifications"
+          icon={<FaBell />}
+          variant="ghost"
+          colorScheme="teal"
+          rounded="full"
+          size="sm"
+          position="relative"
+        >
+          {notifications.some((notif) => !notif.read) && (
+            <Badge
+              colorScheme="red"
+              position="absolute"
+              top="0"
+              right="0"
+              fontSize="xs"
+              rounded="full"
+              bg={""}
+            >
+              {notifications.filter((notif) => !notif.read).length}
+            </Badge>
+          )}
+        </MenuButton>
+        <MenuList>
+          {notifications.map((notif) => (
+            <MenuItem
+              key={notif.id}
+              bg={notif.read ? "gray.500" : "gray.700"}
+              fontWeight={notif.read ? "normal" : "bold"}
+            >
+              {notif.message}
+            </MenuItem>
+          ))}
+          <MenuItem fontWeight="bold" onClick={markAllAsRead}>
+            Mark all as read
+          </MenuItem>
+        </MenuList>
+      </Menu>
 
       {/* Avatar with Dropdown Menu */}
       {user ? (
@@ -89,10 +146,8 @@ export function RightContent({ items, user = null }) {
             cursor="pointer"
           />
           <MenuList>
-            <MenuItem onClick={onOpen}>View Profile</MenuItem>
-            <MenuItem onClick={() => console.log("Settings")}>
-              Settings
-            </MenuItem>
+            <MenuItem onClick={onProfileOpen}>View Profile</MenuItem>
+            <MenuItem onClick={onSettingsOpen}>Settings</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </MenuList>
         </Menu>
@@ -115,7 +170,7 @@ export function RightContent({ items, user = null }) {
       />
 
       {/* Modal for Profile */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isProfileOpen} onClose={onProfileClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Profile Details</ModalHeader>
@@ -145,8 +200,45 @@ export function RightContent({ items, user = null }) {
             </Table>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={onClose}>
+            <Button colorScheme="teal" mr={3} onClick={onProfileClose}>
               Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal for Settings */}
+      <Modal isOpen={isSettingsOpen} onClose={onSettingsClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Settings</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex direction="column" gap={4}>
+              <Input
+                placeholder="Update Name"
+                defaultValue={user?.name || ""}
+                variant="filled"
+              />
+              <Input
+                placeholder="Update Email"
+                defaultValue={user?.email || ""}
+                type="email"
+                variant="filled"
+              />
+              <Input
+                placeholder="New Password"
+                type="password"
+                variant="filled"
+              />
+            </Flex>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="teal" mr={3} onClick={onSettingsClose}>
+              Save
+            </Button>
+            <Button variant="ghost" onClick={onSettingsClose}>
+              Cancel
             </Button>
           </ModalFooter>
         </ModalContent>
