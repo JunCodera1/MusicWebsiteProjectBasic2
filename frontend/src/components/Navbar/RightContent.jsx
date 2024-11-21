@@ -12,28 +12,45 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from "@chakra-ui/react";
 import { FaBell, FaSearch } from "react-icons/fa";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { NavItem } from "./NavItem";
-import { useNavigate } from "react-router-dom";
 
 export function RightContent({ items, user = null }) {
   const { colorMode, toggleColorMode } = useColorMode();
-  const navigate = useNavigate(); // Hook phải được gọi trong component function
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const deleteCookie = (name) => {
     document.cookie = `${name}=; Max-Age=-99999999; path=/;`;
   };
 
-  // Xóa cookie token
   const handleLogout = () => {
-    // Xóa token khỏi localStorage
     deleteCookie("token");
-
-    // Điều hướng người dùng về trang đăng nhập
-    navigate("/login"); // Đảm bảo dùng navigate trong component function
+    console.log("Logged out");
   };
+
+  const profileData = {
+    name: user?.name || "Unknown",
+    email: user?.email || "N/A",
+    role: user?.role || "User",
+  };
+
   return (
     <Flex alignItems="center" gap={2}>
       <IconButton
@@ -72,9 +89,7 @@ export function RightContent({ items, user = null }) {
             cursor="pointer"
           />
           <MenuList>
-            <MenuItem onClick={() => console.log("View Profile")}>
-              View Profile
-            </MenuItem>
+            <MenuItem onClick={onOpen}>View Profile</MenuItem>
             <MenuItem onClick={() => console.log("Settings")}>
               Settings
             </MenuItem>
@@ -98,6 +113,44 @@ export function RightContent({ items, user = null }) {
         colorScheme="teal"
         onClick={toggleColorMode}
       />
+
+      {/* Modal for Profile */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Profile Details</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Table variant="striped" colorScheme="teal">
+              <Thead>
+                <Tr>
+                  <Th>Field</Th>
+                  <Th>Value</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Name</Td>
+                  <Td>{profileData.name}</Td>
+                </Tr>
+                <Tr>
+                  <Td>Email</Td>
+                  <Td>{profileData.email}</Td>
+                </Tr>
+                <Tr>
+                  <Td>Role</Td>
+                  <Td>{profileData.role}</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="teal" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }
