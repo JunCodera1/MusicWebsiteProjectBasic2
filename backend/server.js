@@ -11,6 +11,7 @@ import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { User } from "./model/user.js";
 import rateLimit from "express-rate-limit";
+import bodyParser from "body-parser";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -58,6 +59,19 @@ passport.use(
     }
   })
 );
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
+// Import route Stripe
+import stripePaymentRoute from './routes/stripePayment.js';
+app.use('/api/stripe', stripePaymentRoute);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 // Connect to database and start server
 const PORT = process.env.PORT || 8083;
