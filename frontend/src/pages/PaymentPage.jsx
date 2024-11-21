@@ -1,142 +1,127 @@
-'use client'
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Image, Heading, Text, Spinner, VStack, HStack, useColorModeValue, Badge, Grid } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { CheckIcon } from '@chakra-ui/icons';
 
-import React, { useState, useEffect } from 'react'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-
-
-const stripePromise = loadStripe('pk_test_your_publishable_key')
-
-const CheckoutForm = ({ clientSecret }) => {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [error, setError] = useState(null)
-  const [processing, setProcessing] = useState(false)
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    setProcessing(true)
-
-    if (!stripe || !elements) {
-      return
-    }
-
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      }
-    })
-
-    if (result.error) {
-      setError(result.error.message)
-      setProcessing(false)
-    } else {
-      console.log('Payment successful!')
-      setProcessing(false)
-    }
-  }
+const PlanOption = ({ name, price, features, isSelected, onSelect }) => {
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = isSelected ? 'teal.500' : useColorModeValue('gray.200', 'gray.700');
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement />
-      <Button type="submit" disabled={!stripe || processing} className="mt-4 w-full">
-        {processing ? 'Đang xử lý...' : 'Thanh toán'}
-      </Button>
-      {error && <div className="text-red-500 mt-2">{error}</div>}
-    </form>
-  )
-}
-
-const PricingCard = ({ title, price, features, isPremium, onSelectPlan }) => (
-  <Card className={`border border-gray-200 transition-all duration-200 hover:shadow-md ${isPremium ? 'shadow-lg scale-105' : ''}`}>
-    <div className="p-6">
-      <h3 className="text-xl font-normal text-gray-900 mb-2">{title}</h3>
-      <div className="text-3xl font-light mb-6">
-        <sup className="text-lg align-super mr-1">$</sup>
-        {price}
-        <span className="text-base text-gray-500 ml-1">/ mo</span>
-      </div>
-      <ul className="space-y-2 mb-6">
+    <Box
+      borderWidth="1px"
+      borderRadius="lg"
+      borderColor={borderColor}
+      p={6}
+      width="full"
+      height="full"
+      bg={bgColor}
+      boxShadow={isSelected ? 'lg' : 'md'}
+      transition="all 0.2s"
+      _hover={{ boxShadow: 'lg' }}
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
+      <VStack spacing={4} align="stretch" flex={1}>
+        <Heading size="md">{name}</Heading>
+        <Text fontSize="2xl" fontWeight="bold">
+          {price} <Badge colorScheme="teal">VND/month</Badge>
+        </Text>
         {features.map((feature, index) => (
-          <li key={index} className="text-center text-gray-600">{feature}</li>
+          <HStack key={index}>
+            <CheckIcon color="teal.500" />
+            <Text>{feature}</Text>
+          </HStack>
         ))}
-      </ul>
+      </VStack>
       <Button
-        variant={isPremium ? 'default' : 'outline'}
-        className="w-full"
-        onClick={() => onSelectPlan(title, price)}
+        colorScheme={isSelected ? 'teal' : 'gray'}
+        onClick={onSelect}
+        mt={4}
       >
-        Select Plan
+        {isSelected ? 'Selected' : 'Select Plan'}
       </Button>
-    </div>
-  </Card>
-)
-
+    </Box>
+  );
+};
 
 const PaymentPage = () => {
-  const router = useRouter();
-  const [clientSecret, setClientSecret] = useState('')
-  const [plans] = useState([
-    { title: "Basic", price: 4.99, features: ["Ad-free listening", "High-quality audio", "Offline mode", "Unlimited skips"] },
-    { title: "Premium", price: 9.99, features: ["All Basic features", "Exclusive content", "Lyrics display", "Personal playlists"] },
-    { title: "Pro", price: 14.99, features: ["All Premium features", "Studio quality audio", "Early access to new features", "Priority support"] },
-  ])
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSelectPlan = (title, price) => {
-    if (clientSecret) {
-      // Redirect to a new page for Stripe Checkout
-      router.push(`/checkout?plan=${title}&price=${price}&clientSecret=${clientSecret}`);
+  const plans = [
+    {
+      name: 'Standard',
+      price: '99,000',
+      features: ['Basic features', 'Limited songs', 'Standard quality']
+    },
+    {
+      name: 'Premium Pro',
+      price: '199,000',
+      features: ['All features', 'Unlimited songs', 'High quality audio', 'Offline mode']
     }
+  ];
+
+  const handleSelectPlan = (plan) => {
+    setSelectedPlan(plan);
+    setIsProcessing(true);
   };
 
   useEffect(() => {
-    fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ items: [{ id: 'premium_plan' }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+    let timer;
+    if (isProcessing) {
+      timer = setTimeout(() => {
+        navigate('/success');
+      }, 10000);
+    }
+    return () => clearTimeout(timer);
+  }, [isProcessing, navigate]);
 
   return (
-    <>
-      <div className="text-center mb-16">
-        <h1 className="text-4xl font-normal text-gray-900 mb-4">SoundBox Premium Plans</h1>
-        <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-          Unlock the full potential of your music experience with our premium plans.
-        </p>
-      </div>
-      <div className="grid md:grid-cols-3 gap-8">
-        {plans.map((plan, index) => (
-          <PricingCard
-            key={plan.title}
-            {...plan}
-            isPremium={index === 1}
-            onSelectPlan={handleSelectPlan}
-          />
-        ))}
-      </div>
-      {/* <Elements stripe={stripePromise}>
-        <Card className="w-full max-w-md mx-auto mt-10">
-          <CardHeader>
-            <CardTitle>SoundBox Premium</CardTitle>
-            <CardDescription>Mở khóa tất cả tính năng cao cấp</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {clientSecret && <CheckoutForm clientSecret={clientSecret} />}
-          </CardContent>
-          <CardFooter className="text-sm text-gray-500">
-            Bạn sẽ được tính phí $9.99 mỗi tháng. Hủy bất kỳ lúc nào.
-          </CardFooter>
-        </Card>
-      </Elements> */}
-    </>
-  )
-}
+    <Box textAlign="center" py={10} px={6} maxWidth="1200px" margin="auto">
+      {!isProcessing ? (
+        <>
+          <Heading as="h2" size="xl" mb={4}>
+            Choose Your SoundBox Plan
+          </Heading>
+          <Text color={'gray.500'} mb={6}>
+            Upgrade to Premium Pro for the ultimate music experience!
+          </Text>
+          <Grid templateColumns={["1fr", "1fr", "repeat(2, 1fr)"]} gap={8} mb={8}>
+            {plans.map((plan) => (
+              <PlanOption
+                key={plan.name}
+                {...plan}
+                isSelected={selectedPlan === plan}
+                onSelect={() => handleSelectPlan(plan)}
+              />
+            ))}
+          </Grid>
+        </>
+      ) : (
+        <VStack spacing={6}>
+          <Heading as="h2" size="xl">
+            Processing Payment for {selectedPlan.name} Plan
+          </Heading>
+          <Text color={'gray.500'}>
+            Please transfer {selectedPlan.price} VND according to the image below. You will be automatically redirected in 10 seconds.
+          </Text>
+          <Box boxShadow="lg" borderRadius="lg" overflow="hidden">
+            <Image
+              src="/Bankimg/462564925_1580417332564754_6516071490461345399_n.jpg"
+              alt="Bank Transfer Details"
+              maxWidth="400px"
+              objectFit="contain"
+            />
+          </Box>
+          <Spinner size="xl" color="teal.500" />
+        </VStack>
+      )}
+    </Box>
+  );
+};
 
-export default PaymentPage
+export default PaymentPage;
+

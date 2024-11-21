@@ -13,6 +13,7 @@ import { User } from "./model/user.js";
 import rateLimit from "express-rate-limit";
 import bodyParser from "body-parser";
 
+
 dotenv.config(); // Load environment variables from .env file
 
 if (!process.env.JWT_SECRET) {
@@ -22,6 +23,7 @@ if (!process.env.JWT_SECRET) {
 const app = express(); // Create Express app
 
 // Apply rate limiting and CORS middleware globally
+
 app.use(cors());
 app.use(
   rateLimit({
@@ -38,6 +40,7 @@ app.use("/auth", authRoutes);
 app.use("/song", songRoutes);
 app.use("/playlist", playlistRoutes);
 app.use(express.urlencoded({ extended: true }));
+
 
 // Passport JWT Strategy
 var opts = {
@@ -82,4 +85,3 @@ app.listen(PORT, () => {
   console.log("Server started at http://localhost:" + PORT);
 });
 
-// Error handling middleware for express-async-errors

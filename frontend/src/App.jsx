@@ -26,6 +26,8 @@ import ResetPasswordPage from "./pages/ResetPassword";
 import PaymentPage from "./pages/PaymentPage";
 import SearchPage from "./pages/SearchPage";
 import PlaylistViewPage from "./pages/PlaylistViewPage";
+import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
+
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -103,6 +105,17 @@ const App = () => {
               <Route path="/resetPassword" element={<ResetPasswordPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
+
+
+              {/* <Route path="/mysongs" element={<MySongPage />} />
+              <Route path="/feed" element={<FeedPage />} />
+              <Route path="/library" element={<LibraryPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/trending" element={<TrendingPage />} />
+              <Route path="/playlistView" element={<PlaylistViewPage />} /> */}
             </Routes>
           )}
         </Box>
