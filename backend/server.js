@@ -13,7 +13,6 @@ import { User } from "./model/user.js";
 import rateLimit from "express-rate-limit";
 import bodyParser from "body-parser";
 
-
 dotenv.config(); // Load environment variables from .env file
 
 if (!process.env.JWT_SECRET) {
@@ -41,7 +40,6 @@ app.use("/song", songRoutes);
 app.use("/playlist", playlistRoutes);
 app.use(express.urlencoded({ extended: true }));
 
-
 // Passport JWT Strategy
 var opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -67,13 +65,9 @@ passport.use(
 app.use(cors());
 app.use(bodyParser.json());
 
-// Import route Stripe
-import stripePaymentRoute from './routes/stripePayment.js';
-app.use('/api/stripe', stripePaymentRoute);
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).send("Something broke!");
 });
 
 // Connect to database and start server
@@ -84,4 +78,3 @@ app.listen(PORT, () => {
   connectDB();
   console.log("Server started at http://localhost:" + PORT);
 });
-
