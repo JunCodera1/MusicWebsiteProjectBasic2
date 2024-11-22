@@ -1,11 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button, Image, Heading, Text, Spinner, VStack, HStack, useColorModeValue, Badge, Grid } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { CheckIcon } from '@chakra-ui/icons';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Image,
+  Heading,
+  Text,
+  Spinner,
+  VStack,
+  HStack,
+  useColorModeValue,
+  Badge,
+  Grid,
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { CheckIcon } from "@chakra-ui/icons";
+import Navbar from "@/components/Navbar";
+import LoggedInContainer from "@/containers/LoggedInContainer";
 
 const PlanOption = ({ name, price, features, isSelected, onSelect }) => {
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = isSelected ? 'teal.500' : useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue("white", "gray.800");
+  const borderColor = isSelected
+    ? "teal.500"
+    : useColorModeValue("gray.200", "gray.700");
 
   return (
     <Box
@@ -16,9 +32,9 @@ const PlanOption = ({ name, price, features, isSelected, onSelect }) => {
       width="full"
       height="full"
       bg={bgColor}
-      boxShadow={isSelected ? 'lg' : 'md'}
+      boxShadow={isSelected ? "lg" : "md"}
       transition="all 0.2s"
-      _hover={{ boxShadow: 'lg' }}
+      _hover={{ boxShadow: "lg" }}
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
@@ -36,11 +52,11 @@ const PlanOption = ({ name, price, features, isSelected, onSelect }) => {
         ))}
       </VStack>
       <Button
-        colorScheme={isSelected ? 'teal' : 'gray'}
+        colorScheme={isSelected ? "teal" : "gray"}
         onClick={onSelect}
         mt={4}
       >
-        {isSelected ? 'Selected' : 'Select Plan'}
+        {isSelected ? "Selected" : "Select Plan"}
       </Button>
     </Box>
   );
@@ -53,15 +69,20 @@ const PaymentPage = () => {
 
   const plans = [
     {
-      name: 'Standard',
-      price: '99,000',
-      features: ['Basic features', 'Limited songs', 'Standard quality']
+      name: "Standard",
+      price: "99,000",
+      features: ["Basic features", "Limited songs", "Standard quality"],
     },
     {
-      name: 'Premium Pro',
-      price: '199,000',
-      features: ['All features', 'Unlimited songs', 'High quality audio', 'Offline mode']
-    }
+      name: "Premium Pro",
+      price: "199,000",
+      features: [
+        "All features",
+        "Unlimited songs",
+        "High quality audio",
+        "Offline mode",
+      ],
+    },
   ];
 
   const handleSelectPlan = (plan) => {
@@ -73,23 +94,27 @@ const PaymentPage = () => {
     let timer;
     if (isProcessing) {
       timer = setTimeout(() => {
-        navigate('/success');
-      }, 10000);
+        navigate("/success");
+      }, 100000);
     }
     return () => clearTimeout(timer);
   }, [isProcessing, navigate]);
 
   return (
-    <Box textAlign="center" py={10} px={6} maxWidth="1200px" margin="auto">
+    <LoggedInContainer>
       {!isProcessing ? (
         <>
           <Heading as="h2" size="xl" mb={4}>
             Choose Your SoundBox Plan
           </Heading>
-          <Text color={'gray.500'} mb={6}>
+          <Text color={"gray.500"} mb={6}>
             Upgrade to Premium Pro for the ultimate music experience!
           </Text>
-          <Grid templateColumns={["1fr", "1fr", "repeat(2, 1fr)"]} gap={8} mb={8}>
+          <Grid
+            templateColumns={["1fr", "1fr", "repeat(2, 1fr)"]}
+            gap={8}
+            mb={8}
+          >
             {plans.map((plan) => (
               <PlanOption
                 key={plan.name}
@@ -105,8 +130,9 @@ const PaymentPage = () => {
           <Heading as="h2" size="xl">
             Processing Payment for {selectedPlan.name} Plan
           </Heading>
-          <Text color={'gray.500'}>
-            Please transfer {selectedPlan.price} VND according to the image below. You will be automatically redirected in 10 seconds.
+          <Text color={"gray.500"}>
+            Please transfer {selectedPlan.price} VND according to the image
+            below. You will be automatically redirected in 100 seconds.
           </Text>
           <Box boxShadow="lg" borderRadius="lg" overflow="hidden">
             <Image
@@ -119,9 +145,8 @@ const PaymentPage = () => {
           <Spinner size="xl" color="teal.500" />
         </VStack>
       )}
-    </Box>
+    </LoggedInContainer>
   );
 };
 
 export default PaymentPage;
-
