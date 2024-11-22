@@ -1,188 +1,127 @@
-import React, { useState } from "react";
-import { CloudIcon, Menu, X } from "lucide-react";
-import Navbar from "../components/Navbar";
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Image, Heading, Text, Spinner, VStack, HStack, useColorModeValue, Badge, Grid } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { CheckIcon } from '@chakra-ui/icons';
 
-const menuItemsLeft = [
-  { label: "Home", uri: "/" },
-  { label: "Feed", uri: "/feed" },
-  { label: "Trending", uri: "/trending" },
-  { label: "Upload", uri: "/upload" },
-  { label: "Premium", uri: "/payment" },
-];
+const PlanOption = ({ name, price, features, isSelected, onSelect }) => {
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = isSelected ? 'teal.500' : useColorModeValue('gray.200', 'gray.700');
 
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
-const Button = ({
-  children,
-  variant = "default",
-  className = "",
-  ...props
-}) => {
-  const baseStyle =
-    "px-4 py-2 rounded font-semibold text-sm uppercase transition-colors duration-200";
-  const variants = {
-    default: "bg-pink-500 text-white hover:bg-pink-600",
-    outline: "bg-white text-pink-500 border border-pink-200 hover:bg-pink-50",
-  };
   return (
-    <div>
-      <button
-        className={`${baseStyle} ${variants[variant]} ${className}`}
-        {...props}
+    <Box
+      borderWidth="1px"
+      borderRadius="lg"
+      borderColor={borderColor}
+      p={6}
+      width="full"
+      height="full"
+      bg={bgColor}
+      boxShadow={isSelected ? 'lg' : 'md'}
+      transition="all 0.2s"
+      _hover={{ boxShadow: 'lg' }}
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
+      <VStack spacing={4} align="stretch" flex={1}>
+        <Heading size="md">{name}</Heading>
+        <Text fontSize="2xl" fontWeight="bold">
+          {price} <Badge colorScheme="teal">VND/month</Badge>
+        </Text>
+        {features.map((feature, index) => (
+          <HStack key={index}>
+            <CheckIcon color="teal.500" />
+            <Text>{feature}</Text>
+          </HStack>
+        ))}
+      </VStack>
+      <Button
+        colorScheme={isSelected ? 'teal' : 'gray'}
+        onClick={onSelect}
+        mt={4}
       >
-        {children}
-      </button>
-    </div>
+        {isSelected ? 'Selected' : 'Select Plan'}
+      </Button>
+    </Box>
   );
 };
 
-const Card = ({ children, className = "", ...props }) => (
-  <div
-    className={`bg-lime-100 rounded-lg overflow-hidden ${className}`}
-    {...props}
-  >
-    {children}
-  </div>
-);
+const PaymentPage = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const navigate = useNavigate();
 
-const PricingCard = ({ title, price, features, isPremium }) => (
-  <Card
-    className={`border-2 border-gray-200 transition-all duration-200 hover:shadow-xl ${
-      isPremium ? "shadow-lg scale-105" : ""
-    }`}
-  >
-    <div className="p-6">
-      <h3 className="text-xl font-normal text-teal-500 mb-2">{title}</h3>
-      <div className="text-3xl font-light mb-6 text-teal-400">
-        <sup className="text-lg  align-super mr-1">$</sup>
-        {price}
-        <span className="text-base text-gray-500 ml-1">/ mo</span>
-      </div>
-      <ul className="space-y-2 mb-6">
-        {features.map((feature, index) => (
-          <li key={index} className="text-center text-gray-600">
-            {feature}
-          </li>
-        ))}
-      </ul>
-      <Button variant={isPremium ? "default" : "outline"} className="w-full">
-        Get Started
-      </Button>
-    </div>
-  </Card>
-);
+  const plans = [
+    {
+      name: 'Standard',
+      price: '99,000',
+      features: ['Basic features', 'Limited songs', 'Standard quality']
+    },
+    {
+      name: 'Premium Pro',
+      price: '199,000',
+      features: ['All features', 'Unlimited songs', 'High quality audio', 'Offline mode']
+    }
+  ];
 
-export default function PaymentPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [plans] = useState([
-    {
-      title: "Basic",
-      price: 9,
-      features: [
-        "1 GB memory",
-        "1 core processor",
-        "30 GB SSD Disk",
-        "2 TB Transfer",
-      ],
-    },
-    {
-      title: "Premium",
-      price: 19,
-      features: [
-        "2 GB memory",
-        "2 core processor",
-        "40 GB SSD Disk",
-        "3 TB Transfer",
-      ],
-    },
-    {
-      title: "Gold",
-      price: 39,
-      features: [
-        "4 GB memory",
-        "2 core processor",
-        "60 GB SSD Disk",
-        "4 TB Transfer",
-      ],
-    },
-  ]);
+  const handleSelectPlan = (plan) => {
+    setSelectedPlan(plan);
+    setIsProcessing(true);
+  };
+
+  useEffect(() => {
+    let timer;
+    if (isProcessing) {
+      timer = setTimeout(() => {
+        navigate('/success');
+      }, 10000);
+    }
+    return () => clearTimeout(timer);
+  }, [isProcessing, navigate]);
 
   return (
-    <div className="min-h-screen">
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
-      {/* <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
-                <div className="container mx-auto px-4">
-                    <div className="flex items-center justify-between h-16">
-                        <a href="#" className="flex items-center text-pink-500 font-semibold text-xl">
-                            <CloudIcon className="h-6 w-6 mr-2" />
-                            
-                        </a>
-                        <div className="hidden md:flex items-center space-x-4">
-                            <a href="#" className="text-gray-500 hover:text-gray-700 text-sm font-semibold uppercase">Services</a>
-                            <a href="#" className="text-gray-500 hover:text-gray-700 text-sm font-semibold uppercase">Pricing</a>
-                            <a href="#" className="text-gray-500 hover:text-gray-700 text-sm font-semibold uppercase">Help</a>
-                            <Button variant="outline">Sign In</Button>
-                        </div>
-                        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                            <Menu className="h-6 w-6 text-gray-500" />
-                        </button>
-                    </div>
-                </div>
-            </nav> */}
-
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-white">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex justify-end">
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="text-gray-500"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            <div className="flex flex-col items-center space-y-4 mt-8">
-              <a
-                href="#"
-                className="text-gray-500 hover:text-gray-700 text-lg font-semibold uppercase"
-              >
-                Services
-              </a>
-              <a
-                href="#"
-                className="text-teal-500 hover:text-gray-700 text-lg font-semibold uppercase"
-              >
-                Pricing
-              </a>
-              <a
-                href="#"
-                className="text-gray-500 hover:text-gray-700 text-lg font-semibold uppercase"
-              >
-                Help
-              </a>
-              <Button variant="outline">Sign In</Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <main className="pt-24 pb-16">
-        <section className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl text-teal-500 font-normal text-gray-900 mb-4">
-              Pricing Plans
-            </h1>
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-              Our cloud hosting plans are designed for companies of all sizes.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {plans.map((plan, index) => (
-              <PricingCard key={plan.title} {...plan} isPremium={index === 1} />
+    <Box textAlign="center" py={10} px={6} maxWidth="1200px" margin="auto">
+      {!isProcessing ? (
+        <>
+          <Heading as="h2" size="xl" mb={4}>
+            Choose Your SoundBox Plan
+          </Heading>
+          <Text color={'gray.500'} mb={6}>
+            Upgrade to Premium Pro for the ultimate music experience!
+          </Text>
+          <Grid templateColumns={["1fr", "1fr", "repeat(2, 1fr)"]} gap={8} mb={8}>
+            {plans.map((plan) => (
+              <PlanOption
+                key={plan.name}
+                {...plan}
+                isSelected={selectedPlan === plan}
+                onSelect={() => handleSelectPlan(plan)}
+              />
             ))}
-          </div>
-        </section>
-      </main>
-    </div>
+          </Grid>
+        </>
+      ) : (
+        <VStack spacing={6}>
+          <Heading as="h2" size="xl">
+            Processing Payment for {selectedPlan.name} Plan
+          </Heading>
+          <Text color={'gray.500'}>
+            Please transfer {selectedPlan.price} VND according to the image below. You will be automatically redirected in 10 seconds.
+          </Text>
+          <Box boxShadow="lg" borderRadius="lg" overflow="hidden">
+            <Image
+              src="/Bankimg/462564925_1580417332564754_6516071490461345399_n.jpg"
+              alt="Bank Transfer Details"
+              maxWidth="400px"
+              objectFit="contain"
+            />
+          </Box>
+          <Spinner size="xl" color="teal.500" />
+        </VStack>
+      )}
+    </Box>
   );
-}
+};
+
+export default PaymentPage;
+
