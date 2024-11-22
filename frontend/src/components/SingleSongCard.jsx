@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { PlayCircle, MoreHorizontal } from "lucide-react";
 import SongContext from "./SongContext";
+import { Howl } from "howler";
 
 // Helper function to format duration
 const formatDuration = (durationInSeconds) => {
@@ -15,11 +16,25 @@ const formatDuration = (durationInSeconds) => {
 
 const SingleSongCard = ({ info, onPlay, onMoreOptions }) => {
   const { setCurrentSong } = useContext(SongContext);
+  const [duration, setDuration] = useState(info.duration || null);
 
-  // Prepare formatted duration once at the top level
-  const formattedDuration = info.duration
-    ? formatDuration(info.duration)
-    : "6:14";
+  useEffect(() => {
+    if (!info.duration) {
+      // Nếu không có duration, tải metadata từ file nhạc
+      const sound = new Howl({
+        src: [info.track],
+        html5: true, // Sử dụng HTML5 audio
+      });
+
+      sound.on("load", () => {
+        setDuration(sound.duration()); // Lưu duration vào state
+        sound.unload(); // Giải phóng audio sau khi lấy metadata
+      });
+    }
+  }, [info]);
+
+  // Format duration nếu có
+  const formattedDuration = duration ? formatDuration(duration) : "Loading...";
 
   return (
     <div

@@ -6,6 +6,7 @@ import sendEmail from "../utils/sendEmail.js"; // Import hàm sendEmail
 import getToken from "../utils/helpers.js"; // Import hàm getToken
 import CryptoJS from "crypto-js";
 import axios from "axios";
+import passport from "passport";
 import moment from "moment";
 
 const router = express.Router();
@@ -255,5 +256,28 @@ router.post("/payment", async (req, res) => {
     });
   }
 });
+
+// Route trong auth.js
+router.get(
+  "/get/users/:userId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const loggedInUser = req.user; // Người dùng hiện tại (được xác thực qua JWT)
+
+      // Tìm kiếm thông tin người dùng
+      const user = await User.findById(userId).select("name email avatar"); // Chỉ trả về các trường cần thiết
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
 
 export default router;

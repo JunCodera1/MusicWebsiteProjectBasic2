@@ -47,7 +47,7 @@ router.get("/", admin, async (req, res) => {
 });
 
 // Get user by id
-router.get("/:id", [validObjectId, auth], async (req, res) => {
+router.get("/get/users/:id", [validObjectId, auth], async (req, res) => {
   const user = await User.findById(req.params.id).select("-password -__v");
   res.status(200).send({ data: user });
 });

@@ -7,9 +7,32 @@ import {
 import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
 import { MobileNav } from "./Mobile";
+import { useState, useEffect } from "react";
 
 export function Navbar({ menuItemsLeft, menuItemsRight }) {
   const { isOpen, onToggle } = useDisclosure();
+  const [user, setUser] = useState(null);
+
+  // Fetch user data from API
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/auth/get/users/:userId"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userData = await response.json();
+        setUser(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <VStack w="full" spacing={0}>
       <HStack
@@ -23,14 +46,7 @@ export function Navbar({ menuItemsLeft, menuItemsRight }) {
         {/* left content */}
         <LeftContent items={menuItemsLeft} onToggle={onToggle} />
         {/* right content */}
-        <RightContent
-          items={menuItemsRight}
-          onToggle={onToggle}
-          user={{
-            name: "Minh Tiến",
-            avatar: "", // Không có URL ảnh sẽ sử dụng ảnh mặc định
-          }}
-        />
+        <RightContent items={menuItemsRight} onToggle={onToggle} user={user} />
       </HStack>
       {/* mobile content */}
       <MobileNav items={menuItemsLeft} isOpen={isOpen} />

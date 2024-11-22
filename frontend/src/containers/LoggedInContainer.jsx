@@ -41,27 +41,33 @@ const LoggedInContainer = ({ children }) => {
   const [volume, setVolume] = useState(1);
   const [muted, setMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0); // Thời gian hiện tại
-  const [duration, setDuration] = useState(0); // Thời gian tổng
+  const [duration, setDuration] = useState(() => {
+    // Lấy duration từ localStorage nếu có
+    return parseFloat(localStorage.getItem("songDuration") || 0);
+  });
 
   // Tính toán finalVolume với chế độ mute
   const finalVolume = muted ? 0 : volume;
 
   const firstUpdate = useRef(true);
+  const currentTimeRef = useRef(0);
+
   useEffect(() => {
-    let interval;
+    const interval = setInterval(() => {
+      if (soundPlayed && soundPlayed.playing()) {
+        const currentSeek = soundPlayed.seek();
+        currentTimeRef.current = currentSeek; // Lưu giá trị vào ref
+        setCurrentTime(currentSeek); // Cập nhật state
+      }
+    }, 1000); // Cập nhật mỗi giây
 
-    if (soundPlayed && !isPaused) {
-      interval = setInterval(() => {
-        if (soundPlayed.playing()) {
-          setCurrentTime(soundPlayed.seek()); // Cập nhật thời gian hiện tại
-        } else {
-          clearInterval(interval); // Dừng nếu bài hát không phát
-        }
-      }, 1000); // Cập nhật mỗi giây
-    }
+    return () => clearInterval(interval); // Dọn dẹp khi component unmount hoặc soundPlayed thay đổi
+  }, [soundPlayed]);
 
-    return () => clearInterval(interval); // Dọn dẹp khi component unmount hoặc isPaused thay đổi
-  }, [soundPlayed, isPaused]); // Chạy lại khi soundPlayed hoặc isPaused thay đổi
+  // Log giá trị currentTimeRef khi nó thay đổi
+  useEffect(() => {
+    console.log(currentTimeRef.current);
+  }, [currentTime]); // Log khi currentTime thay đổi
 
   useLayoutEffect(() => {
     // Prevent first render logic
@@ -128,14 +134,31 @@ const LoggedInContainer = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    // Lưu duration vào localStorage khi nó thay đổi
+    if (duration) {
+      localStorage.setItem("songDuration", duration);
+    }
+  }, [duration]);
+
   // Cập nhật thời gian hiện tại mỗi 100ms
   const updateCurrentTime = () => {
-    if (soundPlayed) {
-      setCurrentTime(soundPlayed.seek());
-      setTimeout(updateCurrentTime, 100);
-      console.log(currentTime);
+    if (soundPlayed && soundPlayed.playing()) {
+      const currentSeek = soundPlayed.seek();
+      if (currentSeek !== currentTimeRef.current) {
+        setCurrentTime(currentSeek); // Chỉ cập nhật khi giá trị thay đổi
+        currentTimeRef.current = currentSeek; // Cập nhật giá trị trong ref
+      }
     }
+    requestAnimationFrame(updateCurrentTime); // Gọi lại chính nó
   };
+
+  // Bắt đầu cập nhật khi bài hát bắt đầu phát
+  useEffect(() => {
+    if (soundPlayed && soundPlayed.playing()) {
+      updateCurrentTime(); // Gọi hàm ngay khi bài hát bắt đầu
+    }
+  }, [soundPlayed]); // Chỉ gọi lại khi soundPlayed thay đổi
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -175,13 +198,13 @@ const LoggedInContainer = ({ children }) => {
           color={"white"}
           display={"flex"}
         >
-          <div className="w-1/5 flex items-center">
+          <div className="w-1/4 flex items-center">
             <Image
               src={currentSong.thumbnail}
               className="h-16 w-16"
               borderRadius={"full"}
             />
-            <div className="pl-4">
+            <div className="pl-4 w-4/5">
               <div className="text-md hover:underline">
                 {currentSong ? currentSong.name : "No song selected"}
               </div>
