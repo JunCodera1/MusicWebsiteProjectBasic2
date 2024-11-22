@@ -167,7 +167,7 @@ const LoggedInContainer = ({ children }) => {
   };
 
   return (
-    <Box className="w-full h-9/10">
+    <Box className="w-full" minH="100vh" display="flex" flexDirection="column">
       <Navbar menuItemsLeft={menuItemsLeft} />
       <Box display="flex" minH="100vh" position="relative">
         {/* Sidebar */}
@@ -184,7 +184,7 @@ const LoggedInContainer = ({ children }) => {
           display="flex"
           flexDirection="column"
           overflowY="auto"
-          height={"100vh"}
+          height="100%"
         >
           <Box p={4}>{children}</Box>
         </Box>
@@ -197,6 +197,9 @@ const LoggedInContainer = ({ children }) => {
           className="bg-opacity-30 items-center px-4"
           color={"white"}
           display={"flex"}
+          position="sticky"
+          top={0} // Dính vào phía trên cùng khi cuộn
+          zIndex={10} // Để đảm bảo Box luôn hiển thị trên các phần tử khác
         >
           <div className="w-1/4 flex items-center">
             <Image
@@ -222,7 +225,10 @@ const LoggedInContainer = ({ children }) => {
             </div>
           </div>
           <div className="w-3/4 flex items-center justify-center">
-            <div className="flex w-2/6 justify-between items-center">
+            <div
+              className="flex w-2/6 justify-between items-center"
+              style={{ zIndex: 10 }}
+            >
               <FaShuffle
                 className="text-gray-500 hover:text-white text-md"
                 size={24}

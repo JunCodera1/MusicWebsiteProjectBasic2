@@ -28,7 +28,6 @@ import SearchPage from "./pages/SearchPage";
 import PlaylistViewPage from "./pages/PlaylistViewPage";
 import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
 
-
 const App = () => {
   const [cookie] = useCookies(["token"]);
   const isAuthenticated = !!cookie.token;
@@ -66,14 +65,14 @@ const App = () => {
             base: "100vh",
             sm: "100vh",
             md: "163vh",
-            lg: "120vh",
+            lg: "102vh",
             xl: "100vh",
             "2xl": "110vh",
           }}
           minW={{
             base: "98vw",
             sm: "100vw",
-            md: "162vw",
+            md: "167vw",
             lg: "118vw",
             xl: "90vw",
             "2xl": "100vw",
@@ -105,7 +104,6 @@ const App = () => {
               <Route path="/resetPassword" element={<ResetPasswordPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
-
 
               {/* <Route path="/mysongs" element={<MySongPage />} />
               <Route path="/feed" element={<FeedPage />} />

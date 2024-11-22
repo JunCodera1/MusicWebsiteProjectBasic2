@@ -11,6 +11,9 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
+import Cookies from "js-cookie";
+import { makeAuthenticatedGETRequest } from "@/utils/serverHelper";
+import { jwtDecode } from "jwt-decode";
 import { PiPlaylistBold } from "react-icons/pi";
 import { AiFillPlusSquare } from "react-icons/ai";
 import { IoLibrarySharp } from "react-icons/io5";
@@ -29,7 +32,41 @@ export default function Sidebar() {
   const [navSize, changeNavSize] = useState("large");
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
   const iconColor = useColorModeValue("black", "white");
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Move the fetchUserData logic into a stable useEffect that won't alter hooks
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.identifier;
+
+        const fetchUserData = async () => {
+          try {
+            setIsLoading(true);
+            const response = await makeAuthenticatedGETRequest(
+              `/auth/get/users/${userId}`
+            );
+            setUserData(response);
+          } catch (err) {
+            setError("Failed to fetch user data.");
+          } finally {
+            setIsLoading(false);
+          }
+        };
+        fetchUserData();
+      } catch (err) {
+        setError("Invalid token.");
+      }
+    } else {
+      setError("User is not authenticated.");
+    }
+  }, []); // Runs once when the component mounts
+
+  // Adjust the navigation size on screen change
   useEffect(() => {
     if (isSmallScreen) {
       changeNavSize("small");
@@ -38,6 +75,10 @@ export default function Sidebar() {
     }
   }, [isSmallScreen]);
 
+  if (isLoading) {
+    return <div>Loading...</div>; // Ensure early return doesn't interfere with hooks
+  }
+
   return (
     <Flex
       pos="flex-start"
@@ -45,16 +86,16 @@ export default function Sidebar() {
       h={"660px"}
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-      borderRadius={navSize == "small" ? "15px" : "30px"}
-      w={navSize == "small" ? "75px" : { base: "75px", md: "200px" }}
+      borderRadius={navSize === "small" ? "15px" : "30px"}
+      w={navSize === "small" ? "75px" : { base: "75px", md: "200px" }}
       flexDir="column"
       justifyContent="flex-start"
       bg={useColorModeValue("gray.100", "gray.700")}
       marginLeft={"10px"}
       zIndex={"100"}
       style={{
-        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.8)", // Shadow rõ và đậm hơn
-        transition: "all 0.3s ease", // Thêm hiệu ứng chuyển động mượt mà
+        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.8)",
+        transition: "all 0.3s ease",
       }}
     >
       <Flex
@@ -137,16 +178,22 @@ export default function Sidebar() {
       >
         <Divider display={navSize == "small" ? "none" : "flex"} />
         <Flex mt={4} align="center">
-          <Avatar size="sm" src={avatarImg} />
-          <Flex
-            flexDir="column"
-            ml={4}
-            display={navSize == "small" ? "none" : "flex"}
-          >
-            <Heading as="h3" size="sm">
-              Jun
-            </Heading>
-            <Text color="gray">Admin</Text>
+          <Flex mt={4} align="center">
+            <Avatar size="sm" src={userData ? userData.avatar : ""} />
+            <Flex
+              flexDir="column"
+              ml={4}
+              display={navSize == "small" ? "none" : "flex"}
+            >
+              <Heading as="h3" size="sm">
+                {userData ? userData.username : "Loading..."}{" "}
+                {/* Safely access username */}
+              </Heading>
+              <Text color="gray">
+                {userData ? userData.role : "Loading..."}{" "}
+                {/* Assuming 'role' is a property */}
+              </Text>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
