@@ -4,10 +4,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto"; // Import crypto để tạo token
 import sendEmail from "../utils/sendEmail.js"; // Import hàm sendEmail
 import getToken from "../utils/helpers.js"; // Import hàm getToken
-import CryptoJS from "crypto-js";
-import axios from "axios";
 import passport from "passport";
-import moment from "moment";
 
 const router = express.Router();
 
@@ -16,7 +13,7 @@ router.post("/register", async (req, res) => {
   // This code is run when the /register api is called as a POST request
 
   // My req.body will be of the format {email, password, firstName, lastName, username }
-  const { email, password, firstname, lastname, username } = req.body;
+  const { email, password, firstname, lastname, username, avatar } = req.body;
 
   // Step 2 : Does a user with this email already exist? If yes, we throw an error.
   const user = await User.findOne({ email: email });
@@ -57,32 +54,33 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  // Step 1: Get email and password sent by user from req.body
-  const { email, password } = req.body;
+  try {
+    // Step 1: Get email and password sent by user from req.body
+    const { email, password } = req.body;
 
-  // Step 2: Check if a user with given email exists. If not, the credentials are invalid
-  const user = await User.findOne({ email: email });
-  if (!user) {
-    return res.status(403).json({ err: "Invalid credentials" });
+    // Step 2: Check if a user with given email exists. If not, the credentials are invalid
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(403).json({ err: "Invalid credentials" });
+    }
+
+    // Step 3: If the user exists, check if the password is correct. If not, the credentials are invalid
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(403).json({ err: "Invalid credentials" });
+    }
+
+    // Step 4: If the credentials are valid, we create a token and return it to the user
+    const token = await getToken(email, user); // Assuming getToken is a function that generates a JWT token
+    const userToReturn = { ...user.toJSON(), token };
+    delete userToReturn.password; // Don't send the password in the response
+
+    // Send the response with user data and token
+    return res.status(200).json(userToReturn);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ err: "Internal server error" });
   }
-
-  console.log(user);
-
-  // Step 3: If the user exists, check if the password is correct. If not, the credentials are invalid
-  // This is a tricky step. Why? Because we have stored the original password in a hashed form, which we cannot use to get back the password.
-  // I cannot do : if(password === user.password)
-  // bcrypt.compare enabled us to compare 1 password in plaintext(password from req.body) to a hashed password(the one in our db) securely
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  // This will return true if the password is correct
-  if (!isPasswordValid) {
-    return res.status(403).json({ err: "Invalid credentials" });
-  }
-
-  // Step 4: If the credentials are valid, we create a token and return it to the user
-  const token = await getToken(email, user);
-  const userToReturn = { ...user.toJSON(), token };
-  delete userToReturn.password;
-  return res.status(200).json(userToReturn);
 });
 
 // This POST route will help to forgot password
@@ -174,105 +172,40 @@ router.post("/resetPassword/:token", async (req, res) => {
   }
 });
 
-// Payment route
-const config = {
-  app_id: process.env.ZALOPAY_APP_ID,
-  key1: process.env.ZALOPAY_KEY1,
-  key2: process.env.ZALOPAY_KEY2,
-  endpoint: process.env.ZALOPAY_ENDPOINT,
-};
-router.post("/payment", async (req, res) => {
-  try {
-    console.log("Received POST /payment request");
-    console.log("Request body:", req.body);
-
-    const { app_user, amount, item } = req.body;
-
-    // Ensure required fields are provided
-    if (
-      !amount ||
-      !app_user ||
-      !item ||
-      !Array.isArray(item) ||
-      item.length === 0
-    ) {
-      return res.status(400).json({
-        error: "Missing or invalid required fields",
-        message:
-          "Please provide 'amount', 'app_user', and 'item' as a non-empty array.",
-      });
-    }
-
-    // Generate transaction ID
-    const transID = Math.floor(Math.random() * 1000000);
-    const app_trans_id = `${moment().format("YYMMDD")}_${transID}`;
-
-    const order = {
-      app_id: config.app_id,
-      app_trans_id: app_trans_id,
-      app_user,
-      app_time: Math.floor(Date.now()), // Timestamp in milliseconds
-      amount: parseInt(amount, 10),
-      item: JSON.stringify(item), // Stringify item array
-      description: `<Tên Merchant/Dịch vụ> - Thanh toán đơn hàng #${app_trans_id}`,
-      embed_data: JSON.stringify({
-        redirecturl: "http://localhost:8080/success",
-      }), // Stringify embed_data
-    };
-
-    // Generate the string for MAC creation
-    const data = `${config.app_id}|${order.app_trans_id}|${order.app_user}|${order.amount}|${order.app_time}|${order.embed_data}|${order.item}`;
-    console.log("Generated data for MAC:", data);
-
-    // Generate MAC
-    order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
-    console.log("Generated MAC:", order.mac);
-
-    // Make the POST request to ZaloPay
-    const result = await axios.post(config.endpoint, order);
-
-    console.log("ZaloPay response:", result.data);
-
-    // Check the response from ZaloPay
-    if (result.data.return_code !== 1) {
-      return res.status(400).json({
-        error: result.data.return_message,
-        message: result.data.sub_return_message,
-      });
-    }
-
-    res.status(200).json(result.data);
-  } catch (error) {
-    console.error("Payment error:", error);
-
-    let errorMessage = "Payment processing failed.";
-    if (error.response && error.response.data) {
-      errorMessage = error.response.data.message || errorMessage;
-    }
-
-    res.status(500).json({
-      error: "Payment processing failed",
-      message: errorMessage,
-    });
-  }
-});
-
 // Route trong auth.js
+router.get(
+  "/get/users/me",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const userId = req.user._id;
+      const user = await User.findById(userId).select("username email avatar");
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user); // Return user data
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
 router.get(
   "/get/users/:userId",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const loggedInUser = req.user; // Người dùng hiện tại (được xác thực qua JWT)
+    const { userId } = req.params; // Get userId from route params
 
-      // Tìm kiếm thông tin người dùng
-      const user = await User.findById(userId).select("name email avatar"); // Chỉ trả về các trường cần thiết
+    try {
+      // Find the user by userId
+      const user = await User.findById(userId).select("username email avatar");
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      res.json(user);
+      res.json(user); // Return the user data
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });

@@ -60,7 +60,7 @@ export function RightContent({ items, user = null }) {
   };
 
   const profileData = {
-    name: user?.name || "Unknown",
+    name: user?.username || "Unknown",
     email: user?.email || "N/A",
     role: user?.role || "User",
   };
@@ -217,7 +217,7 @@ export function RightContent({ items, user = null }) {
             <Flex direction="column" gap={4}>
               <Input
                 placeholder="Update Name"
-                defaultValue={user?.name || ""}
+                defaultValue={user?.username || ""}
                 variant="filled"
               />
               <Input

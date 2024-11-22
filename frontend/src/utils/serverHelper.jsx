@@ -27,16 +27,32 @@ export const makeAuthenticatedPOSTRequest = async (route, body) => {
 };
 
 export const makeAuthenticatedGETRequest = async (route) => {
-  const token = getToken();
-  const response = await fetch(backendUrl + route, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const formattedResponse = await response.json();
-  return formattedResponse;
+  const token = getToken(); // Get the token, ensure it's defined
+
+  if (!token) {
+    throw new Error("No token found. User may not be authenticated.");
+  }
+
+  try {
+    const response = await fetch(backendUrl + route, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.message || "Failed to fetch data.");
+    }
+
+    const formattedResponse = await response.json();
+    return formattedResponse;
+  } catch (error) {
+    console.error("Error making authenticated GET request:", error);
+    throw error;
+  }
 };
 
 const getToken = () => {
@@ -44,5 +60,5 @@ const getToken = () => {
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
     "$1"
   );
-  return accessToken;
+  return accessToken ? decodeURIComponent(accessToken) : null; // Decode and handle absence of token
 };
