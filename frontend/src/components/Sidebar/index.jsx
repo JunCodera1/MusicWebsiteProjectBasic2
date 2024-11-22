@@ -82,7 +82,12 @@ export default function Sidebar() {
           description="This is the description for the dashboard."
           href={"/search"}
         />
-        <NavItem navSize={navSize} icon={IoLibrarySharp} title="Library" />
+        <NavItem
+          navSize={navSize}
+          icon={IoLibrarySharp}
+          title="Library"
+          href={"/library"}
+        />
         <NavItem
           navSize={navSize}
           icon={PiPlaylistBold}

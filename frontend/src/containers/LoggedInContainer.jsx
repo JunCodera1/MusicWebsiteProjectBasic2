@@ -1,4 +1,10 @@
-import React, { useContext, useState, useRef, useLayoutEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+} from "react";
 import Sidebar from "../components/Sidebar";
 import { Box, Image, useColorModeValue } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
@@ -34,11 +40,28 @@ const LoggedInContainer = ({ children }) => {
 
   const [volume, setVolume] = useState(1);
   const [muted, setMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0); // Thời gian hiện tại
+  const [duration, setDuration] = useState(0); // Thời gian tổng
 
   // Tính toán finalVolume với chế độ mute
   const finalVolume = muted ? 0 : volume;
 
   const firstUpdate = useRef(true);
+  useEffect(() => {
+    let interval;
+
+    if (soundPlayed && !isPaused) {
+      interval = setInterval(() => {
+        if (soundPlayed.playing()) {
+          setCurrentTime(soundPlayed.seek()); // Cập nhật thời gian hiện tại
+        } else {
+          clearInterval(interval); // Dừng nếu bài hát không phát
+        }
+      }, 1000); // Cập nhật mỗi giây
+    }
+
+    return () => clearInterval(interval); // Dọn dẹp khi component unmount hoặc isPaused thay đổi
+  }, [soundPlayed, isPaused]); // Chạy lại khi soundPlayed hoặc isPaused thay đổi
 
   useLayoutEffect(() => {
     // Prevent first render logic
@@ -47,33 +70,40 @@ const LoggedInContainer = ({ children }) => {
       return;
     }
 
-    // Only change the song if it's a new song
+    // Chỉ thay đổi bài hát nếu có bài hát mới
     if (
       currentSong &&
       (!soundPlayed || soundPlayed._src !== currentSong.track)
     ) {
       if (soundPlayed && soundPlayed.playing()) {
-        soundPlayed.stop(); // Stop the previous song if any
+        soundPlayed.stop(); // Dừng bài hát cũ nếu đang phát
       }
 
       changeSong(currentSong.track);
     } else if (soundPlayed) {
-      // If the same song is playing, adjust the volume
+      // Nếu bài hát giống bài hát cũ, chỉ thay đổi âm lượng
       soundPlayed.volume(finalVolume);
     }
-  }, [currentSong, finalVolume]); // Trigger on currentSong or volume change
+  }, [currentSong, finalVolume]); // Trigger khi currentSong hoặc volume thay đổi
 
   const changeSong = (songSrc) => {
-    // Create a new Howl instance and play the new song
+    // Tạo một đối tượng Howl mới và phát bài hát mới
     const sound = new Howl({
       src: [songSrc],
       html5: true,
       volume: finalVolume,
+      onplay: () => {
+        setDuration(sound.duration()); // Đặt thời gian tổng khi bài hát bắt đầu
+        updateCurrentTime(); // Bắt đầu cập nhật thời gian hiện tại
+      },
+      onend: () => {
+        setCurrentTime(0); // Đặt lại thời gian khi bài hát kết thúc
+      },
     });
 
-    setSoundPlayed(sound); // Set the new sound to state
-    sound.play(); // Play the song
-    setIsPaused(false); // Song is playing, not paused
+    setSoundPlayed(sound); // Lưu sound vào state
+    sound.play(); // Phát bài hát
+    setIsPaused(false); // Bài hát đang phát, không tạm dừng
   };
 
   const playSound = () => {
@@ -96,6 +126,21 @@ const LoggedInContainer = ({ children }) => {
       pauseSound();
       setIsPaused(true);
     }
+  };
+
+  // Cập nhật thời gian hiện tại mỗi 100ms
+  const updateCurrentTime = () => {
+    if (soundPlayed) {
+      setCurrentTime(soundPlayed.seek());
+      setTimeout(updateCurrentTime, 100);
+      console.log(currentTime);
+    }
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (
@@ -130,7 +175,7 @@ const LoggedInContainer = ({ children }) => {
           color={"white"}
           display={"flex"}
         >
-          <div className="w-1/3 flex items-center">
+          <div className="w-1/5 flex items-center">
             <Image
               src={currentSong.thumbnail}
               className="h-16 w-16"
@@ -146,8 +191,14 @@ const LoggedInContainer = ({ children }) => {
                   : "Unknown Artist"}
               </div>
             </div>
+            {/* Hiển thị thời gian phát */}
+            <div className="w-full flex justify-center mt-4">
+              <span className="text-sm text-white">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </span>
+            </div>
           </div>
-          <div className="w-1/2 flex items-center justify-center">
+          <div className="w-3/4 flex items-center justify-center">
             <div className="flex w-2/6 justify-between items-center">
               <FaShuffle
                 className="text-gray-500 hover:text-white text-md"
