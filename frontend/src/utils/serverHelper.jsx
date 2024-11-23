@@ -55,6 +55,36 @@ export const makeAuthenticatedGETRequest = async (route) => {
   }
 };
 
+export const makeAuthenticatedPUTRequest = async (route, body) => {
+  const token = getToken(); // Get the token, ensure it's defined
+
+  if (!token) {
+    throw new Error("No token found. User may not be authenticated.");
+  }
+
+  try {
+    const response = await fetch(backendUrl + route, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body), // Send the request body with the data to update
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.message || "Failed to update data.");
+    }
+
+    const formattedResponse = await response.json();
+    return formattedResponse;
+  } catch (error) {
+    console.error("Error making authenticated PUT request:", error);
+    throw error;
+  }
+};
+
 const getToken = () => {
   const accessToken = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
