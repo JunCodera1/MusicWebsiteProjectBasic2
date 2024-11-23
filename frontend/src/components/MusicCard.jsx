@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { getToken, playTrack } from '../spotify';
-
+import React, { useEffect, useState, useRef } from "react";
+import { getToken, playTrack } from "../spotify";
 
 import {
   Box,
@@ -21,11 +20,9 @@ const MusicCard = ({ image, title, artist, audioSrc }) => {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [token, setToken] = useState(null);
-  const [player, setPlayer] = useState(null);
-  const [deviceId, setDeviceId] = useState(null)
+  const [deviceId, setDeviceId] = useState(null);
 
   // Play the track when the component mounts
-
 
   // Toggle Play/Pause and update state
   const togglePlayPause = () => {
