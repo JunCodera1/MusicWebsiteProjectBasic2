@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { PlayCircle, MoreHorizontal } from "lucide-react";
 import SongContext from "./SongContext";
 import { Howl } from "howler";
+import AddToPlaylistModal from "@/modals/AddToPlaylistModal"; // Import the AddToPlaylistModal
 
 // Helper function to format duration
 const formatDuration = (durationInSeconds) => {
@@ -25,7 +26,8 @@ const SingleSongCard = ({ info, onPlay }) => {
   const { setCurrentSong } = useContext(SongContext);
   const [duration, setDuration] = useState(info.duration || null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); // State to control modal visibility
+  const [modalOpen, setModalOpen] = useState(false); // State for the download modal
+  const [addToPlaylistModalOpen, setAddToPlaylistModalOpen] = useState(false); // State for add to playlist modal
 
   useEffect(() => {
     if (!info.duration) {
@@ -66,6 +68,12 @@ const SingleSongCard = ({ info, onPlay }) => {
     }
   };
 
+  // Handle adding song to playlist
+  const handleAddToPlaylist = () => {
+    setAddToPlaylistModalOpen(true); // Open the add to playlist modal
+    setMenuOpen(false); // Close the dropdown menu
+  };
+
   return (
     <div
       className="flex items-center p-4 hover:bg-gray-700 rounded-xl transition duration-200 ease-in-out relative group"
@@ -74,7 +82,7 @@ const SingleSongCard = ({ info, onPlay }) => {
       }}
       style={{
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)",
-        width: "82vw",
+        width: "79vw",
       }}
     >
       <div className="relative">
@@ -127,10 +135,7 @@ const SingleSongCard = ({ info, onPlay }) => {
             <ul>
               <li
                 className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
-                onClick={() => {
-                  console.log(`Added ${info.name} to playlist`);
-                  setMenuOpen(false);
-                }}
+                onClick={handleAddToPlaylist} // Open the add to playlist modal
               >
                 Add to Playlist
               </li>
@@ -179,6 +184,17 @@ const SingleSongCard = ({ info, onPlay }) => {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Add to Playlist Modal */}
+      {addToPlaylistModalOpen && (
+        <AddToPlaylistModal
+          closeModal={() => setAddToPlaylistModalOpen(false)}
+          addSongToPlaylist={(playlistId) => {
+            console.log(`Added song to playlist ${playlistId}`);
+            setAddToPlaylistModalOpen(false);
+          }}
+        />
       )}
     </div>
   );
