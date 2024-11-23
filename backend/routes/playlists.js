@@ -48,16 +48,20 @@ router.get(
     const { playlistId } = req.params;
 
     try {
-      // Tìm playlist theo _id
+      // Tìm playlist theo _id và trả về nếu tìm thấy
       const playlist = await Playlist.findById(playlistId);
 
       if (!playlist) {
-        return res.status(404).json({ err: "Playlist not found" });
+        // Nếu không tìm thấy playlist, trả về lỗi 404
+        return res.status(404).json({ error: "Playlist not found" });
       }
 
+      // Trả về thông tin playlist nếu tìm thấy
       return res.status(200).json(playlist);
     } catch (error) {
-      return res.status(500).json({ err: "Server error" });
+      // Nếu có lỗi trong quá trình truy vấn, trả về lỗi 500
+      console.error(error); // Log lỗi để dễ dàng debug
+      return res.status(500).json({ error: "Server error" });
     }
   }
 );
