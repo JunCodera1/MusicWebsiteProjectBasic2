@@ -12,17 +12,14 @@ import {
   ModalBody,
   ModalFooter,
 } from "@chakra-ui/react";
-import {
-  makeAuthenticatedPOSTRequest,
-  makeAuthenticatedPUTRequest,
-} from "../utils/serverHelper";
+import { makeAuthenticatedPUTRequest } from "../utils/serverHelper";
 
-const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
+const EditPlaylistModal = ({ closeModal, isOpen, playlist }) => {
   const [playlistName, setPlaylistName] = useState("");
   const [playlistThumbnail, setPlaylistThumbnail] = useState("");
   const [playlistDescription, setPlaylistDescription] = useState("");
 
-  // If there's a playlist, populate the fields with the existing data
+  // Populate the fields with existing playlist data when modal is opened
   useEffect(() => {
     if (playlist) {
       setPlaylistName(playlist.name || "");
@@ -31,7 +28,8 @@ const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
     }
   }, [playlist, isOpen]);
 
-  const createOrUpdatePlaylist = async () => {
+  // Function to update the playlist
+  const updatePlaylist = async () => {
     const data = {
       name: playlistName,
       thumbnail: playlistThumbnail,
@@ -39,20 +37,16 @@ const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
       songs: playlist.songs || [],
     };
 
-    let response;
-    if (playlist && playlist._id) {
-      // Update existing playlist
-      response = await makeAuthenticatedPUTRequest(
+    try {
+      const response = await makeAuthenticatedPUTRequest(
         `/playlist/update/${playlist._id}`,
         data
       );
-    } else {
-      // Create a new playlist
-      response = await makeAuthenticatedPOSTRequest("/playlist/create", data);
-    }
-
-    if (response._id) {
-      closeModal(); // Close modal after creating or updating playlist
+      if (response._id) {
+        closeModal(); // Close modal after successful update
+      }
+    } catch (error) {
+      console.error("Error updating playlist:", error);
     }
   };
 
@@ -60,9 +54,7 @@ const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
     <Modal isOpen={isOpen} onClose={closeModal}>
       <ModalOverlay />
       <ModalContent bg="appBlack" color="white" p={8}>
-        <ModalHeader>
-          {playlist ? "Edit Playlist" : "Create Playlist"}
-        </ModalHeader>
+        <ModalHeader>Edit Playlist</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box mb={4}>
@@ -97,8 +89,8 @@ const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={createOrUpdatePlaylist}>
-            {playlist ? "Save Changes" : "Create"}
+          <Button colorScheme="blue" onClick={updatePlaylist}>
+            Save Changes
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -106,4 +98,4 @@ const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
   );
 };
 
-export default CreatePlaylistModal;
+export default EditPlaylistModal;
