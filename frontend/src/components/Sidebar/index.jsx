@@ -120,9 +120,9 @@ export default function Sidebar() {
         <NavItem
           navSize={navSize}
           icon={FaSearch}
-          title="Search"
+          title="AI"
           description="This is the description for the dashboard."
-          href={"/search"}
+          href={"/ai"}
         />
         <NavItem
           navSize={navSize}
