@@ -27,6 +27,7 @@ import PaymentPage from "./pages/PaymentPage";
 import SearchPage from "./pages/SearchPage";
 import PlaylistViewPage from "./pages/PlaylistViewPage";
 import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
+import PlaylistDetails from "./components/PlaylistDetails";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -73,7 +74,7 @@ const App = () => {
             base: "98vw",
             sm: "100vw",
             md: "167vw",
-            lg: "118vw",
+            lg: "128vw",
             xl: "90vw",
             "2xl": "100vw",
           }}
@@ -83,6 +84,10 @@ const App = () => {
         >
           {isAuthenticated ? (
             <Routes>
+              <Route
+                path="/playlist/:playlistId"
+                element={<PlaylistDetails />}
+              />
               <Route path="/" element={<LoggedInHomePage />} />
               <Route path="/mysongs" element={<MySongPage />} />
               <Route path="/feed" element={<FeedPage />} />
