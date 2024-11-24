@@ -169,7 +169,7 @@ const LoggedInContainer = ({ children }) => {
   return (
     <Box className="w-full" minH="100vh" display="flex" flexDirection="column">
       <Navbar menuItemsLeft={menuItemsLeft} />
-      <Box display="flex" minH="100vh" position="relative">
+      <Box display="flex" minH="100vh" position="relative" gap={4}>
         {/* Sidebar */}
         <Box
           width={{ base: "70px", md: "250px" }}
@@ -192,51 +192,56 @@ const LoggedInContainer = ({ children }) => {
       {currentSong && (
         <Box
           width="full"
-          height="full"
-          bg={"#0F0616"}
+          height={{ base: "60px", md: "80px" }} // Thay đổi chiều cao tùy kích thước màn hình
+          bg="#0F0616"
           className="bg-opacity-30 items-center px-4"
-          color={"white"}
-          display={"flex"}
+          color="white"
+          display="flex"
           position="sticky"
-          top={0} // Dính vào phía trên cùng khi cuộn
-          zIndex={10} // Để đảm bảo Box luôn hiển thị trên các phần tử khác
+          top={0}
+          zIndex={10}
+          px={{ base: 2, md: 4 }} // Thay đổi padding ngang
+          justifyContent={{ base: "center", md: "space-between" }}
         >
-          <div className="w-1/4 flex items-center">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 flex items-center">
             <Image
               src={currentSong.thumbnail}
-              className="h-16 w-16"
-              borderRadius={"full"}
+              className="h-auto w-full max-w-[50px] md:max-w-[30px] lg:max-w-[70px] rounded-full"
             />
-            <div className="pl-4 w-4/5">
-              <div className="text-md hover:underline">
+            <div className="pl-4 w-4/5 space-y-1">
+              <div className="text-xs sm:text-[10px] md:text-[13px] lg:text-sm hover:underline truncate">
                 {currentSong ? currentSong.name : "No song selected"}
               </div>
-              <div className="text-sm text-gray-500 hover:underline">
+              <div className="text-xs sm:text-[10px] md:text-xs lg:text-sm text-gray-500 hover:underline">
                 {currentSong && currentSong.artist
                   ? currentSong.artist.username
                   : "Unknown Artist"}
               </div>
             </div>
+
             {/* Hiển thị thời gian phát */}
-            <div className="w-full flex justify-center mt-4">
-              <span className="text-sm text-white">
+            <div className="w-full  justify-center mt-4 hidden sm:flex">
+              <span className="text-sm text-white sm:text-xs">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
             </div>
           </div>
-          <div className="w-3/4 flex items-center justify-center">
+          <div className="w-full flex justify-center items-center px-4 ">
             <div
-              className="flex w-2/6 justify-between items-center"
+              className="flex justify-between items-center w-[90%] md:w-2/3 lg:w-1/2"
               style={{ zIndex: 10 }}
             >
+              {/* Các nút khác sẽ bị ẩn trên màn hình nhỏ */}
               <FaShuffle
-                className="text-gray-500 hover:text-white text-md"
+                className="hidden sm:block text-gray-500 hover:text-white text-md"
                 size={24}
               />
               <MdOutlineSkipPrevious
-                className="text-gray-500 hover:text-white text-2xl"
+                className="hidden sm:block text-gray-500 hover:text-white text-2xl"
                 size={32}
               />
+
+              {/* Hiển thị nút Play/Pause trên mọi kích thước */}
               <div>
                 {isPaused ? (
                   <FaPlayCircle
@@ -252,18 +257,19 @@ const LoggedInContainer = ({ children }) => {
                   />
                 )}
               </div>
+
               <MdOutlineSkipNext
-                className="text-gray-500 hover:text-white text-2xl"
+                className="hidden sm:block text-gray-500 hover:text-white text-2xl"
                 size={32}
               />
               <FaRepeat
-                className="text-gray-500 hover:text-white text-md"
+                className="hidden sm:block text-gray-500 hover:text-white text-md"
                 size={24}
               />
             </div>
           </div>
 
-          <div className="w-1/4 flex items-center justify-end space-x-4">
+          <div className="w-1/4 flex items-center justify-end space-x-4 hidden sm:flex">
             {/* Biểu tượng âm thanh */}
             <button
               onClick={() => setMuted((prev) => !prev)}

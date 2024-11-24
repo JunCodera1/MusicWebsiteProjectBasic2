@@ -76,13 +76,13 @@ const SingleSongCard = ({ info, onPlay }) => {
 
   return (
     <div
-      className="flex items-center p-4 hover:bg-gray-700 rounded-xl transition duration-200 ease-in-out relative group"
+      className="flex items-center p-4 hover:bg-gray-700 rounded-xl transition duration-200 ease-in-out relative group 
+  sm:h-32 md:h-36 lg:h-40" // Thêm lớp responsive cho chiều cao
       onClick={() => {
         setCurrentSong(info);
       }}
       style={{
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)",
-        width: "79vw",
       }}
     >
       <div className="relative">
@@ -109,7 +109,7 @@ const SingleSongCard = ({ info, onPlay }) => {
           {info.name}
         </div>
         <div className="text-sm text-gray-300 truncate hover:underline">
-          {info.artist.username}
+          {info.artist ? info.artist.username : "Unknown Artist"}
         </div>
       </div>
 
@@ -194,6 +194,7 @@ const SingleSongCard = ({ info, onPlay }) => {
             console.log(`Added song to playlist ${playlistId}`);
             setAddToPlaylistModalOpen(false);
           }}
+          songId={info._id}
         />
       )}
     </div>

@@ -114,6 +114,7 @@ export default function Sidebar() {
             if (navSize === "small") changeNavSize("large");
             else changeNavSize("small");
           }}
+          className="sm:hidden" // Ẩn khi màn hình nhỏ hơn 'sm'
         />
 
         <NavItem

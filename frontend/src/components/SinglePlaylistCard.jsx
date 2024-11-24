@@ -46,7 +46,7 @@ const SinglePlaylistCard = ({ playlist }) => {
       <div className="songs-list pt-5">
         {playlist.songs.length > 0 ? (
           playlist.songs.map((song) => (
-            <SingleSongCard key={song._id} info={song} onPlay={() => {}} />
+            <SingleSongCard key={song._id} info={song} onPlay={() => { }} />
           ))
         ) : (
           <div className="text-white">No songs in this playlist</div>

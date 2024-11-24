@@ -58,21 +58,27 @@ router.get(
   }
 );
 
-// Get all songs
-router.get("/", async (req, res) => {
-  try {
-    // Retrieve all songs from the database
-    const songs = await Song.find();
+router.get(
+  "/get/mysongs/:songId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { songId } = req.params;
 
-    // Send a successful response with the songs data
-    res.status(200).send({ data: songs });
-  } catch (error) {
-    // Handle any errors that occur during the retrieval process
-    res
-      .status(500)
-      .send({ message: "An error occurred while retrieving songs" });
+    try {
+      // Fetch song details based on songId
+      const song = await Song.findById(songId); // Replace with your actual database query
+
+      if (!song) {
+        return res.status(404).json({ message: "Song not found" });
+      }
+
+      res.json(song); // Return song details
+    } catch (error) {
+      console.error("Error fetching song details:", error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
-});
+);
 
 router.put(
   "/put/:songName",
