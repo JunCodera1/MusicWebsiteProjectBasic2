@@ -46,7 +46,7 @@ const PlaylistViewPage = () => {
       </div>
       {playlistDetails.length > 0 ? (
         <div className="pt-10 space-y-3">
-          {playlistDetails.map((playlist, songId) => (
+          {playlistDetails.map((playlist) => (
             <SinglePlaylistCard
               key={playlist._id} // Assuming each playlist has a unique ID
               playlist={playlist} // Passing the playlist data

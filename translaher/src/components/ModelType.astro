@@ -1,0 +1,64 @@
+---
+import { getModelType } from "@/lib/ai-model";
+import { Image } from "astro:assets";
+
+import claude from "@/assets/claude.png";
+import openai from "@/assets/openai.png";
+import google from "@/assets/gemini.png";
+
+const size = 80;
+---
+
+<div
+  class="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 fixed top-4 right-4"
+>
+  {
+    (() => {
+      const { type, model } = getModelType();
+      switch (type) {
+        case "openai":
+          return (
+            <>
+              <Image
+                class="mr-3 w-10"
+                src={openai}
+                alt="OpenAI"
+                width={size}
+                height={size}
+              />
+
+              {model}
+            </>
+          );
+        case "anthropic":
+          return (
+            <>
+              <Image
+                class="mr-3 w-10"
+                src={claude}
+                alt="Anthropic"
+                width={size}
+                height={size}
+              />
+              {model}
+            </>
+          );
+        case "google":
+          return (
+            <>
+              <Image
+                class="mr-3 w-10"
+                src={google}
+                alt="Google"
+                width={size}
+                height={size}
+              />
+              {model}
+            </>
+          );
+        default:
+          return "No model configured";
+      }
+    })()
+  }
+</div>

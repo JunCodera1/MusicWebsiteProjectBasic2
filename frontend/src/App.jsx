@@ -28,6 +28,7 @@ import SearchPage from "./pages/SearchPage";
 import PlaylistViewPage from "./pages/PlaylistViewPage";
 import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
 import PlaylistDetails from "./components/PlaylistDetails";
+import AI from "./pages/AI.jsx";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
@@ -89,7 +90,7 @@ const App = () => {
                 element={<PlaylistDetails />}
               />
               <Route path="/" element={<LoggedInHomePage />} />
-              <Route path="/mysongs" element={<MySongPage />} />
+              <Route path="/ai" element={<AI />} />
               <Route path="/feed" element={<FeedPage />} />
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
@@ -110,15 +111,19 @@ const App = () => {
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
 
-              {/* <Route path="/mysongs" element={<MySongPage />} />
+
+
+
+// for huy
+              <Route path="/mysongs" element={<MySongPage />} />
               <Route path="/feed" element={<FeedPage />} />
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
-              <Route path="/search" element={<SearchPage />} />
+              <Route path="/ai" element={<AI />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
-              <Route path="/playlistView" element={<PlaylistViewPage />} /> */}
+              <Route path="/playlistView" element={<PlaylistViewPage />} />
             </Routes>
           )}
         </Box>
