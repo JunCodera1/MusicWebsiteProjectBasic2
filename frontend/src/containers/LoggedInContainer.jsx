@@ -64,11 +64,6 @@ const LoggedInContainer = ({ children }) => {
     return () => clearInterval(interval); // Dọn dẹp khi component unmount hoặc soundPlayed thay đổi
   }, [soundPlayed]);
 
-  // Log giá trị currentTimeRef khi nó thay đổi
-  useEffect(() => {
-    console.log(currentTimeRef.current);
-  }, [currentTime]); // Log khi currentTime thay đổi
-
   useLayoutEffect(() => {
     // Prevent first render logic
     if (firstUpdate.current) {

@@ -96,7 +96,13 @@ const SinglePlaylistCard = ({ playlist }) => {
         ) : error ? (
           <div className="text-white">{error}</div>
         ) : songs.length > 0 ? (
-          songs.map((song) => <SingleSongCard info={song} onPlay={() => {}} />)
+          songs.map((song) => (
+            <SingleSongCard
+              key={song._id} // Sử dụng id hoặc giá trị duy nhất từ đối tượng `song`
+              info={song}
+              onPlay={() => {}}
+            />
+          ))
         ) : (
           <div className="text-white">No songs in this playlist</div>
         )}

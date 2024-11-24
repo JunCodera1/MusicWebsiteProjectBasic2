@@ -131,74 +131,44 @@ router.get(
   }
 );
 
-// Edit playlists by ID
-router.put("/put/edit/:id", [validObjectId, auth], async (req, res) => {
-  const schema = Joi.object({
-    name: Joi.string().min(1).required(),
-    desc: Joi.string().allow(""),
-    image: Joi.string().allow(""),
-  });
+router.put(
+  "/put/edit/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
 
-  const { error } = schema.validate(req.body);
-  if (error) {
-    return res.status(400).send({ message: error.details[0].message });
+    try {
+      // Find the playlist by ID
+      const updatedPlaylist = await Playlist.findOneAndUpdate(
+        { _id: id }, // Match by playlist ID
+        { $set: req.body }, // Update the playlist fields with the body of the request
+        { new: true } // Return the updated document
+      );
+
+      // Check if the playlist exists
+      if (!updatedPlaylist) {
+        return res.status(404).send({ message: "Playlist not found" });
+      }
+
+      // Check if the authenticated user is the owner of the playlist
+      const user = await User.findById(req.user._id);
+      if (!user._id.equals(updatedPlaylist.user)) {
+        return res
+          .status(403)
+          .send({ message: "You are not authorized to edit this playlist" });
+      }
+
+      // Return the updated playlist
+      return res.status(200).send({
+        data: updatedPlaylist,
+        message: "Playlist updated successfully",
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ message: "Internal server error" });
+    }
   }
-
-  try {
-    const playlist = await Playlist.findById(req.params.id);
-    if (!playlist) {
-      return res.status(404).send({ message: "Playlist not found" });
-    }
-
-    const user = await User.findById(req.user._id);
-    if (!user._id.equals(playlist.user)) {
-      return res
-        .status(403)
-        .send({ message: "You are not authorized to edit this playlist" });
-    }
-
-    // Update the playlist
-    playlist.name = req.body.name;
-    playlist.desc = req.body.desc;
-    playlist.thumbnail = req.body.thumbnail;
-    playlist.owner = req.body.owner;
-    playlist.collaborators = req.body.collaborators;
-    playlist.songs = req.body.songs;
-    await playlist.save();
-
-    res.status(200).send({ data: playlist, message: "Playlist updated" });
-  } catch (error) {
-    res
-      .status(500)
-      .send({ message: "An error occurred while updating the playlist" });
-  }
-
-  // Add song to playlist
-  router.put("/add-song", auth, async (req, res) => {
-    const schema = Joi.object({
-      playlistId: Joi.string().required(),
-      songId: Joi.string().required(),
-    });
-    const { error } = schema.validate(req.body);
-    if (error)
-      return res.status(400).send({ message: error.details[0].message });
-
-    const user = await User.findById(req.user._id);
-    const playlist = await Playlist.findById(req.body.playlistId);
-
-    if (!user._id.equals(playlist.user)) {
-      return res
-        .status(403)
-        .send({ message: "You are not authorized to edit this playlist" });
-    }
-
-    if (playlist.songs.indexOf(req.body.songId) === -1) {
-      playlist.songs.push(req.body.songId);
-    }
-    await playlist.save();
-    res.status(200).send({ data: playlist, message: "Song added to playlist" });
-  });
-});
+);
 
 // Add a song to a playlist
 router.post(
