@@ -99,6 +99,8 @@ const App = () => {
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/playlistView" element={<PlaylistViewPage />} />
+              <Route path="/mysongs" element={<MySongPage />} />
+
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           ) : (
@@ -110,12 +112,7 @@ const App = () => {
               <Route path="/resetPassword" element={<ResetPasswordPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
-
-
-
-
-// for huy
-              <Route path="/mysongs" element={<MySongPage />} />
+              // for huy
               <Route path="/feed" element={<FeedPage />} />
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
