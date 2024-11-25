@@ -21,6 +21,7 @@ import { FaHeartCirclePlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { IoIosHome } from "react-icons/io";
 import { FaEarthAsia } from "react-icons/fa6";
+import { FaPenFancy } from "react-icons/fa";
 
 import avatarImg from "../../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f.jpg";
 
@@ -83,7 +84,7 @@ export default function Sidebar() {
     <Flex
       pos="flex-start"
       left="0"
-      h={"660px"}
+      h={"720px"}
       marginTop="2.5vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize === "small" ? "15px" : "30px"}
@@ -116,10 +117,16 @@ export default function Sidebar() {
           }}
           className="sm:hidden" // Ẩn khi màn hình nhỏ hơn 'sm'
         />
-
         <NavItem
           navSize={navSize}
           icon={FaSearch}
+          title="Search"
+          description="This is the description for the dashboard."
+          href={"/search"}
+        />
+        <NavItem
+          navSize={navSize}
+          icon={FaPenFancy}
           title="AI"
           description="This is the description for the dashboard."
           href={"/ai"}
