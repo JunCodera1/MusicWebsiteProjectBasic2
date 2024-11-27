@@ -29,6 +29,10 @@ import PlaylistViewPage from "./pages/PlaylistViewPage";
 import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
 import PlaylistDetails from "./components/PlaylistDetails";
 import AI from "./pages/AI.jsx";
+import initialTheme from "./theme/theme";
+import AuthLayout from "./layouts/auth";
+import AdminLayout from "./layouts/admin";
+import RTLLayout from "./layouts/rtl";
 
 //Admin
 // import AdminDashboard from "@/pages/adminPage/AdminDashboard";
@@ -39,6 +43,7 @@ import AI from "./pages/AI.jsx";
 const App = () => {
   const [cookie] = useCookies(["token"]);
   const isAuthenticated = !!cookie.token;
+  const [currentTheme, setCurrentTheme] = useState(initialTheme);
 
   // Load state from localStorage if available
   const storedSong = JSON.parse(localStorage.getItem("currentSong"));
@@ -91,6 +96,26 @@ const App = () => {
         >
           {isAuthenticated ? (
             <Routes>
+              {/*ADMIN */}
+
+              <Route path="auth/*" element={<AuthLayout />} />
+              <Route
+                path="admin/*"
+                element={
+                  <AdminLayout
+                    theme={currentTheme}
+                    setTheme={setCurrentTheme}
+                  />
+                }
+              />
+              <Route
+                path="rtl/*"
+                element={
+                  <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
+                }
+              />
+              <Route path="/" element={<Navigate to="/admin" replace />} />
+              {/*ADMIN */}
               <Route
                 path="/playlist/:playlistId"
                 element={<PlaylistDetails />}

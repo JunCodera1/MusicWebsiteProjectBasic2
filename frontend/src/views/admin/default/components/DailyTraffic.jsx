@@ -5,7 +5,7 @@ import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
 import BarChart from "@/adminComponents/charts/BarChart";
 
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 import {
   barChartDataDailyTraffic,
   barChartOptionsDailyTraffic,

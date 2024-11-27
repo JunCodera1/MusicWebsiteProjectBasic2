@@ -8,7 +8,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 import Menu from "@/adminComponents/menu/MainMenu";
 import IconBox from "@/adminComponents/icons/IconBox";
 

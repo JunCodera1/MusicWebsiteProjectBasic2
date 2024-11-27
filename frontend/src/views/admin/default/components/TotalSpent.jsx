@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 import LineChart from "@/adminComponents/charts/LineChart";
 import React from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
@@ -18,7 +18,7 @@ import { RiArrowUpSFill } from "react-icons/ri";
 import {
   lineChartDataTotalSpent,
   lineChartOptionsTotalSpent,
-} from "variables/charts";
+} from "@/variables/charts";
 
 export default function TotalSpent(props) {
   const { ...rest } = props;

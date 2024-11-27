@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 import IconBox from "@/adminComponents/icons/IconBox";
 import Menu from "@/adminComponents/menu/MainMenu";
 import React from "react";

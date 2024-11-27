@@ -39,7 +39,7 @@ import Banner from "@/views/admin/marketplace/components/Banner";
 import TableTopCreators from "@/views/admin/marketplace/components/TableTopCreators";
 import HistoryItem from "@/views/admin/marketplace/components/HistoryItem";
 import NFT from "@/adminComponents/card/NFT";
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 
 // Assets
 import Nft1 from "@/assets/images/nfts/Nft1.png";

@@ -2,7 +2,7 @@ import React from "react";
 // Chakra imports
 import { Flex, Icon, Image, Text, useColorModeValue } from "@chakra-ui/react";
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 // Assets
 import { FaEthereum } from "react-icons/fa";
 

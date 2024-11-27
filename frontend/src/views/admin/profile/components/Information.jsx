@@ -1,7 +1,7 @@
 // Chakra imports
 import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 import React from "react";
 
 export default function Information(props) {

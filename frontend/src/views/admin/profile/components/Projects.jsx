@@ -5,7 +5,7 @@ import Project1 from "@/assets/images/profile/Project1.png";
 import Project2 from "@/assets/images/profile/Project2.png";
 import Project3 from "@/assets/images/profile/Project3.png";
 // Custom components
-import Card from "@/adminComponents/card/Card.js";
+import Card from "@/adminComponents/card/Card";
 import React from "react";
 import Project from "@/views/admin/profile/components/Project";
 
