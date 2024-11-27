@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import routes from 'routes.js';
+import React, { useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import routes from "@/routes.jsx";
 
 // Chakra imports
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 // Layout components
-import { SidebarContext } from 'contexts/SidebarContext';
+import { SidebarContext } from "contexts/SidebarContext";
 
 // Custom Chakra theme
 export default function Auth() {
@@ -14,11 +14,11 @@ export default function Auth() {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   // functions for changing the states from components
   const getRoute = () => {
-    return window.location.pathname !== '/auth/full-screen-maps';
+    return window.location.pathname !== "/auth/full-screen-maps";
   };
   const getRoutes = (routes) => {
     return routes.map((route, key) => {
-      if (route.layout === '/auth') {
+      if (route.layout === "/auth") {
         return (
           <Route path={`${route.path}`} element={route.component} key={key} />
         );
@@ -30,8 +30,8 @@ export default function Auth() {
       }
     });
   };
-  const authBg = useColorModeValue('white', 'navy.900');
-  document.documentElement.dir = 'ltr';
+  const authBg = useColorModeValue("white", "navy.900");
+  document.documentElement.dir = "ltr";
   return (
     <Box>
       <SidebarContext.Provider
