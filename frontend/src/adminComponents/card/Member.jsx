@@ -2,8 +2,8 @@
 import React from "react";
 import { Avatar, Flex, useColorModeValue, Icon, Text } from "@chakra-ui/react";
 // Custom components
-import Card from "components/card/Card.js";
-import TransparentMenu from "components/menu/TransparentMenu";
+import Card from "@/adminComponents/card/Card.jsx";
+import TransparentMenu from "@/adminComponents/menu/TransparentMenu";
 // Custom icons
 import { IoEllipsisVertical } from "react-icons/io5";
 
@@ -17,37 +17,39 @@ export default function Default(props) {
   );
 
   return (
-    <Card boxShadow={shadow} py='10px' bg={bg} {...rest}>
-      <Flex align='center'>
-        <Flex justifyContent='center' alignItems='center'>
+    <Card boxShadow={shadow} py="10px" bg={bg} {...rest}>
+      <Flex align="center">
+        <Flex justifyContent="center" alignItems="center">
           <Avatar
             h={{ base: "48px", xl: "36px", "2xl": "48px" }}
             w={{ base: "48px", xl: "36px", "2xl": "48px" }}
             src={avatar}
-            me='20px'
+            me="20px"
           />
-          <Flex direction='column' align='start'>
+          <Flex direction="column" align="start">
             <Text
               color={textColor}
               fontSize={{ base: "md", xl: "sm", "3xl": "md" }}
-              fontWeight='700'>
+              fontWeight="700"
+            >
               {name}
             </Text>
             <Text
-              color='secondaryGray.600'
-              textAlign='left'
+              color="secondaryGray.600"
+              textAlign="left"
               fontSize={{ base: "sm", xl: "xs", "3xl": "sm" }}
-              fontWeight='400'>
+              fontWeight="400"
+            >
               {job}
             </Text>
           </Flex>
         </Flex>
 
         <TransparentMenu
-          ms='auto'
-          mb='0px'
+          ms="auto"
+          mb="0px"
           icon={
-            <Icon as={IoEllipsisVertical} w='24px' h='24px' color={textColor} />
+            <Icon as={IoEllipsisVertical} w="24px" h="24px" color={textColor} />
           }
         />
       </Flex>

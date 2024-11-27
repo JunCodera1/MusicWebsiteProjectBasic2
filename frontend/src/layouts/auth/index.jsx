@@ -6,7 +6,7 @@ import routes from "@/routes.jsx";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 
 // Layout components
-import { SidebarContext } from "contexts/SidebarContext";
+import { SidebarContext } from "@/contexts/SidebarContext";
 
 // Custom Chakra theme
 export default function Auth() {
