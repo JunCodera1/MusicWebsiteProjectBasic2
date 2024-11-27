@@ -30,6 +30,12 @@ import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
 import PlaylistDetails from "./components/PlaylistDetails";
 import AI from "./pages/AI.jsx";
 
+//Admin
+import AdminDashboard from "@/pages/adminPage/AdminDashboard";
+import AdminStatistics from "./pages/adminPage/AdminStatistics";
+import AdminSongManagement from "./pages/adminPage/AdminSongManagement";
+import AdminUserManagement from "./pages/adminPage/AdminUserManagement";
+
 const App = () => {
   const [cookie] = useCookies(["token"]);
   const isAuthenticated = !!cookie.token;
@@ -100,6 +106,12 @@ const App = () => {
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/playlistView" element={<PlaylistViewPage />} />
               <Route path="/mysongs" element={<MySongPage />} />
+
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/songs" element={<AdminSongManagement />} />
+              <Route path="/admin/users" element={<AdminUserManagement />} />
+
+              <Route path="/statistics" element={<AdminStatistics />} />
 
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
