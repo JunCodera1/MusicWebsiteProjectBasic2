@@ -11,29 +11,35 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
+  const [loading, setLoading] = useState(false); // Track loading state
   const navigate = useNavigate();
 
   const login = async () => {
+    setLoading(true); // Start loading when login is clicked
     const data = { email, password };
     const response = await makeUnAuthenticatedPOSTRequest("/auth/login", data);
+
+    setLoading(false); // Stop loading after request
+
     if (response && !response.err) {
       const token = response.token;
       const date = new Date();
-      date.setDate(date.getDate() + 30);
+      date.setDate(date.getDate() + 30); // Set cookie expiration for 30 days
       setCookie("token", token, { path: "/", expires: date });
       alert("Success");
-      navigate("/home");
+      navigate("/home"); // Redirect to home on successful login
     } else {
-      alert("Failure");
+      alert(response?.err || "Login failed");
     }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      signUp();
+      login(); // Call login function on Enter key
     }
   };
+
   const menuItemsLeft = [
     { label: "Home", uri: "/" },
     { label: "Feed", uri: "/feed" },
@@ -48,12 +54,10 @@ const LoginPage = () => {
       uri: "/signup",
     },
   ];
+
   return (
     <div className="w-full h-full flex flex-col items-center">
-      <Navbar
-        menuItemsLeft={menuItemsLeft}
-        menuItemsRight={menuItemsRight}
-      ></Navbar>
+      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
       <div className="logo p-5 border-b border-solid border-gray-300 w-full flex justify-center">
         <GiMusicSpell size={100} />
       </div>
@@ -72,16 +76,20 @@ const LoginPage = () => {
           placeholder={"Enter Your Password"}
           value={password}
           setValue={setPassword}
+          onKeyDown={handleKeyDown} // Handle Enter key press for login
         />
         <div className="w-full flex flex-col items-end my-8">
           <button
-            className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full "
+            className={`bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             onClick={(e) => {
               e.preventDefault();
               login();
             }}
+            disabled={loading} // Disable button while loading
           >
-            LOG IN
+            {loading ? "Logging in..." : "LOG IN"} {/* Show loading text */}
           </button>
           <Link
             to="/forgotPassword"

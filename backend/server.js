@@ -12,7 +12,8 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { User } from "./model/user.js";
 import rateLimit from "express-rate-limit";
 
-dotenv.config(); // Load environment variables from .env file
+// Load environment variables from .env file
+dotenv.config();
 
 if (!process.env.JWT_SECRET) {
   throw new Error("Missing JWT_SECRET in environment variables");
@@ -43,10 +44,10 @@ app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/song", songRoutes);
 app.use("/playlist", playlistRoutes);
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "25mb" }));
 
 // Passport JWT Strategy
-var opts = {
+const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
 };
@@ -66,7 +67,7 @@ passport.use(
   })
 );
 
-// Connect to database and start server
+// Connect to the database and start the server
 const PORT = process.env.PORT || 5000;
 console.log("MongoDB URI:", process.env.MONGODB_URI);
 
@@ -76,3 +77,7 @@ app.listen(PORT, () => {
 });
 
 // Error handling middleware for express-async-errors
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something went wrong!" });
+});

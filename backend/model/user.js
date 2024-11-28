@@ -8,17 +8,20 @@ const userSchema = new mongoose.Schema(
   {
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    email: { type: String, required: true, unique: true }, // Ensure email is unique
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true, private: true },
     username: { type: String, required: true, unique: true },
     avatar: { type: String, default: "" },
     likedSongs: { type: [String], default: [] },
-    playlists: [{ type: mongoose.Schema.Types.ObjectId, ref: "Playlist" }], // Use ObjectId for playlists
+    playlists: [{ type: mongoose.Schema.Types.ObjectId, ref: "Playlist" }],
     subscribedArtists: { type: [String], default: [] },
     isAdmin: { type: Boolean, default: false },
+    // Các trường mới cho việc reset mật khẩu
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
   { timestamps: true }
-); // Optionally, add timestamps for createdAt and updatedAt
+);
 
 // Pre-save hook to hash the password before storing it in the database
 userSchema.pre("save", async function (next) {

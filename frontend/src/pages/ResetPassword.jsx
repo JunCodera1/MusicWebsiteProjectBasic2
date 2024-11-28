@@ -1,70 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GiMusicSpell } from "react-icons/gi";
 import PasswordInput from "../components/PasswordInput";
-import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper"; // Ensure this function is working
+import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper"; // Ensure this function works
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const ResetPasswordPage = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
-  const { token } = useParams();
+  const [password, setPassword] = useState(""); // State for password
+  const [confirmPassword, setConfirmPassword] = useState(""); // State for confirmPassword
+  const [loading, setLoading] = useState(false); // Loading state to show the button is processing
+  const [errorMessage, setErrorMessage] = useState(null); // Error state
+  const [successMessage, setSuccessMessage] = useState(null); // Success message state for feedback
+  const navigate = useNavigate(); // For programmatic navigation after successful reset
+  const { token } = useParams(); // Retrieve the token from the URL params
+
+  useEffect(() => {
+    // Cleanup state on component unmount to prevent setting state after unmounting
+    return () => {
+      setPassword(""); // Reset password state
+      setConfirmPassword(""); // Reset confirmPassword state
+    };
+  }, []);
 
   // Function to reset the password
   const resetPassword = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      setErrorMessage("Passwords do not match.");
       return;
     }
 
-    const data = { password }; // Password being sent
+    const data = { password };
+
+    setLoading(true);
 
     try {
       const response = await makeUnAuthenticatedPOSTRequest(
         `/auth/resetPassword/${token}`,
         data
       );
-      console.log("Response:", response); // Check the response
-      if (response && !response.err) {
-        alert("Password reset successful");
-        navigate("/login");
+
+      if (response && response.message) {
+        setSuccessMessage("Password reset successful!");
+        setPassword(""); // Reset password after success
+        setConfirmPassword(""); // Reset confirm password after success
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
-        alert("Failed to reset password");
+        setErrorMessage(response?.error || "Failed to reset password.");
       }
     } catch (error) {
       console.error("Error resetting password:", error);
-      alert("An error occurred while resetting the password.");
+      setErrorMessage("An error occurred while resetting the password.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const menuItemsLeft = [
-    {
-      label: "Home",
-      uri: "/",
-    },
-    {
-      label: "Feed",
-      uri: "/feed",
-    },
-    {
-      label: "Trending",
-      uri: "/trending",
-    },
-    {
-      label: "Upload",
-      uri: "/upload",
-    },
+    { label: "Home", uri: "/" },
+    { label: "Feed", uri: "/feed" },
+    { label: "Trending", uri: "/trending" },
+    { label: "Upload", uri: "/upload" },
   ];
 
-  const menuItemsRight = [
-    {
-      label: "Sign Up",
-      uri: "/signup",
-    },
-  ];
+  const menuItemsRight = [{ label: "Sign Up", uri: "/signup" }];
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -79,11 +79,19 @@ const ResetPasswordPage = () => {
           To continue, enter and confirm your new password
         </div>
 
+        {/* Success message if available */}
+        {successMessage && (
+          <div className="text-green-500 text-center mb-4">
+            {successMessage}
+          </div>
+        )}
+
         {/* Error message if any */}
         {errorMessage && (
           <div className="text-red-500 text-center mb-4">{errorMessage}</div>
         )}
 
+        {/* Password Input Component */}
         <PasswordInput
           label={"Password"}
           placeholder={"Enter Your New Password"}
@@ -92,6 +100,8 @@ const ResetPasswordPage = () => {
         />
 
         <br />
+
+        {/* Confirm Password Input Component */}
         <PasswordInput
           label={"Confirm Password"}
           placeholder={"Confirm Your New Password"}
