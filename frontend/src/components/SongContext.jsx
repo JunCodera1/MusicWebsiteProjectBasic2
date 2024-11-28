@@ -2,11 +2,11 @@ import { createContext } from "react";
 
 const SongContext = createContext({
   currentSong: null,
-  setCurrentSong: (currentSong) => {},
+  setCurrentSong: (currentSong) => { },
   soundPlayed: null,
-  setSoundPlayed: () => {},
+  setSoundPlayed: () => { },
   isPaused: null,
-  setIsPaused: () => {},
+  setIsPaused: () => { },
 });
 
 export default SongContext;

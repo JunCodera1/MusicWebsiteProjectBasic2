@@ -21,7 +21,7 @@ import { SidebarResponsive } from "@/adminComponents/sidebar/Sidebar";
 import PropTypes from "prop-types";
 import React from "react";
 // Assets
-import navImage from "/home/jun/Documents/SoundBox/frontend/src/assets/images/layout/Navbar.png";
+import navImage from "../../assets/Pictures/white-wallpaper-1.jpg";
 import { MdNotificationsNone, MdInfoOutline } from "react-icons/md";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { FaEthereum } from "react-icons/fa";
