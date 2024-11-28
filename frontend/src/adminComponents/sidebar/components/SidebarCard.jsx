@@ -6,7 +6,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import logoWhite from "/home/jun/Documents/SoundBox/frontend/src/assets/images/layout/logoWhite.png";
+import logoWhite from "../../../assets/Pictures/white-wallpaper-1.jpg";
 import React from "react";
 
 export default function SidebarDocs() {
