@@ -114,7 +114,6 @@ const App = () => {
                   <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
                 }
               />
-              <Route path="/" element={<Navigate to="/admin" replace />} />
               {/*ADMIN */}
               <Route
                 path="/playlist/:playlistId"

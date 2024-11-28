@@ -11,6 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
+
 import Cookies from "js-cookie";
 import { makeAuthenticatedGETRequest } from "@/utils/serverHelper";
 import { jwtDecode } from "jwt-decode";
