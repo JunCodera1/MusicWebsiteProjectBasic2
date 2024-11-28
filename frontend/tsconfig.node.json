@@ -9,6 +9,7 @@
     "include": [
         "src/**/*.ts",
         "src/**/*.tsx",
-        "vite.config.ts"
+         "vite.config.ts",
+        "src/components/ui/button.jsx"
     ]
 }

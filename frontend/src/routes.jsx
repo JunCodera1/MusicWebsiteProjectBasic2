@@ -1,20 +1,12 @@
 import React from "react";
-
 import { Icon } from "@chakra-ui/react";
-import {
-  MdBarChart,
-  MdPerson,
-  MdHome,
-  MdLock,
-  MdOutlineShoppingCart,
-} from "react-icons/md";
+import { MdHome, MdPerson, MdBarChart, MdLock, MdGroup } from "react-icons/md";
 
 // Admin Imports
 import MainDashboard from "@/views/admin/default";
-import NFTMarketplace from "@/views/admin/marketplace";
-import Profile from "@/views/admin/profile";
 import DataTables from "@/views/admin/dataTables";
-import RTL from "@/views/admin/rtl";
+import Profile from "@/views/admin/profile";
+import UserManager from "@/views/admin/userManager"; // Thêm UserManager vào đây
 
 // Auth Imports
 import SignInCentered from "@/views/auth/signIn";
@@ -28,25 +20,10 @@ const routes = [
     component: <MainDashboard />,
   },
   {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "/nft-marketplace",
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
-    component: <NFTMarketplace />,
-    secondary: true,
-  },
-  {
     name: "Data Tables",
     layout: "/admin",
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     path: "/data-tables",
+    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     component: <DataTables />,
   },
   {
@@ -57,18 +34,18 @@ const routes = [
     component: <Profile />,
   },
   {
+    name: "User Manager", // Tên mới cho quản lý người dùng
+    layout: "/admin",
+    path: "/user-manager",
+    icon: <Icon as={MdGroup} width="20px" height="20px" color="inherit" />, // Biểu tượng nhóm người
+    component: <UserManager />, // Component cho User Manager
+  },
+  {
     name: "Sign In",
     layout: "/auth",
     path: "/sign-in",
     icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
     component: <SignInCentered />,
-  },
-  {
-    name: "RTL Admin",
-    layout: "/rtl",
-    path: "/rtl-default",
-    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
-    component: <RTL />,
   },
 ];
 
