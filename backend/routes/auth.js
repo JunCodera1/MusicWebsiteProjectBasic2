@@ -83,7 +83,7 @@ router.post("/forgotPassword", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const resetToken = await getToken(email, newUser);
+    const resetToken = await getToken(email, user);
     user.passwordResetToken = resetToken;
     user.passwordResetExpires = Date.now() + 3600000; // Token expires in 1 hour
     await user.save();
