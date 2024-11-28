@@ -6,6 +6,8 @@ import UserDetails from "./components/UserDetails";
 const UserManager = () => {
   return (
     <Box>
+      {/* Thay vì sử dụng <br />, bạn có thể thêm khoảng cách bằng margin */}
+      <Box mb="80px" /> {/* khoảng cách bên dưới */}
       <SimpleGrid columns={{ base: 1, md: 2 }} gap="20px">
         {/* User List component */}
         <UserList />
