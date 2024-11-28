@@ -21,7 +21,14 @@ if (!process.env.JWT_SECRET) {
 const app = express(); // Create Express app
 
 // Apply rate limiting and CORS middleware globally
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow the frontend to connect
+    methods: ["GET", "POST"],
+    credentials: true, // Include credentials if needed (cookies, etc.)
+  })
+);
+
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes

@@ -8,25 +8,48 @@ import SingleSongCard from "@/components/SingleSongCard";
 const PlaylistDetails = () => {
   const { playlistId } = useParams(); // Lấy ID playlist từ URL
   const [playlist, setPlaylist] = useState(null);
+  const [songs, setSongs] = useState([]); // State để lưu danh sách bài hát chi tiết
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getPlaylistDetails = async () => {
-      const url = `/playlist/get/playlist/${playlistId}`; // Construct the correct URL
+      setLoading(true);
+      setError(null);
 
       try {
-        // Gửi yêu cầu tới API để lấy playlist theo playlistId
+        const url = `/playlist/get/playlist/${playlistId}`; // URL API playlist
         const response = await makeAuthenticatedGETRequest(url);
-        console.log("Full response:", response); // Log toàn bộ response
-        setPlaylist(response); // Lưu dữ liệu playlist vào state
+        console.log("Playlist response:", response);
+        setPlaylist(response);
+
+        // Fetch chi tiết các bài hát từ playlist
+        if (response.songs && response.songs.length > 0) {
+          const songDetails = await Promise.allSettled(
+            response.songs.map((songId) =>
+              makeAuthenticatedGETRequest(`/song/get/mysongs/${songId}`)
+            )
+          );
+
+          // Lọc các kết quả thành công
+          const validSongs = songDetails
+            .filter((result) => result.status === "fulfilled")
+            .map((result) => result.value);
+
+          setSongs(validSongs);
+        }
       } catch (error) {
-        console.error("Error fetching playlist details:", error);
+        console.error("Error fetching playlist or songs:", error);
+        setError("Failed to load playlist details. Please try again.");
+      } finally {
+        setLoading(false);
       }
     };
 
     getPlaylistDetails(); // Gọi hàm khi component render
-  }, [playlistId]); // Chạy lại khi playlistId thay đổi
+  }, [playlistId]);
 
-  if (!playlist) {
+  if (loading) {
     return (
       <LoggedInContainer curActiveScreen={"library"}>
         <Box
@@ -36,6 +59,23 @@ const PlaylistDetails = () => {
           minHeight="100vh"
         >
           <Spinner size="xl" color="white" />
+        </Box>
+      </LoggedInContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <LoggedInContainer curActiveScreen={"library"}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh"
+        >
+          <Text color="red.500" fontSize="lg">
+            {error}
+          </Text>
         </Box>
       </LoggedInContainer>
     );
@@ -51,8 +91,8 @@ const PlaylistDetails = () => {
           {playlist.desc || "No description available"}
         </Text>
         <Stack spacing={4} pt={10}>
-          {playlist.songs.length > 0 ? (
-            playlist.songs.map((song) => (
+          {songs.length > 0 ? (
+            songs.map((song) => (
               <SingleSongCard key={song._id} info={song} onPlay={() => {}} />
             ))
           ) : (

@@ -17,13 +17,15 @@ const router = express.Router();
 // Route 1: Create playlist
 router.post(
   "/create",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }), // Passport JWT strategy
   async (req, res) => {
-    const currentUser = req.user;
+    const currentUser = req.user; // Should be populated by passport
     const { name, thumbnail, songs } = req.body;
+
     if (!name || !thumbnail || !songs) {
-      return res.status(301).send({ err: "Insufficient data" });
+      return res.status(400).send({ err: "Insufficient data" });
     }
+
     const playlistData = {
       name,
       thumbnail,
@@ -31,8 +33,14 @@ router.post(
       owner: currentUser._id,
       collabrators: [],
     };
-    const playlist = await Playlist.create(playlistData);
-    return res.status(200).send(playlist);
+
+    try {
+      const playlist = await Playlist.create(playlistData);
+      return res.status(200).send(playlist);
+    } catch (error) {
+      console.error("Error creating playlist:", error);
+      return res.status(500).send({ err: "Failed to create playlist" });
+    }
   }
 );
 

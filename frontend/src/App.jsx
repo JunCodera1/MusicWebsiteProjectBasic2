@@ -145,7 +145,10 @@ const App = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-              <Route path="/resetPassword" element={<ResetPasswordPage />} />
+              <Route
+                path="/resetPassword/:token"
+                element={<ResetPasswordPage />}
+              />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
               // for huy

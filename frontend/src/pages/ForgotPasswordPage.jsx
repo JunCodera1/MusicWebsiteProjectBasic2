@@ -26,17 +26,25 @@ const ForgotPasswordPage = () => {
 
     setError(""); // Clear any previous error
 
-    const data = { email };
-    const response = await makeUnAuthenticatedPOSTRequest(
-      "/auth/forgotPassword",
-      data
-    );
+    try {
+      const data = { email };
+      // Ensure that you are passing the email data to the server
+      const response = await makeUnAuthenticatedPOSTRequest(
+        "/auth/forgotPassword",
+        data
+      );
 
-    if (response && !response.err) {
-      alert("Check your email for a password reset link");
-      navigate("/login"); // Redirect to login after request is made
-    } else {
-      alert("Failed to send password reset email. Please try again.");
+      if (response && !response.err) {
+        alert(
+          "Check your email for a password reset link (if you don't see it, check your trash/spam folder)."
+        );
+        navigate("/login"); // Optionally navigate to the login page after successful request
+      } else {
+        alert("Failed to send password reset email. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error sending reset email:", err);
+      setError("An error occurred. Please try again later.");
     }
   };
 
@@ -78,7 +86,7 @@ const ForgotPasswordPage = () => {
               sendResetPasswordEmail();
             }}
           >
-            Send
+            Send Email
           </button>
         </div>
 

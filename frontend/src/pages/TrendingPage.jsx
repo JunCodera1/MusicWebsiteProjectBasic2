@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
 import Navbar from "../components/Navbar";
 import { ArrowLeft, ArrowRight, Play, Search, Settings } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -24,6 +25,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import p1 from "../assets/Pictures/708a320ec3182cd3a629e98808e73fb5_2744128242798474951-removebg-preview.png";
+import { useColorModeValue } from "@chakra-ui/react"; // Import Chakra UI hook
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -33,7 +35,7 @@ const menuItemsLeft = [
   { label: "Premium", uri: "/payment" },
 ];
 
-// Dữ liệu xếp hạng bài hát giả
+// Data
 const rankingData = [
   { time: "15:00", song1: 80, song2: 40, song3: 30 },
   { time: "17:00", song1: 75, song2: 45, song3: 35 },
@@ -69,11 +71,41 @@ const CustomTooltip = ({ active, payload, label }) => {
 export default function TrendingPage() {
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const chartBackground = useColorModeValue("white", "#170f23");
+  const textColor = useColorModeValue("gray.900", "white");
+  const cardBackground = useColorModeValue("white", "#2f2739");
+  const buttonColor = useColorModeValue("blue.500", "#9b4de0");
+  const hoverButtonColor = useColorModeValue("blue.400", "#9b4de0");
+  const headingColor = useColorModeValue("gray.900", "transparent");
+  const headingGradient = useColorModeValue(
+    "",
+    "bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500"
+  );
+  const [songData, setSongData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [soundPlayed, setSoundPlayed] = useState(null);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        setIsLoading(true);
+        const response = await makeAuthenticatedGETRequest("/song/get/mysongs");
+        setSongData(response.data);
+      } catch (err) {
+        setError("Failed to fetch songs. Please try again later.");
+        console.error("Error fetching songs:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSongs();
+  }, []);
   const handleMouseEnter = (data, index) => {
     setActiveIndex(index);
   };
 
-  // Dữ liệu giả cho danh sách bài hát
   const songs = [
     { title: "Song 1", artist: "Artist 1", duration: "03:45" },
     { title: "Song 2", artist: "Artist 2", duration: "04:00" },
@@ -82,7 +114,6 @@ export default function TrendingPage() {
     { title: "Song 5", artist: "Artist 5", duration: "03:50" },
   ];
 
-  // Dữ liệu giả cho bảng xếp hạng tuần
   const regions = [
     { region: "Việt Nam", songs: songs },
     { region: "US-UK", songs: songs },
@@ -90,24 +121,25 @@ export default function TrendingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#170f23] text-gray">
-      {/* Chart Section */}
+    <div className={`min-h-screen ${chartBackground} text-${textColor}`}>
       <LoggedInContainer>
         <div className="p-8">
           <div className="flex items-center gap-4 mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
+            <h1
+              className={`text-4xl font-bold ${headingColor} ${headingGradient}`}
+            >
               SoundBox
             </h1>
             <Button
               size="icon"
-              className="rounded-full bg-[#9b4de0] hover:bg-[#9b4de0]/90"
+              className={`rounded-full bg-${buttonColor} hover:bg-${hoverButtonColor}`}
             >
               <Play className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Chart */}
-          <Card className="w-full bg-[#2f2739]/50 mb-8">
+          <Card className={`w-full bg-${cardBackground} mb-8`}>
             <CardContent className="p-6">
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -175,59 +207,33 @@ export default function TrendingPage() {
           {/* Song List */}
           <div className="space-y-4">
             {songs.map((song, index) => (
-              <Card key={index} className="bg-[#2f2739]/50 hover:bg-[#2f2739]">
+              <Card
+                key={index}
+                className={`bg-${cardBackground} hover:bg-${cardBackground}`}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
                     <span className="text-3xl font-bold text-gray-400 w-8">
                       {index + 1}
                     </span>
                     <div className="w-10 h-10">
-                      <img
-                        src={p1}
-                        alt="Song thumbnail"
-                        className="w-full h-full object-cover rounded"
-                      />
+                      <Avatar>
+                        <AvatarImage
+                          src={song.thumbnail || p1} // Provide fallback image or dynamically set the thumbnail
+                          alt="Thumbnail" // Alt text for the image
+                          className="w-16 h-16 bg-cover bg-center rounded-md"
+                        />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold">{song.title}</h3>
+                      <p className="text-lg font-semibold text-white">
+                        {song.title}
+                      </p>
                       <p className="text-sm text-gray-400">{song.artist}</p>
                     </div>
-                    <span className="text-sm text-gray-400">
-                      {song.duration}
-                    </span>
+                    <span className="text-gray-500">{song.duration}</span>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Weekly Rankings */}
-        <div className="p-8 bg-[#2f2739]/30">
-          <h2 className="text-2xl font-bold mb-6">Bảng Xếp Hạng Tuần</h2>
-          <div className="grid grid-cols-3 gap-6">
-            {regions.map((region) => (
-              <Card key={region.region} className="bg-[#2f2739]/50">
-                <CardContent className="p-4">
-                  <CardHeader>
-                    <CardTitle>{region.region}</CardTitle>
-                  </CardHeader>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Rank</TableHead>
-                        <TableHead>Song</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {region.songs.map((song, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell>{song.title}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
                 </CardContent>
               </Card>
             ))}

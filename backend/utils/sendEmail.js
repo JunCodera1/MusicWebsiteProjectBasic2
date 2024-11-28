@@ -1,22 +1,29 @@
+import exp from "constants";
 import nodemailer from "nodemailer";
 
-const sendEmail = async ({ email, subject, message }) => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.EMAIL_USER, // Email của bạn
-      pass: process.env.EMAIL_PASS, // Mật khẩu ứng dụng
-    },
-  });
+const transporter = nodemailer.createTransport({
+  service: "gmail", // Sử dụng dịch vụ Gmail
+  auth: {
+    user: process.env.EMAIL_USER, // Email của bạn
+    pass: process.env.EMAIL_PASS, // Mật khẩu ứng dụng
+  },
+});
 
+const sendEmail = (to, resetLink) => {
   const mailOptions = {
-    from: process.env.EMAIL_USER, // Người gửi
-    to: email, // Người nhận
-    subject, // Tiêu đề email
-    text: message, // Nội dung email
+    from: process.env.EMAIL_USER,
+    to,
+    subject: "Password Reset Request",
+    html: `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
   };
 
-  await transporter.sendMail(mailOptions);
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 };
 
 export default sendEmail;
