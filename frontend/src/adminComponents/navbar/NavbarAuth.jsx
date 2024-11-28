@@ -25,7 +25,7 @@ import {
 import IconBox from "@/adminComponents/icons/IconBox";
 import { HorizonLogo } from "@/adminComponents/icons/Icons";
 import { SidebarResponsive } from "@/adminComponents/sidebar/Sidebar";
-import { SidebarContext } from "@/contexts/SidebarContext";
+import { SidebarContext } from "@/adminComponents/SidebarContext";
 
 // Assets
 import { GoChevronDown, GoChevronRight } from "react-icons/go";
