@@ -129,6 +129,8 @@ const App = () => {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
+              <Route path="/mysongs" element={<MySongPage />} />
+
               <Route path="/playlistView" element={<PlaylistViewPage />} />
               <Route path="/mysongs" element={<MySongPage />} />
 
