@@ -127,7 +127,7 @@ export default function Sidebar() {
         <NavItem
           navSize={navSize}
           icon={FaPenFancy}
-          title="AI"
+          title="AI support"
           description="This is the description for the dashboard."
           href={"/ai"}
         />

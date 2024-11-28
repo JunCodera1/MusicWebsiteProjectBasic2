@@ -29,10 +29,21 @@ import PlaylistViewPage from "./pages/PlaylistViewPage";
 import SuccessPage from "./pages/SuccessPage"; // Import SuccessPage
 import PlaylistDetails from "./components/PlaylistDetails";
 import AI from "./pages/AI.jsx";
+import initialTheme from "./theme/theme";
+import AuthLayout from "./layouts/auth";
+import AdminLayout from "./layouts/admin";
+import RTLLayout from "./layouts/rtl";
+
+//Admin
+// import AdminDashboard from "@/pages/adminPage/AdminDashboard";
+// import AdminStatistics from "./pages/adminPage/AdminStatistics";
+// import AdminSongManagement from "./pages/adminPage/AdminSongManagement";
+// import AdminUserManagement from "./pages/adminPage/AdminUserManagement";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
   const isAuthenticated = !!cookie.token;
+  const [currentTheme, setCurrentTheme] = useState(initialTheme);
 
   // Load state from localStorage if available
   const storedSong = JSON.parse(localStorage.getItem("currentSong"));
@@ -85,6 +96,26 @@ const App = () => {
         >
           {isAuthenticated ? (
             <Routes>
+              {/*ADMIN */}
+
+              <Route path="auth/*" element={<AuthLayout />} />
+              <Route
+                path="admin/*"
+                element={
+                  <AdminLayout
+                    theme={currentTheme}
+                    setTheme={setCurrentTheme}
+                  />
+                }
+              />
+              <Route
+                path="rtl/*"
+                element={
+                  <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
+                }
+              />
+              <Route path="/" element={<Navigate to="/admin" replace />} />
+              {/*ADMIN */}
               <Route
                 path="/playlist/:playlistId"
                 element={<PlaylistDetails />}
@@ -101,6 +132,14 @@ const App = () => {
               <Route path="/mysongs" element={<MySongPage />} />
 
               <Route path="/playlistView" element={<PlaylistViewPage />} />
+              <Route path="/mysongs" element={<MySongPage />} />
+
+              {/* <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/songs" element={<AdminSongManagement />} />
+              <Route path="/admin/users" element={<AdminUserManagement />} />
+
+              <Route path="/statistics" element={<AdminStatistics />} /> */}
+
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           ) : (
@@ -112,12 +151,7 @@ const App = () => {
               <Route path="/resetPassword" element={<ResetPasswordPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
-
-
-
-
-// for huy
-              <Route path="/mysongs" element={<MySongPage />} />
+              // for huy
               <Route path="/feed" element={<FeedPage />} />
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/upload" element={<UploadPage />} />
