@@ -8,6 +8,7 @@ import {
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { useCookies } from "react-cookie";
 
+// Importing Pages and Components
 import HomePage from "./pages/HomePage";
 import FeedPage from "./pages/FeedPage";
 import LibraryPage from "./pages/LibraryPage";
@@ -34,7 +35,7 @@ import AuthLayout from "./layouts/auth";
 import AdminLayout from "./layouts/admin";
 import RTLLayout from "./layouts/rtl";
 
-//Admin
+// Admin Pages (currently commented out for now)
 // import AdminDashboard from "@/pages/adminPage/AdminDashboard";
 // import AdminStatistics from "./pages/adminPage/AdminStatistics";
 // import AdminSongManagement from "./pages/adminPage/AdminSongManagement";
@@ -42,10 +43,10 @@ import RTLLayout from "./layouts/rtl";
 
 const App = () => {
   const [cookie] = useCookies(["token"]);
-  const isAuthenticated = !!cookie.token;
+  const isAuthenticated = !!cookie.token; // Check if the user is authenticated based on the presence of the token cookie
   const [currentTheme, setCurrentTheme] = useState(initialTheme);
 
-  // Load state from localStorage if available
+  // Load song and pause state from localStorage if available
   const storedSong = JSON.parse(localStorage.getItem("currentSong"));
   const storedIsPaused = JSON.parse(localStorage.getItem("isPaused"));
 
@@ -53,7 +54,7 @@ const App = () => {
   const [soundPlayed, setSoundPlayed] = useState(null);
   const [isPaused, setIsPaused] = useState(storedIsPaused || true);
 
-  // Store current state to localStorage when it changes
+  // Store current song and pause state to localStorage when they change
   useEffect(() => {
     if (currentSong) {
       localStorage.setItem("currentSong", JSON.stringify(currentSong));
@@ -95,9 +96,9 @@ const App = () => {
           mx="auto"
         >
           {isAuthenticated ? (
+            // Authenticated Routes
             <Routes>
-              {/*ADMIN */}
-
+              {/* Admin Layout (Currently Commented Out) */}
               <Route path="auth/*" element={<AuthLayout />} />
               <Route
                 path="admin/*"
@@ -114,8 +115,7 @@ const App = () => {
                   <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
                 }
               />
-              {/* <Route path="/" element={<Navigate to="/admin" replace />} /> */}
-              {/*ADMIN */}
+              {/* Regular User Routes */}
               <Route
                 path="/playlist/:playlistId"
                 element={<PlaylistDetails />}
@@ -131,26 +131,38 @@ const App = () => {
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/playlistView" element={<PlaylistViewPage />} />
               <Route path="/mysongs" element={<MySongPage />} />
-              <Route path="/resetPassword" element={<ResetPasswordPage />} />
 
+              {/* Admin Routes (Currently Commented Out) */}
               {/* <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/songs" element={<AdminSongManagement />} />
               <Route path="/admin/users" element={<AdminUserManagement />} />
-
               <Route path="/statistics" element={<AdminStatistics />} /> */}
 
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           ) : (
+            // Unauthenticated Routes
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-              <Route path="/resetPassword" element={<ResetPasswordPage />} />
+              <Route
+                path="/resetPassword/:token"
+                element={<ResetPasswordPage />}
+              />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
 
+              {/* For testing routes */}
+              <Route path="/feed" element={<FeedPage />} />
+              <Route path="/library" element={<LibraryPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/ai" element={<AI />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/trending" element={<TrendingPage />} />
+              <Route path="/playlistView" element={<PlaylistViewPage />} />
             </Routes>
           )}
         </Box>

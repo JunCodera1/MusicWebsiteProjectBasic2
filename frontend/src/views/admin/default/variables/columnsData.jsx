@@ -1,36 +1,37 @@
 export const columnsDataCheck = [
   {
-    Header: "NAME",
+    Header: "Song Name", // Tên bài hát
     accessor: "name",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "Artist", // Nghệ sĩ
+    accessor: "artist",
   },
   {
-    Header: "QUANTITY",
-    accessor: "quantity",
+    Header: "Genre", // Thể loại
+    accessor: "genre",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "Duration", // Thời gian
+    accessor: "duration",
   },
 ];
+
 export const columnsDataComplex = [
   {
-    Header: "NAME",
+    Header: "Song Name", // Tên bài hát
     accessor: "name",
   },
   {
-    Header: "STATUS",
-    accessor: "status",
+    Header: "Artist", // Nghệ sĩ
+    accessor: "artist",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "Album", // Album của bài hát
+    accessor: "album",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "Release Date", // Ngày phát hành
+    accessor: "releaseDate",
   },
 ];

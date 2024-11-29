@@ -1,56 +1,24 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2023 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// Chakra imports
 import {
-  Avatar,
   Box,
-  Flex,
-  FormLabel,
-  Icon,
-  Select,
   SimpleGrid,
+  Icon,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
-// Assets
-import Usa from "@/assets/images/dashboards/usa.png";
-// Custom components
-import MiniCalendar from "@/adminComponents/calendar/MiniCalendar";
-import MiniStatistics from "@/adminComponents/card/MiniStatistics";
-import IconBox from "@/adminComponents/icons/IconBox";
-import React from "react";
 import {
-  MdAddTask,
   MdAttachMoney,
   MdBarChart,
   MdFileCopy,
+  MdAddTask,
 } from "react-icons/md";
-import CheckTable from "@/views/admin/default/components/CheckTable";
-import ComplexTable from "@/views/admin/default/components/ComplexTable";
+import MiniStatistics from "@/adminComponents/card/MiniStatistics";
+import IconBox from "@/adminComponents/icons/IconBox";
 import DailyTraffic from "@/views/admin/default/components/DailyTraffic";
 import PieCard from "@/views/admin/default/components/PieCard";
-import Tasks from "@/views/admin/default/components/Tasks";
 import TotalSpent from "@/views/admin/default/components/TotalSpent";
 import WeeklyRevenue from "@/views/admin/default/components/WeeklyRevenue";
+import CheckTable from "@/views/admin/default/components/CheckTable";
+import ComplexTable from "@/views/admin/default/components/ComplexTable";
 import {
   columnsDataCheck,
   columnsDataComplex,
@@ -58,10 +26,11 @@ import {
 import tableDataCheck from "@/views/admin/default/variables/tableDataCheck.json";
 import tableDataComplex from "@/views/admin/default/variables/tableDataComplex.json";
 
-export default function UserReports() {
+export default function MusicDashboard() {
   // Chakra Color Mode
   const brandColor = useColorModeValue("brand.500", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
@@ -80,8 +49,8 @@ export default function UserReports() {
               }
             />
           }
-          name="Earnings"
-          value="$350.4"
+          name="Tổng lượt phát"
+          value="1,245,000"
         />
         <MiniStatistics
           startContent={
@@ -94,30 +63,13 @@ export default function UserReports() {
               }
             />
           }
-          name="Spend this month"
-          value="$642.39"
+          name="Doanh thu tháng này"
+          value="$12,000"
         />
-        <MiniStatistics growth="+23%" name="Sales" value="$574.34" />
+        <MiniStatistics growth="+23%" name="Bài hát mới" value="150" />
         <MiniStatistics
-          endContent={
-            <Flex me="-16px" mt="10px">
-              <FormLabel htmlFor="balance">
-                <Avatar src={Usa} />
-              </FormLabel>
-              <Select
-                id="balance"
-                variant="mini"
-                mt="5px"
-                me="0px"
-                defaultValue="usd"
-              >
-                <option value="usd">USD</option>
-                <option value="eur">EUR</option>
-                <option value="gba">GBA</option>
-              </Select>
-            </Flex>
-          }
-          name="Your balance"
+          endContent={<Flex me="-16px" mt="10px"></Flex>}
+          name="Số dư tài khoản"
           value="$1,000"
         />
         <MiniStatistics
@@ -129,7 +81,7 @@ export default function UserReports() {
               icon={<Icon w="28px" h="28px" as={MdAddTask} color="white" />}
             />
           }
-          name="New Tasks"
+          name="Công việc mới"
           value="154"
         />
         <MiniStatistics
@@ -143,8 +95,8 @@ export default function UserReports() {
               }
             />
           }
-          name="Total Projects"
-          value="2935"
+          name="Tổng số album"
+          value="430"
         />
       </SimpleGrid>
 
@@ -164,10 +116,6 @@ export default function UserReports() {
           columnsData={columnsDataComplex}
           tableData={tableDataComplex}
         />
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px">
-          <Tasks />
-          <MiniCalendar h="100%" minW="100%" selectRange={false} />
-        </SimpleGrid>
       </SimpleGrid>
     </Box>
   );
