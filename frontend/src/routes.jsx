@@ -7,6 +7,7 @@ import {
   MdLock,
   MdGroup,
   MdMusicNote,
+  MdComment,
 } from "react-icons/md";
 
 // Admin Imports
@@ -18,6 +19,7 @@ import SongManager from "@/views/admin/songManager"; // Thêm SongManager vào �
 
 // Auth Imports
 import SignInCentered from "@/views/auth/signIn";
+import CommentManager from "./views/admin/commentsManager";
 
 const routes = [
   {
@@ -48,6 +50,13 @@ const routes = [
     path: "/song-manager",
     icon: <Icon as={MdMusicNote} width="20px" height="20px" color="inherit" />, // Biểu tượng nhạc
     component: <SongManager />, // Component cho Song Manager
+  },
+  {
+    name: "Comments Manager", // Tên mới cho quản lý bài hát
+    layout: "/admin",
+    path: "/comment-manager",
+    icon: <Icon as={MdComment} width="20px" height="20px" color="inherit" />, // Biểu tượng nhạc
+    component: <CommentManager />, // Component cho Song Manager
   },
   {
     name: "Sign In",

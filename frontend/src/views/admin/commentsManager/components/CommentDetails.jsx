@@ -1,32 +1,32 @@
 import React from "react";
 import { Box, Text, VStack } from "@chakra-ui/react";
 
-const SongDetails = () => {
+const CommentDetails = () => {
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="bold" mb="10px">
-        Song Details
+        Comment Details
       </Text>
       <VStack spacing="10px" align="flex-start">
         <Text>
-          <strong>Song name:</strong> Shape of You
+          <strong>Comment ID:</strong> 12345
         </Text>
         <Text>
-          <strong>Artist:</strong> Ed Sheeran
+          <strong>User:</strong> John Doe
         </Text>
         <Text>
-          <strong>Year of release:</strong> 2017
+          <strong>Date:</strong> 2024-11-29
         </Text>
         <Text>
-          <strong>Genre:</strong> Pop
+          <strong>Comment:</strong> I love this song! It's amazing.
         </Text>
         <Text>
-          <strong>Duration:</strong> 4:24
+          <strong>Status:</strong> Approved
         </Text>
-        {/* Các thông tin chi tiết khác */}
+        {/* Các thông tin chi tiết khác liên quan đến comment */}
       </VStack>
     </Box>
   );
 };
 
-export default SongDetails;
+export default CommentDetails;

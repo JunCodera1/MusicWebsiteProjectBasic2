@@ -10,39 +10,38 @@ import {
   ButtonGroup,
   Box,
 } from "@chakra-ui/react";
-import { songColumnsData, songData } from "../variables/songData";
+import { commentColumnsData, commentData } from "../variables/commentData";
 
-const SongList = () => {
+const CommentList = () => {
   return (
     <Box overflowX="auto">
       <Table variant="striped" size="md">
         <Thead>
           <Tr>
-            {songColumnsData.map((column, index) => (
+            {commentColumnsData.map((column, index) => (
               <Th key={index}>{column}</Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
-          {songData.length === 0 ? (
+          {commentData.length === 0 ? (
             <Tr>
-              <Td colSpan={songColumnsData.length} textAlign="center">
-                No songs available
+              <Td colSpan={commentColumnsData.length} textAlign="center">
+                No comments available
               </Td>
             </Tr>
           ) : (
-            songData.map((song) => (
-              <Tr key={song.id}>
-                <Td>{song.id}</Td>
-                <Td>{song.name}</Td>
-                <Td>{song.artist}</Td>
-                <Td>{song.year}</Td>
-                <Td>{song.genre}</Td>
-                <Td>{song.duration}</Td>
+            commentData.map((comment) => (
+              <Tr key={comment.id}>
+                <Td>{comment.id}</Td>
+                <Td>{comment.user}</Td>
+                <Td>{comment.comment}</Td>
+                <Td>{comment.date}</Td>
+                <Td>{comment.status}</Td>
                 <Td>
                   <ButtonGroup>
                     <Button colorScheme="blue" size="sm">
-                      Edit
+                      Approve
                     </Button>
                     <Button colorScheme="red" size="sm">
                       Delete
@@ -58,4 +57,4 @@ const SongList = () => {
   );
 };
 
-export default SongList;
+export default CommentList;
