@@ -184,7 +184,7 @@ export default function HeaderLinks(props) {
           <Flex flexDirection="column">
             <Link w="100%" href="https://horizon-ui.com/pro">
               <Button w="100%" h="44px" mb="10px" variant="brand">
-                Buy Horizon UI PRO
+                Buy SoundBox PRO
               </Button>
             </Link>
             <Link
