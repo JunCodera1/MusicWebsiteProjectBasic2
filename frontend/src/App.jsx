@@ -114,7 +114,7 @@ const App = () => {
                   <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
                 }
               />
-              <Route path="/" element={<Navigate to="/admin" replace />} />
+              {/* <Route path="/" element={<Navigate to="/admin" replace />} /> */}
               {/*ADMIN */}
               <Route
                 path="/playlist/:playlistId"
@@ -131,6 +131,7 @@ const App = () => {
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/playlistView" element={<PlaylistViewPage />} />
               <Route path="/mysongs" element={<MySongPage />} />
+              <Route path="/resetPassword" element={<ResetPasswordPage />} />
 
               {/* <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/songs" element={<AdminSongManagement />} />
@@ -149,15 +150,7 @@ const App = () => {
               <Route path="/resetPassword" element={<ResetPasswordPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
-              // for huy
-              <Route path="/feed" element={<FeedPage />} />
-              <Route path="/library" element={<LibraryPage />} />
-              <Route path="/upload" element={<UploadPage />} />
-              <Route path="/favourites" element={<FavouritesPage />} />
-              <Route path="/ai" element={<AI />} />
-              <Route path="/payment" element={<PaymentPage />} />
-              <Route path="/trending" element={<TrendingPage />} />
-              <Route path="/playlistView" element={<PlaylistViewPage />} />
+
             </Routes>
           )}
         </Box>

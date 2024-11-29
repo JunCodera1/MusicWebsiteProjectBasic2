@@ -1,63 +1,54 @@
 import React, { useState } from "react";
 import { GiMusicSpell } from "react-icons/gi";
-import PasswordInput from "../components/PasswordInput";
-import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
 import Navbar from "../components/Navbar";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
-  const { token } = useParams(); // Retrieve the token from the URL
+  const { token } = useParams();
 
-  // Reset Password function
-  const resetPassword = async () => {
+  const resetPassword = async (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setAlert({ type: "error", title: "Lỗi", description: "Mật khẩu không khớp. Vui lòng kiểm tra lại." });
       return;
     }
 
-    const data = { password };
-    const response = await makeUnAuthenticatedPOSTRequest(
-      `/auth/resetPassword/${token}`,
-      data
-    );
+    setIsLoading(true);
+    try {
+      const response = await makeUnAuthenticatedPOSTRequest(
+        `/auth/resetPassword/${token}`,
+        { password }
+      );
 
-    if (response && !response.err) {
-      alert("Password reset successful");
-      navigate("/login");
-    } else {
-      alert("Failed to reset password. Try again later.");
+      if (response && !response.err) {
+        setAlert({ type: "success", title: "Thành công", description: "Mật khẩu đã được đặt lại thành công." });
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        setAlert({ type: "error", title: "Lỗi", description: response.err || "Không thể đặt lại mật khẩu. Vui lòng thử lại sau." });
+      }
+    } catch (error) {
+      console.error("Lỗi đặt lại mật khẩu:", error);
+      setAlert({ type: "error", title: "Lỗi", description: "Đã xảy ra lỗi. Vui lòng thử lại sau." });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const menuItemsLeft = [
-    {
-      label: "Home",
-      uri: "/",
-    },
-    {
-      label: "Feed",
-      uri: "/feed",
-    },
-    {
-      label: "Trending",
-      uri: "/trending",
-    },
-    {
-      label: "Upload",
-      uri: "/upload",
-    },
+    { label: "Trang chủ", uri: "/" },
+    { label: "Khám phá", uri: "/discover" },
   ];
 
   const menuItemsRight = [
-    {
-      label: "Sign Up",
-      uri: "/signup",
-    },
+    { label: "Đăng nhập", uri: "/login" },
+    { label: "Đăng ký", uri: "/signup" },
   ];
 
   return (
@@ -69,41 +60,55 @@ const ResetPasswordPage = () => {
       </div>
 
       <div className="inputRegion w-1/3 py-10 flex items-center justify-center flex-col">
-        <div className="font-bold mb-6">
-          To continue, enter and confirm your new password
-        </div>
+        <div className="font-bold mb-6 text-2xl">Đặt lại mật khẩu</div>
 
-        <PasswordInput
-          label={"Password"}
-          placeholder={"Enter Your New Password"}
-          value={password}
-          setValue={setPassword}
-        />
+        <form onSubmit={resetPassword} className="w-full space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu mới</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Nhập mật khẩu mới"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
 
-        <br />
-        <PasswordInput
-          label={"Confirm Password"}
-          placeholder={"Confirm Your New Password"}
-          value={confirmPassword}
-          setValue={setConfirmPassword}
-        />
+          <div className="space-y-2">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              placeholder="Xác nhận mật khẩu mới"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
 
-        <div className="w-full flex items-center justify-center my-8">
           <button
-            className="bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full"
-            onClick={(e) => {
-              e.preventDefault();
-              resetPassword(); // Trigger resetPassword function
-            }}
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
           >
-            Reset Password
+            {isLoading ? "Đang xử lý..." : "Đặt lại mật khẩu"}
           </button>
-        </div>
+        </form>
 
-        <div className="w-full border border-solid border-gray-300 "></div>
-        <div className="my-6 font-bold text-lg">Don't have an account?</div>
+        {alert && (
+          <Alert type={alert.type} onClose={() => setAlert(null)}>
+            <AlertTitle>{alert.title}</AlertTitle>
+            <AlertDescription>{alert.description}</AlertDescription>
+          </Alert>
+        )}
+
+        <div className="w-full border border-solid border-gray-300 my-8"></div>
+        <div className="my-6 font-bold text-lg">Chưa có tài khoản?</div>
         <div className="border border-gray-500 w-full flex items-center justify-center py-4 rounded-full hover:bg-indigo-400">
-          <a href="/signup">SIGN UP FOR SOUNDBOX</a>
+          <a href="/signup" className="text-indigo-600 hover:text-white">ĐĂNG KÝ SOUNDBOX</a>
         </div>
       </div>
     </div>
@@ -111,3 +116,4 @@ const ResetPasswordPage = () => {
 };
 
 export default ResetPasswordPage;
+
