@@ -9,6 +9,7 @@ import {
   MdMusicNote,
   MdComment,
 } from "react-icons/md";
+import { FaCashRegister } from "react-icons/fa6";
 
 // Admin Imports
 import MainDashboard from "@/views/admin/default";
@@ -20,6 +21,7 @@ import SongManager from "@/views/admin/songManager"; // Thêm SongManager vào �
 // Auth Imports
 import SignInCentered from "@/views/auth/signIn";
 import CommentManager from "./views/admin/commentsManager";
+import PaymentManager from "./views/admin/paymentManager";
 
 const routes = [
   {
@@ -57,6 +59,15 @@ const routes = [
     path: "/comment-manager",
     icon: <Icon as={MdComment} width="20px" height="20px" color="inherit" />, // Biểu tượng nhạc
     component: <CommentManager />, // Component cho Song Manager
+  },
+  {
+    name: "Payment Manager", // Tên mới cho quản lý bài hát
+    layout: "/admin",
+    path: "/payment-manager",
+    icon: (
+      <Icon as={FaCashRegister} width="20px" height="20px" color="inherit" />
+    ), // Biểu tượng nhạc
+    component: <PaymentManager />, // Component cho Song Manager
   },
   {
     name: "Sign In",
