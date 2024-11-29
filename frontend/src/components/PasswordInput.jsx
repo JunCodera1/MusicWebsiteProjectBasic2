@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import React from "react";
 
-const TextInput = ({ label, placeholder, className, value, setValue }) => {
+const PasswordInput = ({ label, placeholder, className, value, setValue }) => {
   return (
     <div className={`textInputDiv flex flex-col space-y-2 w-full ${className}`}>
       <label
@@ -23,4 +23,4 @@ const TextInput = ({ label, placeholder, className, value, setValue }) => {
   );
 };
 
-export default TextInput;
+export default PasswordInput;

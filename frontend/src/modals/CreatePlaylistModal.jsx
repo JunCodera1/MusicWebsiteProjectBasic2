@@ -1,9 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  Input,
-  Button,
-  Box,
-  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -11,94 +7,115 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Button,
+  Input,
+  Textarea,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
-import {
-  makeAuthenticatedPOSTRequest,
-  makeAuthenticatedPUTRequest,
-} from "../utils/serverHelper";
+import { makeAuthenticatedPOSTRequest } from "../utils/serverHelper";
 
-const CreatePlaylistModal = ({ closeModal, isOpen, playlist }) => {
+const CreatePlaylistModal = ({ isOpen, closeModal }) => {
   const [playlistName, setPlaylistName] = useState("");
   const [playlistThumbnail, setPlaylistThumbnail] = useState("");
-  const [playlistDescription, setPlaylistDescription] = useState("");
+  const [description, setDescription] = useState(""); // State for description
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const toast = useToast();
 
-  // If there's a playlist, populate the fields with the existing data
-  useEffect(() => {
-    if (playlist) {
-      setPlaylistName(playlist.name || "");
-      setPlaylistThumbnail(playlist.thumbnail || "");
-      setPlaylistDescription(playlist.desc || "");
-    }
-  }, [playlist, isOpen]);
+  const createPlaylist = async () => {
+    setLoading(true);
+    setError(""); // Reset previous errors
+    setSuccess(false); // Reset success state
 
-  const createOrUpdatePlaylist = async () => {
-    const data = {
-      name: playlistName,
-      thumbnail: playlistThumbnail,
-      description: playlistDescription,
-      songs: playlist.songs || [],
-    };
+    try {
+      const response = await makeAuthenticatedPOSTRequest("/playlist/create", {
+        name: playlistName,
+        thumbnail: playlistThumbnail,
+        description, // Include description in request payload
+        songs: [],
+      });
 
-    let response;
-    if (playlist && playlist._id) {
-      // Update existing playlist
-      response = await makeAuthenticatedPUTRequest(
-        `/playlist/update/${playlist._id}`,
-        data
-      );
-    } else {
-      // Create a new playlist
-      response = await makeAuthenticatedPOSTRequest("/playlist/create", data);
-    }
-
-    if (response._id) {
-      closeModal(); // Close modal after creating or updating playlist
+      if (response._id) {
+        setSuccess(true); // Playlist created successfully
+        toast({
+          title: "Playlist created.",
+          description: "Your playlist was successfully created.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        closeModal(); // Close modal after success
+      } else {
+        setError("Failed to create playlist. Please try again.");
+      }
+    } catch (err) {
+      setError("An error occurred while creating the playlist.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal}>
       <ModalOverlay />
-      <ModalContent bg="appBlack" color="white" p={8}>
-        <ModalHeader>
-          {playlist ? "Edit Playlist" : "Create Playlist"}
-        </ModalHeader>
+      <ModalContent>
+        <ModalHeader>Create a New Playlist</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box mb={4}>
-            <Text mb={2}>Name</Text>
+          {error && <div className="text-red-500 mb-4">{error}</div>}
+          {success && (
+            <div className="text-green-500 mb-4">
+              Playlist created successfully!
+            </div>
+          )}
+
+          <FormControl id="playlistName" isRequired isInvalid={error}>
+            <FormLabel>Playlist Name</FormLabel>
             <Input
+              type="text"
               value={playlistName}
               onChange={(e) => setPlaylistName(e.target.value)}
-              placeholder="Playlist Name"
-              bg="gray.700"
-              color="white"
+              placeholder="Enter playlist name"
             />
-          </Box>
-          <Box mb={4}>
-            <Text mb={2}>Thumbnail</Text>
+            <FormErrorMessage>{error}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl id="thumbnail" mt={4}>
+            <FormLabel>Thumbnail URL</FormLabel>
             <Input
+              type="text"
               value={playlistThumbnail}
               onChange={(e) => setPlaylistThumbnail(e.target.value)}
-              placeholder="Playlist Thumbnail URL"
-              bg="gray.700"
-              color="white"
+              placeholder="Enter thumbnail URL"
             />
-          </Box>
-          <Box mb={4}>
-            <Text mb={2}>Description</Text>
-            <Input
-              value={playlistDescription}
-              onChange={(e) => setPlaylistDescription(e.target.value)}
-              placeholder="Playlist Description"
-              bg="gray.700"
-              color="white"
+          </FormControl>
+
+          <FormControl id="desc" mt={4}>
+            <FormLabel>Description (Optional)</FormLabel>
+            <Textarea
+              value={description} // Controlled by description state
+              onChange={(e) => setDescription(e.target.value)} // Update state on input
+              placeholder="Enter description (optional)"
             />
-          </Box>
+          </FormControl>
         </ModalBody>
+
         <ModalFooter>
-          <Button colorScheme="blue" onClick={createOrUpdatePlaylist}>
-            {playlist ? "Save Changes" : "Create"}
+          <Button
+            colorScheme="blue"
+            onClick={createPlaylist}
+            isLoading={loading}
+            loadingText="Creating"
+            isDisabled={loading}
+          >
+            Create Playlist
+          </Button>
+          <Button variant="ghost" onClick={closeModal}>
+            Cancel
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -85,11 +85,21 @@ const SingleSongCard = ({ info, onPlay }) => {
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)",
       }}
     >
-      <div className="relative">
+      <div
+        className="relative"
+        onClick={(e) => {
+          e.stopPropagation();
+          onPlay();
+        }}
+      >
         <div
           className="w-16 h-16 bg-cover bg-center rounded-md"
           style={{
             backgroundImage: `url(${info.thumbnail})`,
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPlay();
           }}
         ></div>
         <button

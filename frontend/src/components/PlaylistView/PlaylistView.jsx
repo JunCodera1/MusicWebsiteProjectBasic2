@@ -19,7 +19,6 @@ const PlaylistView = ({ titleText, cardsData }) => {
         const response = await makeAuthenticatedGETRequest("/song/get/mysongs");
         setSongData(response.data); // Assuming the response contains the song data
       } catch (err) {
-        setError("Failed to fetch songs. Please try again later.");
         console.error("Error fetching songs:", err);
       } finally {
         setIsLoading(false);

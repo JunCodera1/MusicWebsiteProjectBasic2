@@ -141,7 +141,7 @@ export default function Sidebar() {
         <NavItem
           navSize={navSize}
           icon={PiPlaylistBold}
-          title="Playlist View"
+          title="Playlist Create"
           href={"/playlistView"}
         />
         <NavItem
