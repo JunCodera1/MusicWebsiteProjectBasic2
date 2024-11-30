@@ -3,6 +3,7 @@ import { PlayCircle, MoreHorizontal } from "lucide-react";
 import SongContext from "./SongContext";
 import { Howl } from "howler";
 import AddToPlaylistModal from "@/modals/AddToPlaylistModal"; // Import the AddToPlaylistModal
+import { Heart } from "lucide-react"; // Import biểu tượng trái tim
 
 // Helper function to format duration
 const formatDuration = (durationInSeconds) => {
@@ -28,6 +29,7 @@ const SingleSongCard = ({ info, onPlay }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false); // State for the download modal
   const [addToPlaylistModalOpen, setAddToPlaylistModalOpen] = useState(false); // State for add to playlist modal
+  const [isLiked, setIsLiked] = useState(false); // Trạng thái "Yêu thích"
 
   useEffect(() => {
     if (!info.duration) {
@@ -44,6 +46,12 @@ const SingleSongCard = ({ info, onPlay }) => {
   }, [info]);
 
   const formattedDuration = duration ? formatDuration(duration) : "Loading...";
+
+  const handleLike = (e) => {
+    e.stopPropagation(); // Ngăn chặn sự kiện nhấp lan ra ngoài
+    setIsLiked((prev) => !prev); // Toggle trạng thái yêu thích
+    console.log(`Song ${info.name} is ${!isLiked ? "liked" : "unliked"}`);
+  };
 
   // Function to handle sharing
   const handleShare = () => {
@@ -125,6 +133,15 @@ const SingleSongCard = ({ info, onPlay }) => {
 
       <div className="flex items-center gap-4 ml-auto relative">
         <div className="text-md text-gray-400">{formattedDuration}</div>
+        <button
+          className={`text-gray-400 hover:text-pink-500 transition-colors duration-200 relative ${
+            isLiked ? "text-pink-500" : ""
+          }`}
+          onClick={handleLike}
+          aria-label={`Like ${info.name}`}
+        >
+          <Heart className="w-5 h-5" />
+        </button>
         <button
           className="text-gray-400 hover:text-white transition-colors duration-200 relative"
           onClick={(e) => {
