@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@clerk/clerk-react": "^5.16.0",
+    "@clerk/clerk-sdk-node": "^5.0.74",
     "@cloudinary/react": "^1.13.1",
     "@cloudinary/url-gen": "^1.21.0",
     "@paypal/react-paypal-js": "^8.7.0",
@@ -30,6 +31,7 @@
     "cloudinary-react": "^1.8.1",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "env": "^0.0.2",
@@ -44,6 +46,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.460.0",
+    "mailtrap": "^3.4.0",
     "moment": "^2.30.1",
     "mongodb": "^6.9.0",
     "mongoose": "^8.8.2",

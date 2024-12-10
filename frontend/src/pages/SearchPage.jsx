@@ -8,15 +8,20 @@ import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
 
 const SearchPage = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [playlistData, setPlaylistData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [songData, setSongData] = useState([]);
 
   const searchSong = async () => {
     // This function will call the search api
-    const response = await makeAuthenticatedGETRequest(
+    const songResponse = await makeAuthenticatedGETRequest(
       "/song/get/songname/" + searchText
     );
-    setSongData(response.data);
+    setSongData(songResponse.data);
+    const playlistResponse = await makeAuthenticatedGETRequest(
+      "/playlist/get/playlistname/" + searchText
+    );
+    setPlaylistData(playlistResponse.data);
   };
 
   return (
@@ -49,21 +54,56 @@ const SearchPage = () => {
             }}
           />
         </div>
-        {songData.length > 0 ? (
-          <div className="pt-10 space-y-3">
-            <div className="text-white">
-              Showing search results for
-              <span className="font-bold"> {searchText}</span>
-            </div>
-            {songData.map((item) => {
-              return (
-                <SingleSongCard
-                  info={item}
-                  key={JSON.stringify(item)}
-                  playSound={() => {}}
-                />
-              );
-            })}
+        {songData.length > 0 || playlistData.length > 0 ? (
+          <div className="pt-10 space-y-5">
+            {/* Kết quả bài hát */}
+            {songData.length > 0 && (
+              <div>
+                <div className="text-white">
+                  Showing song results for
+                  <span className="font-bold"> {searchText}</span>
+                </div>
+                {songData.map((item) => (
+                  <SingleSongCard
+                    info={item}
+                    key={JSON.stringify(item)}
+                    playSound={() => {}}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Kết quả playlist */}
+            {Array.isArray(playlistData) && playlistData.length > 0 && (
+              <div>
+                <div className="text-white">
+                  Showing playlist results for
+                  <span className="font-bold"> {searchText}</span>
+                </div>
+                <div className="space-y-3">
+                  {playlistData.map((playlist) => (
+                    <div
+                      key={playlist._id}
+                      className="flex items-center space-x-4 p-3 bg-gray-800 rounded-lg"
+                    >
+                      <img
+                        src={playlist.thumbnail || "default-thumbnail.png"}
+                        alt="Playlist Thumbnail"
+                        className="w-12 h-12 rounded-lg"
+                      />
+                      <div>
+                        <div className="text-white font-semibold">
+                          {playlist.name}
+                        </div>
+                        <div className="text-gray-400 text-sm">
+                          {playlist.description}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-gray-400 pt-10">Nothing to show here.</div>

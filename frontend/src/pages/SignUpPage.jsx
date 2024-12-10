@@ -1,161 +1,141 @@
 import React, { useState } from "react";
 import { GiMusicSpell } from "react-icons/gi";
-import { useCookies } from "react-cookie";
-import TextInput from "../components/TextInput";
-import PasswordInput from "../components/PasswordInput";
-import CloudinaryUploadAvatar from "../components/CloudinaryUploadAvatar"; // Import upload component
-import { makeUnAuthenticatedPOSTRequest } from "../utils/serverHelper";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Loader, Lock, Mail, User } from "lucide-react";
 import Navbar from "../components/Navbar";
+import Input from "../components/Input";
+import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+import CloudinaryUploadAvatar from "../components/CloudinaryUploadAvatar";
+import { useAuthStore } from "../store/authStore";
+
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
   { label: "Feed", uri: "/feed" },
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
   { label: "Premium", uri: "/payment" },
+  { label: "Store", uri: "/store" },
 ];
 
-const menuItemsRight = [{ label: "Login", uri: "/login" }];
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [profileName, setProfileName] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState(""); // New state for avatar
-  const [loading, setLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const { signup, error, isLoading } = useAuthStore();
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["token"]);
 
-  const signUp = async () => {
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
     if (email !== confirmEmail) {
       alert("Emails do not match, please try again.");
       return;
     }
-    if (!email || !username || !password || !firstName || !lastName) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    const data = {
-      email,
-      username,
-      password,
-      firstname: firstName,
-      lastname: lastName,
-      profileName,
-      avatar: avatarUrl, // Include avatar URL
-    };
 
     try {
-      setLoading(true);
-      const response = await makeUnAuthenticatedPOSTRequest(
-        "/auth/register",
-        data
-      );
-      setLoading(false);
-
-      if (response && !response.error) {
-        const token = response.token;
-        const date = new Date();
-        date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-        setCookie("token", token, { path: "/", expires: date });
-        alert("Successfully signed up. Redirecting to home page...");
-        navigate("/");
-      } else {
-        alert(response?.error || "Something went wrong, please try again.");
-      }
+      await signup(email, password, name);
+      navigate("/verify-email");
     } catch (error) {
-      setLoading(false);
       console.error(error);
-      alert("Failed to connect to the server, please try again later.");
     }
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <Navbar menuItemsLeft={menuItemsLeft} menuItemsRight={menuItemsRight} />
-      <div className="logo p-5 border-b border-solid border-gray-300 w-full flex justify-center">
-        <GiMusicSpell size={100} />
-      </div>
-
-      <div className="inputRegion w-1/3 py-10 flex items-center justify-center flex-col">
-        <div className="font-bold mb-6 text-2xl">
-          Sign up for free to start listening.
+    <div className="min-h-screen w-full flex flex-col items-center bg-gray-900 text-white">
+      <Navbar menuItemsLeft={menuItemsLeft} />
+      <div className="flex flex-col items-center mt-10">
+        <div className="logo p-5 flex justify-center">
+          <GiMusicSpell size={100} className="text-green-500" />
         </div>
-        <CloudinaryUploadAvatar setAvatarUrl={setAvatarUrl} />{" "}
-        {/* Upload Button */}
-        {avatarUrl && ( // Show avatar preview if available
-          <img
-            src={avatarUrl}
-            alt="Avatar Preview"
-            className="w-24 h-24 rounded-full mt-4"
-          />
-        )}
-        <TextInput
-          label={"Email"}
-          placeholder={"Enter Your Email Address"}
-          className="my-6"
-          value={email}
-          setValue={setEmail}
-        />
-        <TextInput
-          label={"Confirm your email address"}
-          placeholder={"Confirm Your Email Address"}
-          className="mb-6"
-          value={confirmEmail}
-          setValue={setConfirmEmail}
-        />
-        <TextInput
-          label={"Username"}
-          placeholder={"Enter Your Username"}
-          className="mb-6"
-          value={username}
-          setValue={setUsername}
-        />
-        <PasswordInput
-          label={"Password"}
-          placeholder={"Enter Your Password"}
-          value={password}
-          setValue={setPassword}
-        />
-        <br />
-        <TextInput
-          label={"What should we call you?"}
-          placeholder={"Enter Your Profile Name"}
-          className="mb-6"
-          value={profileName}
-          setValue={setProfileName}
-        />
-        <div className="w-full flex items-center justify-between space-x-4">
-          <TextInput
-            label={"First Name"}
-            placeholder={"Enter Your First Name"}
-            className="w-[48%]"
-            value={firstName}
-            setValue={setFirstName}
-          />
-          <TextInput
-            label={"Last Name"}
-            placeholder={"Enter Your Last Name"}
-            className="w-[48%]"
-            value={lastName}
-            setValue={setLastName}
-          />
-        </div>
-        <br />
-        <br />
-        <button
-          className={`bg-blue-500 text-lg font-semibold p-3 px-8 rounded-full ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          onClick={signUp}
-          disabled={loading}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-lg w-full bg-gray-800 bg-opacity-60 backdrop-filter backdrop-blur-md rounded-2xl shadow-lg overflow-hidden"
         >
-          {loading ? "SIGNING UP..." : "SIGN UP"}
-        </button>
+          <div className="p-8">
+            <h2 className="text-3xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">
+              Create Account
+            </h2>
+
+            {/* Avatar Upload Centered */}
+            <div className="flex flex-col items-center">
+              <CloudinaryUploadAvatar setAvatarUrl={setAvatarUrl} />
+              {avatarUrl && (
+                <img
+                  src={avatarUrl}
+                  alt="Avatar Preview"
+                  className="w-20 h-20 rounded-full mt-4 border-2 border-green-400"
+                />
+              )}
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSignUp} className="mt-6 space-y-4">
+              <Input
+                icon={User}
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                icon={Mail}
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                icon={Mail}
+                type="email"
+                placeholder="Confirm Email Address"
+                value={confirmEmail}
+                onChange={(e) => setConfirmEmail(e.target.value)}
+              />
+              <Input
+                icon={Lock}
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <PasswordStrengthMeter password={password} />
+              {error && (
+                <p className="text-red-500 font-semibold mt-2 text-center">
+                  {error}
+                </p>
+              )}
+              <motion.button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg transition-all duration-200 hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isLoading ? (
+                  <Loader className="animate-spin mx-auto" size={24} />
+                ) : (
+                  "Sign Up"
+                )}
+              </motion.button>
+            </form>
+          </div>
+          <div className="px-8 py-4 bg-gray-900 flex justify-center">
+            <p className="text-sm text-gray-400">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-green-400 hover:underline transition"
+              >
+                Login
+              </Link>
+            </p>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

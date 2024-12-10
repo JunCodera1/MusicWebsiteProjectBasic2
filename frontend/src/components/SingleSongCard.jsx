@@ -4,6 +4,7 @@ import SongContext from "./SongContext";
 import { Howl } from "howler";
 import AddToPlaylistModal from "@/modals/AddToPlaylistModal"; // Import the AddToPlaylistModal
 import { Heart } from "lucide-react"; // Import biểu tượng trái tim
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 // Helper function to format duration
 const formatDuration = (durationInSeconds) => {
@@ -83,15 +84,12 @@ const SingleSongCard = ({ info, onPlay }) => {
   };
 
   return (
-    <div
+    <Box
       className="flex items-center p-4 hover:bg-gray-700 rounded-xl transition duration-200 ease-in-out relative group 
-  sm:h-32 md:h-36 lg:h-40" // Thêm lớp responsive cho chiều cao
-      onClick={() => {
-        setCurrentSong(info);
-      }}
-      style={{
-        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)",
-      }}
+  sm:h-32 md:h-36 lg:h-40"
+      onClick={() => setCurrentSong(info)}
+      boxShadow="0 8px 20px rgba(0, 0, 0, 0.4)"
+      color={useColorModeValue("black", "white")}
     >
       <div
         className="relative"
@@ -123,10 +121,20 @@ const SingleSongCard = ({ info, onPlay }) => {
       </div>
 
       <div className="flex flex-col justify-center pl-4 flex-grow min-w-0">
-        <div className="text-lg font-semibold text-white truncate hover:underline">
+        <div
+          className="text-lg font-semibold text-white truncate hover:underline"
+          style={{
+            color: useColorModeValue("black", "white"), // Thay đổi màu chữ
+          }}
+        >
           {info.name}
         </div>
-        <div className="text-sm text-gray-300 truncate hover:underline">
+        <div
+          className="text-sm  truncate hover:underline"
+          style={{
+            color: useColorModeValue("text-gray-400", "white"), // Thay đổi màu chữ
+          }}
+        >
           {info.artist ? info.artist.username : "Unknown Artist"}
         </div>
       </div>
@@ -175,7 +183,6 @@ const SingleSongCard = ({ info, onPlay }) => {
               >
                 Download
               </li>
-              {/* Share item */}
               <li
                 className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
                 onClick={handleShare}
@@ -224,7 +231,7 @@ const SingleSongCard = ({ info, onPlay }) => {
           songId={info._id}
         />
       )}
-    </div>
+    </Box>
   );
 };
 

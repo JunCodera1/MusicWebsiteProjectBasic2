@@ -33,7 +33,7 @@ export function Navbar({ menuItemsLeft, menuItemsRight }) {
           try {
             setIsLoading(true);
             const response = await makeAuthenticatedGETRequest(
-              `/auth/get/users/${userId}` // Sử dụng userId từ token
+              `/user/get/users/${userId}` // Sử dụng userId từ token
             );
 
             setUserData(response); // `response` contains the user data directly

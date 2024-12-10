@@ -1,20 +1,24 @@
-import { useState, useEffect } from "react";
+import { makeAuthenticatedGETRequest } from "@/utils/serverHelper";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoggedInContainer from "../containers/LoggedInContainer";
-import { makeAuthenticatedGETRequest } from "../utils/serverHelper";
 
-const Library = () => {
+const Playlists = () => {
   const [myPlaylists, setMyPlaylists] = useState([]);
   useEffect(() => {
-    const getData = async () => {
-      const response = await makeAuthenticatedGETRequest("/playlist/get/me");
-      setMyPlaylists(response.data);
+    const fetchSongs = async () => {
+      try {
+        const response = await makeAuthenticatedGETRequest("/playlist/get/me");
+        setMyPlaylists(response.data);
+      } catch (err) {
+        console.error("Error fetching songs:", err);
+      } finally {
+      }
     };
-    getData();
-  }, []);
 
+    fetchSongs();
+  }, []);
   return (
-    <LoggedInContainer curActiveScreen={"library"}>
+    <div className="text-white px-8 pt-6">
       <div className="text-white text-xl pt-8 font-semibold">My Playlists</div>
       <div className="py-5 grid gap-5 grid-cols-5">
         {myPlaylists.map((item) => {
@@ -29,10 +33,9 @@ const Library = () => {
           );
         })}
       </div>
-    </LoggedInContainer>
+    </div>
   );
 };
-
 const Card = ({ title, description, imgUrl, playlistId }) => {
   const navigate = useNavigate();
   return (
@@ -51,4 +54,4 @@ const Card = ({ title, description, imgUrl, playlistId }) => {
   );
 };
 
-export default Library;
+export default Playlists;

@@ -6,8 +6,6 @@ import bcrypt from "bcryptjs";
 // Create user schema
 const userSchema = new mongoose.Schema(
   {
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, private: true },
     username: { type: String, required: true, unique: true },
@@ -17,8 +15,18 @@ const userSchema = new mongoose.Schema(
     subscribedArtists: { type: [String], default: [] },
     isAdmin: { type: Boolean, default: false },
     // Các trường mới cho việc reset mật khẩu
-    passwordResetToken: String,
-    passwordResetExpires: Date,
+    lastLogin: {
+      type: Date,
+      default: Date.now,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: String,
+    verificationTokenExpiresAt: Date,
   },
   { timestamps: true }
 );
@@ -34,12 +42,11 @@ userSchema.pre("save", async function (next) {
 // Validate user input using Joi
 const validate = (user) => {
   const schema = Joi.object({
-    firstname: Joi.string().min(2).required().label("First Name"),
-    lastname: Joi.string().min(2).required().label("Last Name"),
     email: Joi.string().email().required().label("Email"),
     password: passwordComplexity().required().label("Password"),
     username: Joi.string().min(5).required().label("Username"),
     avatar: Joi.string().uri().label("Avatar"),
+    likedSongs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Song" }],
   });
   return schema.validate(user);
 };

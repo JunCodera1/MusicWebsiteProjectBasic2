@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { openUploadWidget } from "../utils/CloudinaryService";
 
-const CloudinaryUpload = ({ setUrl, setName, setDuration }) => {
+const CloudinaryUpload = ({ setUrl, setName }) => {
   const uploadImageWidget = () => {
     let myUploadWidget = openUploadWidget(
       {
@@ -14,7 +14,6 @@ const CloudinaryUpload = ({ setUrl, setName, setDuration }) => {
           console.log(result.info);
           setUrl(result.info.secure_url); // Set URL from result
           setName(result.info.original_filename); // Set file name
-          setDuration(result.info.duration); // Set duration
         } else {
           console.log(error);
         }

@@ -26,7 +26,9 @@ const SongPage = () => {
     const fetchSongs = async () => {
       try {
         setIsLoading(true);
-        const response = await makeAuthenticatedGETRequest("/song/get/mysongs");
+        const response = await makeAuthenticatedGETRequest(
+          "/song/get/allsongs"
+        );
         setSongData(response.data);
       } catch (err) {
         setError("Failed to fetch songs. Please try again later.");

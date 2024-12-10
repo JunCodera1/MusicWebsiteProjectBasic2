@@ -35,7 +35,6 @@ export default function Sidebar() {
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
   const iconColor = useColorModeValue("black", "white");
   const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Move the fetchUserData logic into a stable useEffect that won't alter hooks
@@ -48,15 +47,12 @@ export default function Sidebar() {
 
         const fetchUserData = async () => {
           try {
-            setIsLoading(true);
             const response = await makeAuthenticatedGETRequest(
-              `/auth/get/users/${userId}`
+              `/user/get/users/${userId}`
             );
             setUserData(response);
           } catch (err) {
             setError("Failed to fetch user data.");
-          } finally {
-            setIsLoading(false);
           }
         };
         fetchUserData();
@@ -76,10 +72,6 @@ export default function Sidebar() {
       changeNavSize("large");
     }
   }, [isSmallScreen]);
-
-  if (isLoading) {
-    return <div>Loading...</div>; // Ensure early return doesn't interfere with hooks
-  }
 
   return (
     <Flex
@@ -189,20 +181,6 @@ export default function Sidebar() {
         <Flex mt={4} align="center">
           <Flex mt={4} align="center">
             <Avatar size="sm" src={userData ? userData.avatar : ""} />
-            <Flex
-              flexDir="column"
-              ml={4}
-              display={navSize == "small" ? "none" : "flex"}
-            >
-              <Heading as="h3" size="sm">
-                {userData ? userData.username : "Loading..."}{" "}
-                {/* Safely access username */}
-              </Heading>
-              <Text color="gray">
-                {userData ? userData.role : "Loading..."}{" "}
-                {/* Assuming 'role' is a property */}
-              </Text>
-            </Flex>
           </Flex>
         </Flex>
       </Flex>

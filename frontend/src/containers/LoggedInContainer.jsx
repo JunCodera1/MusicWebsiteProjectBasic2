@@ -22,6 +22,7 @@ import { FaVolumeUp, FaVolumeMute } from "react-icons/fa"; // I
 import { Slider } from "@/components/ui/slider";
 import ShuffleIcon from "@/assets/icons/shuffle.svg";
 import RedoIcon from "@/assets/icons/redo.svg";
+import SongController from "@/controller/SongController";
 
 const menuItemsLeft = [
   { label: "Home", uri: "/" },
@@ -29,6 +30,7 @@ const menuItemsLeft = [
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
   { label: "Premium", uri: "/payment" },
+  { label: "Store", uri: "/store" },
 ];
 
 const LoggedInContainer = ({ children }) => {
@@ -187,88 +189,19 @@ const LoggedInContainer = ({ children }) => {
         </Box>
       </Box>
       {currentSong && (
-        <Box className="fixed bottom-0 left-0 right-0 w-full h-20 bg-[#18181c] text-white flex flex-col z-10">
-          <Slider
-            value={[Math.floor((currentTime / duration) * 100) || 0]} // Hiển thị vị trí thời gian bài hát
-            max={100}
-            step={1}
-            onChange={(value) => {
-              // Tính toán lại thời gian khi slider thay đổi
-              const newTime = (value / 100) * duration;
-              if (soundPlayed) {
-                soundPlayed.seek(newTime); // Di chuyển bài hát đến thời điểm mới
-                setCurrentTime(newTime); // Cập nhật thời gian hiện tại
-              }
-            }}
-            className="w-full cursor-pointer [&>span]:h-1 [&>span]:bg-[#ffffff1a] [&_[role=slider]]:h-1 [&_[role=slider]]:w-1 [&_[role=slider]]:border-none [&>span:first-child_span]:bg-[#1ed760]"
-          />
-          <Box className="flex justify-between items-center px-4 h-[calc(100%-4px)]">
-            <Box className="flex items-center gap-4 w-1/3">
-              <Image
-                src={currentSong.thumbnail}
-                alt="Thumbnail"
-                className="w-14 h-14 object-cover"
-              />
-              <Box>
-                <div className="text-sm font-medium truncate">
-                  {currentSong.name || "No song selected"}
-                </div>
-                <div className="text-xs text-gray-400">
-                  {currentSong.artist?.username || "Unknown Artist"}
-                </div>
-              </Box>
-            </Box>
-            <Box className="flex items-center gap-6 w-1/3 justify-center">
-              <img
-                src={ShuffleIcon}
-                alt="Shuffle"
-                className="text-[#b3b3b3] hover:text-white cursor-pointer w-4 h-4"
-              />
-              <MdOutlineSkipPrevious
-                className="text-[#b3b3b3] hover:text-white cursor-pointer"
-                size={24}
-              />
-              <Box
-                className="bg-white rounded-full p-2 hover:scale-105 transition cursor-pointer"
-                onClick={togglePlayPause}
-              >
-                {isPaused ? (
-                  <FaPlayCircle className="text-black" size={24} />
-                ) : (
-                  <FaPauseCircle className="text-black" size={24} />
-                )}
-              </Box>
-              <MdOutlineSkipNext
-                className="text-[#b3b3b3] hover:text-white cursor-pointer"
-                size={24}
-              />
-              <img
-                src={RedoIcon}
-                alt="Redo"
-                className="text-[#b3b3b3] hover:text-white cursor-pointer w-4 h-4"
-                onClick={() => {
-                  replaySong();
-                  console.log(soundPlayed);
-                }}
-              />
-            </Box>
-            <Box className="flex items-center gap-2 w-1/3 justify-end">
-              <button
-                onClick={() => setMuted(!muted)}
-                className="text-[#b3b3b3] hover:text-white"
-              >
-                {muted ? <FaVolumeMute size={20} /> : <FaVolumeUp size={20} />}
-              </button>
-              <Slider
-                defaultValue={[volume * 100]}
-                max={100}
-                step={1}
-                onValueChange={(value) => setVolume(value[0] / 100)}
-                className="w-24 cursor-pointer [&>span]:h-1 [&>span]:bg-white/20 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-none [&>span:first-child_span]:bg-white"
-              />
-            </Box>
-          </Box>
-        </Box>
+        <SongController
+          currentSong={currentSong}
+          currentTime={currentTime}
+          duration={duration}
+          soundPlayed={soundPlayed}
+          isPaused={isPaused}
+          togglePlayPause={togglePlayPause}
+          replaySong={replaySong}
+          muted={muted}
+          setMuted={setMuted}
+          volume={volume}
+          setVolume={setVolume}
+        />
       )}
     </Box>
   );

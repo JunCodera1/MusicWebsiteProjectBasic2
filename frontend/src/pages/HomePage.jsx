@@ -4,6 +4,7 @@ import { Box } from "@chakra-ui/react";
 import image from "../assets/Pictures/0c1f51cf62b4a54f6b80e5a29224390f-removebg-preview.png";
 import PlaylistView from "../components/PlaylistView/PlaylistView";
 import Navbar from "../components/Navbar";
+import UserView from "@/components/UserView";
 
 const soundboxPlaylistData = [
   {
@@ -67,6 +68,7 @@ const menuItemsLeft = [
   { label: "Trending", uri: "/trending" },
   { label: "Upload", uri: "/upload" },
   { label: "Premium", uri: "/payment" },
+  { label: "Store", uri: "/store" },
 ];
 
 const HomePage = () => {
@@ -88,12 +90,15 @@ const HomePage = () => {
         <Box flex="1" display="flex" flexDirection="column" overflowY="auto">
           {/* Playlist Views */}
           <Box p={4} className="content">
-            <PlaylistView titleText="Focus" cardsData={focusCardData} />
             <PlaylistView
-              titleText="Soundbox Music"
+              titleText="Recently Played"
+              cardsData={focusCardData}
+            />
+            <PlaylistView
+              titleText="More of what you like"
               cardsData={soundboxPlaylistData}
             />
-            <PlaylistView titleText="JP 80's" cardsData={focusCardData} />
+            <UserView titleText="Artists you should know" />
           </Box>
         </Box>
       </Box>

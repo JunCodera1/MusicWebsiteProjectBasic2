@@ -30,7 +30,7 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import { FaBell, FaSearch } from "react-icons/fa";
+import { FaBell, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { NavItem } from "./NavItem";
@@ -71,6 +71,12 @@ export function RightContent({ items, user = null }) {
     { id: 3, message: "New song added to your playlist", read: true },
   ]);
 
+  const [cartItems, setCartItems] = useState([
+    { id: 1, name: "Track 1", price: "$1.99" },
+    { id: 2, name: "Track 2", price: "$1.99" },
+    { id: 3, name: "Track 3", price: "$1.99" },
+  ]);
+
   const markAllAsRead = () => {
     setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
   };
@@ -86,12 +92,6 @@ export function RightContent({ items, user = null }) {
         rounded="full"
         size="sm"
       />
-      <InputGroup size="sm" display={{ base: "none", md: "flex" }}>
-        <Input variant="filled" placeholder="Search..." width={500} />
-        <InputRightElement>
-          <FaSearch color="teal" />
-        </InputRightElement>
-      </InputGroup>
 
       {/* Notifications */}
       <Menu>
@@ -154,6 +154,43 @@ export function RightContent({ items, user = null }) {
       ) : (
         ""
       )}
+
+      {/* Cart Menu */}
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          aria-label="cart"
+          icon={<FaShoppingCart />}
+          variant="ghost"
+          colorScheme="teal"
+          rounded="full"
+          size="sm"
+          position="relative"
+        >
+          {cartItems.length > 0 && (
+            <Badge
+              colorScheme="red"
+              position="absolute"
+              top="0"
+              right="0"
+              fontSize="xs"
+              rounded="full"
+            >
+              {cartItems.length}
+            </Badge>
+          )}
+        </MenuButton>
+        <MenuList>
+          {cartItems.map((item) => (
+            <MenuItem key={item.id}>
+              {item.name} - {item.price}
+            </MenuItem>
+          ))}
+          <MenuItem fontWeight="bold" onClick={() => setCartItems([])}>
+            Clear Cart
+          </MenuItem>
+        </MenuList>
+      </Menu>
 
       <List gap={1} display={{ base: "none", md: "flex", lg: "flex" }}>
         {Array.isArray(items) &&
