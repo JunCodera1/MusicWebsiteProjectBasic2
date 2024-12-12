@@ -163,6 +163,19 @@ const App = () => {
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/trending" element={<TrendingPage />} />
               <Route path="/playlistView" element={<PlaylistViewPage />} />
+
+              // for huy
+              <Route path="/" element={<LoggedInHomePage />} />
+              <Route path="/ai" element={<AI />} />
+              <Route path="/feed" element={<FeedPage />} />
+              <Route path="/library" element={<LibraryPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/favourites" element={<FavouritesPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/trending" element={<TrendingPage />} />
+              <Route path="/playlistView" element={<PlaylistViewPage />} />
+              <Route path="/mysongs" element={<MySongPage />} />
             </Routes>
           )}
         </Box>

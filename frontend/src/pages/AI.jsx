@@ -30,7 +30,7 @@ const AI = () => {
             bgClip="text"
             fontWeight="bold"
           >
-            Translaher Application
+            SoundBox Application
           </Heading>
           <Box
             as="iframe"
