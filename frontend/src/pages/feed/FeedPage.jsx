@@ -9,7 +9,7 @@ export default function FeedPage() {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const userId = "12345"; // Replace with dynamic user ID from auth context or props
+  const [userId, setUserId] = useState(null);
 
   // API call
   useEffect(() => {
@@ -33,6 +33,23 @@ export default function FeedPage() {
     fetchTracks();
   }, []);
 
+  useEffect(() => {
+    // Fetch the user ID from your authentication system
+    const fetchUserId = async () => {
+      try {
+        const userResponse = await makeAuthenticatedGETRequest("/user/current");
+        if (!userResponse && !userResponse.data && !userResponse.data._id) {
+          throw new Error("Invalid user data received");
+        }
+        setUserId(userResponse.data._id);
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-900">
       <LoggedInContainer>
@@ -53,7 +70,6 @@ export default function FeedPage() {
                 tracks={tracks}
                 setCurrentTrack={setCurrentTrack}
                 setTracks={setTracks}
-                userId={userId}
               />
             )}
           </div>

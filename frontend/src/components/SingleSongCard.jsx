@@ -5,6 +5,7 @@ import { Howl } from "howler";
 import AddToPlaylistModal from "@/modals/AddToPlaylistModal"; // Import the AddToPlaylistModal
 import { Heart } from "lucide-react"; // Import biểu tượng trái tim
 import { Box, useColorModeValue } from "@chakra-ui/react";
+import { makeUnAuthenticatedPUTRequest } from "@/utils/serverHelper";
 
 // Helper function to format duration
 const formatDuration = (durationInSeconds) => {
@@ -48,10 +49,22 @@ const SingleSongCard = ({ info, onPlay }) => {
 
   const formattedDuration = duration ? formatDuration(duration) : "Loading...";
 
-  const handleLike = (e) => {
-    e.stopPropagation(); // Ngăn chặn sự kiện nhấp lan ra ngoài
-    setIsLiked((prev) => !prev); // Toggle trạng thái yêu thích
-    console.log(`Song ${info.name} is ${!isLiked ? "liked" : "unliked"}`);
+  const handleLike = async (trackId, isLiked) => {
+    try {
+      const endpoint = isLiked
+        ? `/song/put/unlike/${trackId}`
+        : `/song/put/like/${trackId}`;
+      const response = await makeUnAuthenticatedPUTRequest(endpoint);
+
+      // Update the UI or state with the new data
+      setTracks((prevTracks) =>
+        prevTracks.map((track) =>
+          track.id === trackId ? { ...track, ...response } : track
+        )
+      );
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
   };
 
   // Function to handle sharing

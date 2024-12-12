@@ -2,33 +2,23 @@ import React, { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 import { makeAuthenticatedGETRequest } from "@/utils/serverHelper";
 import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
-const mockUsers = [
-  {
-    username: "Minh Tiến",
-    avatar: "https://i.pravatar.cc/150?u=minhtien",
-    bio: "Music enthusiast. Always vibing 🎵",
-    followersCount: 120,
-    playlistsCount: 15,
-  },
-  {
-    username: "Phương",
-    avatar: "https://i.pravatar.cc/150?u=phuong",
-    bio: "Lofi beats and chill vibes.",
-    followersCount: 200,
-    playlistsCount: 8,
-  },
-];
 
 const UserView = ({ titleText }) => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const response = await makeAuthenticatedGETRequest("/user/get/users");
-        setUsers(response.data);
+        setUsers(response.data.slice(0, 5)); // Limit to the first 5 users
+        setLoading(false);
       } catch (error) {
-        console.error("Failed to fetch users", error);
+        setError("Failed to fetch users");
+        setLoading(false);
+        console.error(error);
       }
     };
     fetchUsers();
@@ -46,24 +36,29 @@ const UserView = ({ titleText }) => {
           {titleText}
         </Text>
       </Box>
-      {/* Thêm overflowX="auto" để scroll ngang */}
-      <Box overflowX="auto" whiteSpace="nowrap" ml="5">
-        <div className="flex gap-6">
-          {/* Sử dụng flexbox để xếp các thẻ theo hàng ngang */}
-          {Array.isArray(users) &&
-            users.map((user, index) => (
-              <div key={user.id} className="flex-shrink-0">
-                <UserCard
-                  username={user.username}
-                  avatar={user.thumbnail}
-                  bio={user.bio}
-                  followersCount={user.followers}
-                  playlistsCount={user.playlists}
-                />
-              </div>
-            ))}
-        </div>
-      </Box>
+
+      {loading ? (
+        <div>Loading...</div> // Display loading spinner
+      ) : error ? (
+        <div>{error}</div> // Display error message
+      ) : (
+        <Box overflowX="auto" whiteSpace="nowrap" ml="5">
+          <div className="flex gap-6">
+            {Array.isArray(users) &&
+              users.map((user, index) => (
+                <div key={user.id} className="flex-shrink-0">
+                  <UserCard
+                    username={user.username}
+                    avatar={user.avatar}
+                    bio={user.bio}
+                    followersCount={user.followersCount}
+                    playlistsCount={user.playlistsCount}
+                  />
+                </div>
+              ))}
+          </div>
+        </Box>
+      )}
     </div>
   );
 };

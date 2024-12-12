@@ -1,10 +1,9 @@
+import React, { useState } from "react";
 import {
   Avatar,
   Flex,
   IconButton,
   Input,
-  InputGroup,
-  InputRightElement,
   Button,
   useColorMode,
   List,
@@ -20,21 +19,37 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Badge,
   Box,
   Text,
+  VStack,
+  HStack,
+  Divider,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Progress,
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
 } from "@chakra-ui/react";
-import { FaBell, FaSearch, FaShoppingCart } from "react-icons/fa";
+import {
+  FaBell,
+  FaSearch,
+  FaShoppingCart,
+  FaUser,
+  FaCog,
+  FaMusic,
+  FaHeart,
+  FaClock,
+} from "react-icons/fa";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { NavItem } from "./NavItem";
-import { useState } from "react";
 
 export function RightContent({ items, user = null }) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -63,6 +78,24 @@ export function RightContent({ items, user = null }) {
     name: user?.username || "Unknown",
     email: user?.email || "N/A",
     role: user?.role || "User",
+    joinDate: "January 1, 2023",
+    totalListeningTime: "500 hours",
+    favoriteGenre: "Rock",
+    playlists: [
+      { name: "My Favorites", songCount: 50 },
+      { name: "Workout Mix", songCount: 25 },
+      { name: "Chill Vibes", songCount: 40 },
+    ],
+    recentlyPlayed: [
+      { name: "Song 1", artist: "Artist 1" },
+      { name: "Song 2", artist: "Artist 2" },
+      { name: "Song 3", artist: "Artist 3" },
+    ],
+    stats: {
+      songsListened: 1500,
+      artistsDiscovered: 200,
+      topArtist: "The Beatles",
+    },
   };
 
   const [notifications, setNotifications] = useState([
@@ -146,8 +179,12 @@ export function RightContent({ items, user = null }) {
             cursor="pointer"
           />
           <MenuList>
-            <MenuItem onClick={onProfileOpen}>View Profile</MenuItem>
-            <MenuItem onClick={onSettingsOpen}>Settings</MenuItem>
+            <MenuItem onClick={onProfileOpen} icon={<FaUser />}>
+              View Profile
+            </MenuItem>
+            <MenuItem onClick={onSettingsOpen} icon={<FaCog />}>
+              Settings
+            </MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </MenuList>
         </Menu>
@@ -206,38 +243,146 @@ export function RightContent({ items, user = null }) {
         onClick={toggleColorMode}
       />
 
-      {/* Modal for Profile */}
-      <Modal isOpen={isProfileOpen} onClose={onProfileClose}>
+      {/* Enhanced Modal for Profile */}
+      <Modal isOpen={isProfileOpen} onClose={onProfileClose} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Profile Details</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader bg="teal.500" color="white" borderTopRadius="md">
+            User Profile
+          </ModalHeader>
+          <ModalCloseButton color="white" />
           <ModalBody>
-            <Table variant="striped" colorScheme="teal">
-              <Thead>
-                <Tr>
-                  <Th>Field</Th>
-                  <Th>Value</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>Name</Td>
-                  <Td>{profileData.name}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Email</Td>
-                  <Td>{profileData.email}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Role</Td>
-                  <Td>{profileData.role}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
+            <VStack spacing={6} align="stretch">
+              <Flex alignItems="center" justifyContent="space-between">
+                <HStack>
+                  <Avatar
+                    size="xl"
+                    name={profileData.name}
+                    src={user?.avatar || "https://via.placeholder.com/150"}
+                  />
+                  <VStack align="start" spacing={1}>
+                    <Text fontSize="2xl" fontWeight="bold">
+                      {profileData.name}
+                    </Text>
+                    <Text color="gray.500">{profileData.email}</Text>
+                    <Badge colorScheme="teal">{profileData.role}</Badge>
+                  </VStack>
+                </HStack>
+                <VStack align="end">
+                  <Text fontWeight="bold">Member since</Text>
+                  <Text>{profileData.joinDate}</Text>
+                </VStack>
+              </Flex>
+
+              <Tabs isFitted variant="enclosed">
+                <TabList mb="1em">
+                  <Tab>
+                    <FaMusic /> Overview
+                  </Tab>
+                  <Tab>
+                    <FaHeart /> Playlists
+                  </Tab>
+                  <Tab>
+                    <FaClock /> Recent Activity
+                  </Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <SimpleGrid columns={2} spacing={4}>
+                      <Stat>
+                        <StatLabel>Total Listening Time</StatLabel>
+                        <StatNumber>
+                          {profileData.totalListeningTime}
+                        </StatNumber>
+                        <StatHelpText>Across all tracks</StatHelpText>
+                      </Stat>
+                      <Stat>
+                        <StatLabel>Favorite Genre</StatLabel>
+                        <StatNumber>{profileData.favoriteGenre}</StatNumber>
+                        <StatHelpText>Based on your history</StatHelpText>
+                      </Stat>
+                      <Stat>
+                        <StatLabel>Songs Listened</StatLabel>
+                        <StatNumber>
+                          {profileData.stats.songsListened}
+                        </StatNumber>
+                      </Stat>
+                      <Stat>
+                        <StatLabel>Artists Discovered</StatLabel>
+                        <StatNumber>
+                          {profileData.stats.artistsDiscovered}
+                        </StatNumber>
+                      </Stat>
+                    </SimpleGrid>
+                    <Box mt={4}>
+                      <Text fontWeight="bold">Top Artist</Text>
+                      <Text>{profileData.stats.topArtist}</Text>
+                    </Box>
+                    <Box mt={4}>
+                      <Text fontWeight="bold" mb={2}>
+                        Listening Habits
+                      </Text>
+                      <Progress value={80} colorScheme="teal" mb={2} />
+                      <Text fontSize="sm">
+                        You're in the top 20% of {profileData.favoriteGenre}{" "}
+                        listeners
+                      </Text>
+                    </Box>
+                  </TabPanel>
+                  <TabPanel>
+                    <VStack align="stretch" spacing={4}>
+                      {profileData.playlists.map((playlist, index) => (
+                        <Box
+                          key={index}
+                          p={3}
+                          shadow="md"
+                          borderWidth="1px"
+                          borderRadius="md"
+                        >
+                          <Flex justify="space-between" align="center">
+                            <Text fontWeight="bold">{playlist.name}</Text>
+                            <Badge colorScheme="teal">
+                              {playlist.songCount} songs
+                            </Badge>
+                          </Flex>
+                        </Box>
+                      ))}
+                    </VStack>
+                  </TabPanel>
+                  <TabPanel>
+                    <VStack align="stretch" spacing={4}>
+                      {profileData.recentlyPlayed.map((song, index) => (
+                        <Box
+                          key={index}
+                          p={3}
+                          shadow="md"
+                          borderWidth="1px"
+                          borderRadius="md"
+                        >
+                          <Flex justify="space-between" align="center">
+                            <VStack align="start" spacing={0}>
+                              <Text fontWeight="bold">{song.name}</Text>
+                              <Text fontSize="sm" color="gray.500">
+                                {song.artist}
+                              </Text>
+                            </VStack>
+                            <IconButton
+                              aria-label="Add to playlist"
+                              icon={<FaHeart />}
+                              variant="ghost"
+                              colorScheme="teal"
+                            />
+                          </Flex>
+                        </Box>
+                      ))}
+                    </VStack>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={onProfileClose}>
+            <Button colorScheme="teal" onClick={onProfileClose}>
               Close
             </Button>
           </ModalFooter>
@@ -245,34 +390,60 @@ export function RightContent({ items, user = null }) {
       </Modal>
 
       {/* Modal for Settings */}
-      <Modal isOpen={isSettingsOpen} onClose={onSettingsClose}>
+      <Modal isOpen={isSettingsOpen} onClose={onSettingsClose} size="md">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Settings</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader bg="teal.500" color="white" borderTopRadius="md">
+            Settings
+          </ModalHeader>
+          <ModalCloseButton color="white" />
           <ModalBody>
-            <Flex direction="column" gap={4}>
-              <Input
-                placeholder="Update Name"
-                defaultValue={user?.username || ""}
-                variant="filled"
-              />
-              <Input
-                placeholder="Update Email"
-                defaultValue={user?.email || ""}
-                type="email"
-                variant="filled"
-              />
-              <Input
-                placeholder="New Password"
-                type="password"
-                variant="filled"
-              />
-            </Flex>
+            <VStack spacing={4} align="stretch">
+              <Box>
+                <Text fontWeight="bold" mb={2}>
+                  Update Profile
+                </Text>
+                <Input
+                  placeholder="Update Name"
+                  defaultValue={user?.username || ""}
+                  variant="filled"
+                />
+              </Box>
+              <Box>
+                <Input
+                  placeholder="Update Email"
+                  defaultValue={user?.email || ""}
+                  type="email"
+                  variant="filled"
+                />
+              </Box>
+              <Box>
+                <Text fontWeight="bold" mb={2}>
+                  Change Password
+                </Text>
+                <Input
+                  placeholder="Current Password"
+                  type="password"
+                  variant="filled"
+                  mb={2}
+                />
+                <Input
+                  placeholder="New Password"
+                  type="password"
+                  variant="filled"
+                  mb={2}
+                />
+                <Input
+                  placeholder="Confirm New Password"
+                  type="password"
+                  variant="filled"
+                />
+              </Box>
+            </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={onSettingsClose}>
-              Save
+            <Button colorScheme="teal" mr={3}>
+              Save Changes
             </Button>
             <Button variant="ghost" onClick={onSettingsClose}>
               Cancel
